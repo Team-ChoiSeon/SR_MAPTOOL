@@ -70,6 +70,15 @@
     <Filter Include="04. GUI_panel\ScenePanel">
       <UniqueIdentifier>{5ce16c99-58e9-4420-95f8-9af4e7c43d9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Mesh">
+      <UniqueIdentifier>{f786a980-a3eb-4d27-a8eb-4b51830c83b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Mesh\CubeMesh">
+      <UniqueIdentifier>{c36514aa-56b4-4869-a5f4-e866427d2152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Mesh\SphereMesh">
+      <UniqueIdentifier>{304e52a2-126a-439a-a56f-28879dda446d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CGraphicDev.h">
@@ -168,6 +177,15 @@
     <ClInclude Include="..\Header\CTransform.h">
       <Filter>03. Component\00. Transform</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\IMesh.h">
+      <Filter>05. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CModel.h">
+      <Filter>03. Component\01. Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CCubeMesh.h">
+      <Filter>05. Mesh\CubeMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -238,6 +256,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\CTransform.cpp">
       <Filter>03. Component\00. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\IMesh.cpp">
+      <Filter>05. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CModel.cpp">
+      <Filter>03. Component\01. Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCubeMesh.cpp">
+      <Filter>05. Mesh\CubeMesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
