@@ -53,6 +53,7 @@ void CLayer::Add_ObjectList(vector<CGameObject*> obj)
 	}
 }
 
+//조건에 맞는 오브젝트 추출
 void CLayer::Remove_Object(function<bool(CGameObject*)> predicate)
 {
 	if (m_ObjectList.empty()) return;
@@ -63,7 +64,7 @@ void CLayer::Remove_Object(function<bool(CGameObject*)> predicate)
 		m_ObjectList.erase(iter);
 }
 
-
+//조건에 맞는 벡터 추출
 vector<CGameObject*> CLayer::Pop_Objects(function<bool(CGameObject*)> predicate)
 {
 	if (m_ObjectList.empty()) return vector<CGameObject*>();

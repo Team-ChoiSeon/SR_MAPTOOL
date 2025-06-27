@@ -42,7 +42,6 @@ void CScene::LateUpdate_Panel(_float& dt)
 	}
 }
 
-
 void CScene::FreeUI()
 {
 	for (auto& panel : m_UIContainer) {

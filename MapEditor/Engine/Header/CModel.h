@@ -18,8 +18,9 @@ public:
     virtual void Update_Component(float& dt);
     virtual void LateUpdate_Component(float& dt);
     void Render();
-
     CComponent* Clone() const override;
+public:
+    IMesh* Get_Mesh() { return m_pMesh; }
 private:
     HRESULT Set_Mesh(const string& meshType);
 

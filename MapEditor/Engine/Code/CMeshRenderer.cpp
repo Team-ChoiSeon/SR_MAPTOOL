@@ -3,6 +3,8 @@
 #include "CResourceMgr.h"
 #include "CRenderMgr.h"
 #include "CTransform.h"
+#include "CModel.h"
+#include "IMesh.h"
 
 CMeshRenderer::CMeshRenderer()
 {
@@ -42,7 +44,16 @@ void CMeshRenderer::LateUpdate_Component(float& dt)
 
 void CMeshRenderer::Render(LPDIRECT3DDEVICE9 pDevice)
 {
-	
+	if (!m_pTransform || !m_pModel)
+		return;
+
+	IMesh* mesh = m_pModel->Get_Mesh();
+
+	pDevice->SetFVF(mesh->GetFVF());
+
+	pDevice->SetStreamSource(0, mesh->Get_VertexBuffer(), 0, sizeof(VTXTILE));
+	pDevice->SetIndices(mesh->Get_IndexBuffer());
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12);
 }
 
 CComponent* CMeshRenderer::Clone() const

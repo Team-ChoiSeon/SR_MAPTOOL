@@ -21,10 +21,14 @@ HRESULT CSceneMgr::Ready_SceneMgr()
 
 void CSceneMgr::Update_Scene(_float& dt)
 {
+	if (m_CurScene)
+		m_CurScene->Update_Scene(dt);
 }
 
 void CSceneMgr::LateUpdate_Scene(_float& dt)
 {
+	if (m_CurScene)
+		m_CurScene->LateUpdate_Scene(dt);
 }
 
 void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
@@ -36,8 +40,9 @@ void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
 void CSceneMgr::Set_Scene(string sceneTag)
 {
 	if (m_CurScene == m_SceneContainer[sceneTag]) return;
-
 	m_CurScene = m_SceneContainer[sceneTag];
+
+
 }
 
 void CSceneMgr::Free()

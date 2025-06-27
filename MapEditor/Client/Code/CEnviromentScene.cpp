@@ -32,6 +32,7 @@ HRESULT CEnviromentScene::Ready_Scene()
 void CEnviromentScene::Update_Scene(_float& dt)
 {
 	Update_Panel(dt);
+
 }
 
 void CEnviromentScene::LateUpdate_Scene(_float& dt)

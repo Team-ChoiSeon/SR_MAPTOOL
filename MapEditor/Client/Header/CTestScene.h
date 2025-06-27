@@ -15,7 +15,6 @@ public:
     void Update_Scene(_float& dt) override;
     void LateUpdate_Scene(_float& dt) override;
 
-
 private:
     void Free() override;
 };

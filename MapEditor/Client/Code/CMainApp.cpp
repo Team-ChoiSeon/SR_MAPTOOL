@@ -10,6 +10,9 @@
 #include "CRenderMgr.h"
 #include "GUISystem.h"
 #include "CSceneMgr.h"
+#include "CResourceMgr.h"
+
+
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
 
@@ -27,15 +30,15 @@ HRESULT CMainApp::Ready_MainApp()
 {
 	if (FAILED(CGraphicDev::GetInstance()->Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass)))
 		return E_FAIL;
-
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
-
 	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
 		return E_FAIL;
 	if (FAILED(GUISystem::GetInstance()->Ready_GUI(g_hWnd)))
 		return E_FAIL;	
 	if (FAILED(CSceneMgr::GetInstance()->Ready_SceneMgr()))
+		return E_FAIL;	
+	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
@@ -86,8 +89,7 @@ void CMainApp::Render_MainApp()
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60.f), 800.f / 600.f, 0.1f, 100.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
-	
-
+	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
 	// 5. ³ª¸ÓÁö ·»´õ (GUI µî)
 	GUISystem::GetInstance()->Render_GUI();
 	// 6. ·»´õ Á¾·á
@@ -116,6 +118,6 @@ void CMainApp::Free()
 	CRenderMgr::GetInstance()->DestroyInstance();
 	GUISystem::GetInstance()->DestroyInstance();
 	CSceneMgr::GetInstance()->DestroyInstance();
-
+	CResourceMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }
