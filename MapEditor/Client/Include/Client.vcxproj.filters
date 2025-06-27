@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00. Common">
+      <UniqueIdentifier>{318bb856-104a-42d7-8de7-04f934be78c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Client">
+      <UniqueIdentifier>{0d0864b3-668c-4122-aa65-f47a5c008001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. Common\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="02. MainApp">
+      <UniqueIdentifier>{9c5040e7-00aa-46e9-975c-7a1b9dace7a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scenes">
+      <UniqueIdentifier>{fe9bd7f2-d8c3-41cc-a502-d5000c4e6b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. fucntion">
+      <UniqueIdentifier>{f4d5a26e-2126-4ce5-a860-b14c4a5a91ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scenes\Test">
+      <UniqueIdentifier>{a053797d-037e-4dec-aaae-dbca777eb034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scenes\Enviroment">
+      <UniqueIdentifier>{41735504-47db-4312-ad74-f89dd1909d26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>00. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>00. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>00. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>00. Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>01. Client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMainApp.h">
+      <Filter>02. MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTestScene.h">
+      <Filter>04. Scenes\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CEnviromentScene.h">
+      <Filter>04. Scenes\Enviroment</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>00. Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>01. Client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMainApp.cpp">
+      <Filter>02. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTestScene.cpp">
+      <Filter>04. Scenes\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CEnviromentScene.cpp">
+      <Filter>04. Scenes\Enviroment</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>00. Common\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>00. Common\리소스 파일</Filter>
+    </Image>
+    <Image Include="Client.ico">
+      <Filter>00. Common\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
