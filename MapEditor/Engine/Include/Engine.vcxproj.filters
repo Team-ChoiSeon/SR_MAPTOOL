@@ -79,6 +79,18 @@
     <Filter Include="05. Mesh\SphereMesh">
       <UniqueIdentifier>{304e52a2-126a-439a-a56f-28879dda446d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Managers\07. ResourceMgr">
+      <UniqueIdentifier>{1fdcf425-e1d4-4226-8d5f-8e372cf7de84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Managers\06. SceneMgr\Layer">
+      <UniqueIdentifier>{37ece630-2aa0-438f-9549-d59606e4d8ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\04. Renderer">
+      <UniqueIdentifier>{0a5d7260-83e4-43f0-9cfe-d8a9859f6d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\04. Renderer\MeshRenderer">
+      <UniqueIdentifier>{1f2db26b-8b8d-460a-8d52-b14386fe02dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CGraphicDev.h">
@@ -114,7 +126,7 @@
     <ClInclude Include="..\Header\CFrame.h">
       <Filter>01. Managers\02. FrameMgr\Frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CRenderer.h">
+    <ClInclude Include="..\Header\CRenderMgr.h">
       <Filter>01. Managers\04. RenderMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CInputMgr.h">
@@ -186,6 +198,18 @@
     <ClInclude Include="..\Header\CCubeMesh.h">
       <Filter>05. Mesh\CubeMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CResourceMgr.h">
+      <Filter>01. Managers\07. ResourceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CLayer.h">
+      <Filter>01. Managers\06. SceneMgr\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CRenderer.h">
+      <Filter>03. Component\04. Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMeshRenderer.h">
+      <Filter>03. Component\04. Renderer\MeshRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -206,7 +230,7 @@
     <ClCompile Include="..\Code\CInputMgr.cpp">
       <Filter>01. Managers\03. InputMgr</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\CRenderer.cpp">
+    <ClCompile Include="..\Code\CRenderMgr.cpp">
       <Filter>01. Managers\04. RenderMgr</Filter>
     </ClCompile>
     <ClCompile Include="CGameObject.cpp">
@@ -265,6 +289,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\CCubeMesh.cpp">
       <Filter>05. Mesh\CubeMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CResourceMgr.cpp">
+      <Filter>01. Managers\07. ResourceMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CLayer.cpp">
+      <Filter>01. Managers\06. SceneMgr\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CRenderer.cpp">
+      <Filter>03. Component\04. Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMeshRenderer.cpp">
+      <Filter>03. Component\04. Renderer\MeshRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,27 +1,26 @@
 #pragma once
-#include "CBase.h"
-
+#include "CComponent.h"
 BEGIN(Engine)
+class CTransform;
 
 class ENGINE_DLL CRenderer :
-    public CBase
+    public CComponent
 {
-    DECLARE_SINGLETON(CRenderer)
-
-private:
+protected:
     explicit CRenderer();
-    virtual ~CRenderer();
-
-public: 
-    HRESULT Ready_Renderer();
-    void Render();
+   virtual ~CRenderer();
+public:
+	virtual HRESULT Ready_Component() PURE;
+	virtual void Render(LPDIRECT3DDEVICE9 pDevice) PURE;
+	virtual CComponent* Clone() const PURE;
+	virtual RENDER_PASS Get_RenderPass() PURE;
+	void Set_Transform();
 
 private:
-    LPDIRECT3DDEVICE9 m_pDevice;
+	CTransform* m_pTransform;
 
 private:
-    void Free() override;
-
+    void Free() override PURE;
 };
 
 END

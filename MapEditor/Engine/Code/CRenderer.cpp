@@ -1,11 +1,14 @@
 #include "Engine_Define.h"
 #include "CRenderer.h"
-#include "CGraphicDev.h"
- 
-IMPLEMENT_SINGLETON(CRenderer)
+#include "CTransform.h"
+#include "CGameObject.h"
+
+
+void CRenderer::Free()
+{
+}
 
 CRenderer::CRenderer()
-	: m_pDevice(nullptr)
 {
 }
 
@@ -13,24 +16,8 @@ CRenderer::~CRenderer()
 {
 }
 
-HRESULT CRenderer::Ready_Renderer()
+void CRenderer::Set_Transform()
 {
-	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
-
-	if(!m_pDevice)
-		return E_FAIL;
-
-		return S_OK;
-}
-
-void CRenderer::Render()
-{
-	m_pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-	m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-}
-
-void CRenderer::Free()
-{
+	if (m_pOwner)
+		m_pTransform = m_pOwner->Get_Component<CTransform>();
 }

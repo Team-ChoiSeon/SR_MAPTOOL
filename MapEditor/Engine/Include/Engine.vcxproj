@@ -167,8 +167,12 @@
     <ClInclude Include="..\Header\CGameObject.h" />
     <ClInclude Include="..\Header\CGraphicDev.h" />
     <ClInclude Include="..\Header\CInputMgr.h" />
+    <ClInclude Include="..\Header\CLayer.h" />
+    <ClInclude Include="..\Header\CMeshRenderer.h" />
     <ClInclude Include="..\Header\CModel.h" />
     <ClInclude Include="..\Header\CRenderer.h" />
+    <ClInclude Include="..\Header\CRenderMgr.h" />
+    <ClInclude Include="..\Header\CResourceMgr.h" />
     <ClInclude Include="..\Header\CScene.h" />
     <ClInclude Include="..\Header\CSceneMgr.h" />
     <ClInclude Include="..\Header\CScenePanel.h" />
@@ -201,8 +205,12 @@
     <ClCompile Include="..\Code\CFunction.cpp" />
     <ClCompile Include="..\Code\CGraphicDev.cpp" />
     <ClCompile Include="..\Code\CInputMgr.cpp" />
+    <ClCompile Include="..\Code\CLayer.cpp" />
+    <ClCompile Include="..\Code\CMeshRenderer.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
     <ClCompile Include="..\Code\CRenderer.cpp" />
+    <ClCompile Include="..\Code\CRenderMgr.cpp" />
+    <ClCompile Include="..\Code\CResourceMgr.cpp" />
     <ClCompile Include="..\Code\CScene.cpp" />
     <ClCompile Include="..\Code\CSceneMgr.cpp" />
     <ClCompile Include="..\Code\CScenePanel.cpp" />

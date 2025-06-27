@@ -7,7 +7,7 @@
 #include "CTimeMgr.h"
 #include "CFrameMgr.h"
 #include "CInputMgr.h"
-#include "CRenderer.h"
+#include "CRenderMgr.h"
 #include "GUISystem.h"
 #include "CSceneMgr.h"
 #include "CTestScene.h"
@@ -31,7 +31,7 @@ HRESULT CMainApp::Ready_MainApp()
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
 
-	if (FAILED(CRenderer::GetInstance()->Ready_Renderer()))
+	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
 		return E_FAIL;
 	if (FAILED(GUISystem::GetInstance()->Ready_GUI(g_hWnd)))
 		return E_FAIL;	
@@ -90,7 +90,6 @@ void CMainApp::Render_MainApp()
 
 	// 5. ³ª¸ÓÁö ·»´õ (GUI µî)
 	GUISystem::GetInstance()->Render_GUI();
-
 	// 6. ·»´õ Á¾·á
 	m_pDeviceClass->Render_End();
 }
@@ -114,7 +113,7 @@ void CMainApp::Free()
 	CTimeMgr::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
 	CInputMgr::GetInstance()->DestroyInstance();
-	CRenderer::GetInstance()->DestroyInstance();
+	CRenderMgr::GetInstance()->DestroyInstance();
 	GUISystem::GetInstance()->DestroyInstance();
 	CSceneMgr::GetInstance()->DestroyInstance();
 
