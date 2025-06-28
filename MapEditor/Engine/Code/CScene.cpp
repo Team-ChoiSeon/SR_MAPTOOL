@@ -77,3 +77,4 @@ void CScene::Free_AllLayer()
 
 	m_mapLayer.clear();
 }
+

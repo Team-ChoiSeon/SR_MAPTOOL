@@ -3,7 +3,8 @@
 #include "CGraphicDev.h"
 
 CCubeMesh::CCubeMesh()
-	:m_pDevice(nullptr),m_pVB(nullptr),m_pIB(nullptr), m_FVF(FVF_TILE), numIndices(36), numVertices(8)
+	:m_pDevice(nullptr),m_pVB(nullptr),m_pIB(nullptr), 
+    m_FVF(FVF_TILE), numIndices(36), numVertices(8)
 {}
 
 CCubeMesh::~CCubeMesh()
@@ -41,28 +42,37 @@ HRESULT CCubeMesh::Ready_Mesh()
     // ÀÎµ¦½º ¹öÆÛ »ý¼º
     hr = m_pDevice->CreateIndexBuffer(sizeof(DWORD) * numIndices,
         0, D3DFMT_INDEX32, D3DPOOL_MANAGED, &m_pIB, 0);
+
     if (FAILED(hr)) {
         return hr;
     }
+
 
     float s = 1.f;
 
     VTXTILE cube[] = {
         // µÞ¸é (-Z)
         { {-s,+s,-s}, { 0,  0, -1 }, {0, 1} },      // 0
-        { {+s,-s,-s}, { 0,  0, -1 }, {0, 0} },  // 1
+        { {+s,+s,-s}, { 0,  0, -1 }, {0, 0} },      // 1
         { {+s,-s,-s}, { 0,  0, -1 }, {1, 0} },      // 2
         { {-s,-s,-s}, { 0,  0, -1 }, {1, 1} },      // 3
 
         // ¾Õ¸é (+Z)
-        { {-s,+s,+s}, { 0,  0,  1 }, {0, 0} }, // 4
+        { {-s,+s,+s}, { 0,  0,  1 }, {0, 0} },  // 4
         { {+s,+s,+s}, { 0,  0,  1 }, {0, 0} }, // 5
         { {+s,-s,+s}, { 0,  0,  1 }, {0, 0} },  // 6
         { {-s,-s,+s}, { 0,  0,  1 }, {0, 0} },  // 7
     };
 
     DWORD indices[] =
-    {3,0,1, 3,1,2,6,5,4, 6,4,7,   2,1,5,2,5,6,7,4,0,7,0,3,       0,4,5,0,5,1,7,3,2,7,2,6};
+    {
+        3,0,1,   3,1,2,     //¾Õ¸é
+        2,1,5,   2,5,6,     //¿À¸¥ÂÊ¸é
+        6,5,4,  6,4,7,  // µÞ¸é
+        0,4,5,  0,5,1,   // À­¸é
+        7,4,0,  7,0,3,  //¿Þ¸é
+        7,3,2,  7,2,6   //¾Æ·§¸é
+    };
 
     // Á¤Á¡ Á¤ÀÇ
     void* pVertices = nullptr;

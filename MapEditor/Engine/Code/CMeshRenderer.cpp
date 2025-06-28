@@ -47,6 +47,9 @@ void CMeshRenderer::Render(LPDIRECT3DDEVICE9 pDevice)
 	if (!m_pTransform || !m_pModel)
 		return;
 
+	// Transform Àû¿ë
+	pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_WorldMatrix());
+
 	IMesh* mesh = m_pModel->Get_Mesh();
 
 	pDevice->SetFVF(mesh->GetFVF());

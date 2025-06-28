@@ -10,13 +10,13 @@ CGameObject::~CGameObject()
 }
 
 
-void CGameObject::Update_Component(float& dt)
+void CGameObject::Update_Component(_float& dt)
 {
 	for (auto& pair : m_ComponentMap)
 		pair.second->Update_Component(dt);
 }
 
-void CGameObject::LateUpdate_Component(float& dt)
+void CGameObject::LateUpdate_Component(_float& dt)
 {
 	for (auto& pair : m_ComponentMap)
 		pair.second->LateUpdate_Component(dt);

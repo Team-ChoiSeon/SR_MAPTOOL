@@ -16,12 +16,12 @@ public:
 
 public:
 	virtual HRESULT Ready_GameObject() PURE;
-	virtual void Update_GameObject(float& dt) PURE;
-	virtual void LateUpdate_GameObject(float& dt) PURE;
+	virtual void Update_GameObject(_float& dt) PURE;
+	virtual void LateUpdate_GameObject(_float& dt) PURE;
 
 protected:
-	void Update_Component(float& dt);
-	void LateUpdate_Component(float& dt);
+	void Update_Component(_float& dt);
+	void LateUpdate_Component(_float& dt);
 	void Release_Component();
 
 public:

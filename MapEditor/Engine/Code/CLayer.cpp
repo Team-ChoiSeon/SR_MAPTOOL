@@ -98,4 +98,5 @@ void CLayer::Free()
 	for (CGameObject*& obj : m_ObjectList) {
 		Safe_Release(obj);
 	}
+	m_ObjectList.clear();
 }

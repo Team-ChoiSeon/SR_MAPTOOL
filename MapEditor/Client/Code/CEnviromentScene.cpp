@@ -32,7 +32,6 @@ HRESULT CEnviromentScene::Ready_Scene()
 void CEnviromentScene::Update_Scene(_float& dt)
 {
 	Update_Panel(dt);
-
 }
 
 void CEnviromentScene::LateUpdate_Scene(_float& dt)
@@ -43,4 +42,14 @@ void CEnviromentScene::LateUpdate_Scene(_float& dt)
 void CEnviromentScene::Free()
 {
 	FreeUI();
+}
+
+HRESULT CEnviromentScene::Enter_Scene()
+{
+	return S_OK;
+}
+
+HRESULT CEnviromentScene::Exit_Scene()
+{
+	return S_OK;
 }

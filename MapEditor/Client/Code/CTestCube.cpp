@@ -4,6 +4,7 @@
 #include "CTransform.h"
 #include "CModel.h"
 #include "CMeshRenderer.h"
+#include "CInputMgr.h"
 
 CTestCube::CTestCube()
 {
@@ -35,12 +36,15 @@ HRESULT CTestCube::Ready_GameObject()
 	return S_OK;
 }
 
-void CTestCube::Update_GameObject(float& dt)
+void CTestCube::Update_GameObject(_float& dt)
 {
 	Update_Component(dt);
+	if (CInputMgr::GetInstance()->Key_Down(DIK_W)) {
+		Get_Component<CTransform>()->Add_Rotate({0,16* dt,0 });
+	}
 }
 
-void CTestCube::LateUpdate_GameObject(float& dt)
+void CTestCube::LateUpdate_GameObject(_float& dt)
 {
 	LateUpdate_Component(dt);
 }

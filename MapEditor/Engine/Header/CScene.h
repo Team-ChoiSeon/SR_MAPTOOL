@@ -21,6 +21,9 @@ public:
     virtual void Update_Scene(_float& dt) PURE;
     virtual void LateUpdate_Scene(_float& dt) PURE;
     virtual void Render_Panel();
+public:
+    virtual HRESULT Enter_Scene()PURE;
+    virtual HRESULT Exit_Scene()PURE;
 
 public:
     const string& Get_Name() { return m_Name; }

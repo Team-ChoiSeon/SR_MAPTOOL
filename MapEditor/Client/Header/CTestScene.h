@@ -15,7 +15,11 @@ public:
     void Update_Scene(_float& dt) override;
     void LateUpdate_Scene(_float& dt) override;
 
+    HRESULT Enter_Scene() override;
+    HRESULT Exit_Scene() override;
+
 private:
     void Free() override;
+
 };
 

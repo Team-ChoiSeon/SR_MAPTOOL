@@ -37,12 +37,29 @@ void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
 	m_SceneContainer.insert({ sceneTag,scene });
 }
 
-void CSceneMgr::Set_Scene(string sceneTag)
+void CSceneMgr::Change_Scene(string sceneTag)
 {
-	if (m_CurScene == m_SceneContainer[sceneTag]) return;
-	m_CurScene = m_SceneContainer[sceneTag];
+	auto iter = m_SceneContainer.find(sceneTag);
 
+	if (iter == m_SceneContainer.end()) return;
 
+	CScene* next = iter->second;
+
+	if (m_CurScene) {
+		HRESULT exit = m_CurScene->Exit_Scene();
+		if (FAILED(exit)) {
+			MessageBoxW(0, L"씬 전환 실패, 씬 퇴장 오류", L"error", MB_OK);
+		}
+	}
+
+	HRESULT enter = next->Enter_Scene();
+
+	if (FAILED(enter)) {
+		MessageBoxW(0, L"씬 전환 실패, 씬 입장 오류", L"error", MB_OK);
+		return;
+	}
+
+	m_CurScene = next;
 }
 
 void CSceneMgr::Free()

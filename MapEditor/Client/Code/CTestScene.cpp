@@ -39,6 +39,7 @@ void CTestScene::Update_Scene(_float& dt)
 {
 	Update_Panel(dt);
 	m_mapLayer["Object"]->Update_Layer(dt);
+
 }
 
 void CTestScene::LateUpdate_Scene(_float& dt)
@@ -51,4 +52,14 @@ void CTestScene::Free()
 {
 	FreeUI();
 	Free_AllLayer();
+}
+
+HRESULT CTestScene::Enter_Scene()
+{
+	return S_OK;
+}
+
+HRESULT CTestScene::Exit_Scene()
+{
+	return S_OK;
 }

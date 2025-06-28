@@ -47,8 +47,8 @@ HRESULT CMainApp::Ready_MainApp()
 	m_pGraphicDev->AddRef();
 
 	CSceneMgr::GetInstance()->Add_Scene("Test", CTestScene::Create());
-	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CTestScene::Create());
-	CSceneMgr::GetInstance()->Set_Scene("Test");
+	CSceneMgr::GetInstance()->Change_Scene("Test");
+	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CEnviromentScene::Create());
 	return S_OK;
 }
 
@@ -69,11 +69,6 @@ void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 void CMainApp::Render_MainApp()
 {
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
-
-	// 2. 렌더 상태 기본 세팅
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE); // 조명 없으면 어두워져서 끔
 
 	// 3. 카메라 설정
 	D3DXMATRIX matWorld, matView, matProj;
@@ -100,10 +95,12 @@ void CMainApp::Render_MainApp()
 CMainApp* CMainApp::Create()
 {
 	CMainApp* pInstance = new CMainApp();
+
 	if (FAILED(pInstance->Ready_MainApp())) {
 		Engine::Safe_Release(pInstance);
 		return nullptr;
 	}
+
 	return pInstance;
 }
 
