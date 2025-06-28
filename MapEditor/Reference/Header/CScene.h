@@ -4,6 +4,8 @@
 BEGIN(Engine)
 
 class IPanel;
+class CLayer;
+class CGameObject;
 
 class ENGINE_DLL CScene :
     public CBase
@@ -20,16 +22,25 @@ public:
     virtual void LateUpdate_Scene(_float& dt) PURE;
     virtual void Render_Panel();
 public:
+    virtual HRESULT Enter_Scene()PURE;
+    virtual HRESULT Exit_Scene()PURE;
+
+public:
     const string& Get_Name() { return m_Name; }
     void Set_Name(const string& name) { m_Name = name; };
+
 protected:
    void Update_Panel(_float& dt);
    void LateUpdate_Panel(_float& dt);
    void FreeUI();
+    void Create_Layer(const string& key);
+    void Free_Layer(const string& key);
+    void Free_AllLayer();
 
 protected:
-    string m_Name = "scene";
+    string m_Name;
     unordered_map<type_index, IPanel*> m_UIContainer;//gui panel
+    unordered_map<string, CLayer*> m_mapLayer;
 
 private:
     virtual void Free() PURE;

@@ -2,6 +2,8 @@
 #include "Engine_Define.h"
 #include "CTestScene.h"
 #include "CScenePanel.h"
+#include "CTestCube.h"
+#include "CLayer.h"
 
 CTestScene::CTestScene()
 {
@@ -26,6 +28,9 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Add_Panel<CScenePanel>();
+	Create_Layer("Object");
+	m_mapLayer["Object"]->Add_Object(CTestCube::Create());
+
 	return S_OK;
 }
 
@@ -33,14 +38,28 @@ HRESULT CTestScene::Ready_Scene()
 void CTestScene::Update_Scene(_float& dt)
 {
 	Update_Panel(dt);
+	m_mapLayer["Object"]->Update_Layer(dt);
+
 }
 
 void CTestScene::LateUpdate_Scene(_float& dt)
 {
 	LateUpdate_Panel(dt);
+	m_mapLayer["Object"]->LateUpdate_Layer(dt);
 }
 
 void CTestScene::Free()
 {
 	FreeUI();
+	Free_AllLayer();
+}
+
+HRESULT CTestScene::Enter_Scene()
+{
+	return S_OK;
+}
+
+HRESULT CTestScene::Exit_Scene()
+{
+	return S_OK;
 }

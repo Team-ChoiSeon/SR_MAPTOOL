@@ -27,6 +27,7 @@
 #include <process.h>//쓰레드
 
 //--Define 헤더--//
+#include "Engine_GUI.h"
 #include "Engine_Enum.h"
 #include "Engine_Function.h"
 #include "Engine_Macro.h"

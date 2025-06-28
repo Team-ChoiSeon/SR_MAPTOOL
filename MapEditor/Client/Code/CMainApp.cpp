@@ -7,9 +7,12 @@
 #include "CTimeMgr.h"
 #include "CFrameMgr.h"
 #include "CInputMgr.h"
-#include "CRenderer.h"
+#include "CRenderMgr.h"
 #include "GUISystem.h"
 #include "CSceneMgr.h"
+#include "CResourceMgr.h"
+
+
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
 
@@ -27,15 +30,15 @@ HRESULT CMainApp::Ready_MainApp()
 {
 	if (FAILED(CGraphicDev::GetInstance()->Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass)))
 		return E_FAIL;
-
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
-
-	if (FAILED(CRenderer::GetInstance()->Ready_Renderer()))
+	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
 		return E_FAIL;
 	if (FAILED(GUISystem::GetInstance()->Ready_GUI(g_hWnd)))
 		return E_FAIL;	
 	if (FAILED(CSceneMgr::GetInstance()->Ready_SceneMgr()))
+		return E_FAIL;	
+	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
@@ -44,8 +47,8 @@ HRESULT CMainApp::Ready_MainApp()
 	m_pGraphicDev->AddRef();
 
 	CSceneMgr::GetInstance()->Add_Scene("Test", CTestScene::Create());
-	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CTestScene::Create());
-	CSceneMgr::GetInstance()->Set_Scene("Test");
+	CSceneMgr::GetInstance()->Change_Scene("Test");
+	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CEnviromentScene::Create());
 	return S_OK;
 }
 
@@ -67,11 +70,6 @@ void CMainApp::Render_MainApp()
 {
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
 
-	// 2. 렌더 상태 기본 세팅
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE); // 조명 없으면 어두워져서 끔
-
 	// 3. 카메라 설정
 	D3DXMATRIX matWorld, matView, matProj;
 	D3DXMatrixIdentity(&matWorld);
@@ -86,11 +84,9 @@ void CMainApp::Render_MainApp()
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60.f), 800.f / 600.f, 0.1f, 100.f);
 	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
 
-	
-
+	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
 	// 5. 나머지 렌더 (GUI 등)
 	GUISystem::GetInstance()->Render_GUI();
-
 	// 6. 렌더 종료
 	m_pDeviceClass->Render_End();
 }
@@ -99,10 +95,12 @@ void CMainApp::Render_MainApp()
 CMainApp* CMainApp::Create()
 {
 	CMainApp* pInstance = new CMainApp();
+
 	if (FAILED(pInstance->Ready_MainApp())) {
 		Engine::Safe_Release(pInstance);
 		return nullptr;
 	}
+
 	return pInstance;
 }
 
@@ -114,9 +112,9 @@ void CMainApp::Free()
 	CTimeMgr::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
 	CInputMgr::GetInstance()->DestroyInstance();
-	CRenderer::GetInstance()->DestroyInstance();
+	CRenderMgr::GetInstance()->DestroyInstance();
 	GUISystem::GetInstance()->DestroyInstance();
 	CSceneMgr::GetInstance()->DestroyInstance();
-
+	CResourceMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

@@ -91,7 +91,7 @@ void CScenePanel::Request_SceneChange(const string& name)
 
 	if (m_pOwner != iter->second)
 	{
-		CSceneMgr::GetInstance()->Set_Scene(name);
+		CSceneMgr::GetInstance()->Change_Scene(name);
 	}
 }
 

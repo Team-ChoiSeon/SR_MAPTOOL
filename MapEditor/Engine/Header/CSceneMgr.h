@@ -21,7 +21,7 @@ public:
 public:
     CScene* Get_NowScene() { return m_CurScene; };
     void Add_Scene(string sceneTag, CScene* scene);
-    void Set_Scene(string sceneTag);
+    void Change_Scene(string sceneTag);
     const unordered_map<string, CScene*>& Get_SceneArr()const { return m_SceneContainer; }
 private:
     CScene* m_CurScene;
