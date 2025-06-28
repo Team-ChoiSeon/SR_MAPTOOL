@@ -15,8 +15,8 @@ public:
 
 public:
     HRESULT Ready_Component() override;
-    virtual void Update_Component(float& dt);
-    virtual void LateUpdate_Component(float& dt);
+    virtual void Update_Component(_float& dt);
+    virtual void LateUpdate_Component(_float& dt);
     void Render();
     CComponent* Clone() const override;
 public:

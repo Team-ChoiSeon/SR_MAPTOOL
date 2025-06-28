@@ -69,25 +69,8 @@ void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 void CMainApp::Render_MainApp()
 {
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
-
-	// 3. 카메라 설정
-	D3DXMATRIX matWorld, matView, matProj;
-	D3DXMatrixIdentity(&matWorld);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	D3DXVECTOR3 vEye(0.f, 0.f, -5.f);
-	D3DXVECTOR3 vAt(0.f, 0.f, 0.f);
-	D3DXVECTOR3 vUp(0.f, 1.f, 0.f);
-	D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
-
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60.f), 800.f / 600.f, 0.1f, 100.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
-
 	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
-	// 5. 나머지 렌더 (GUI 등)
 	GUISystem::GetInstance()->Render_GUI();
-	// 6. 렌더 종료
 	m_pDeviceClass->Render_End();
 }
 

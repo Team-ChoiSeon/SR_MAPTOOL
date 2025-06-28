@@ -30,11 +30,11 @@ HRESULT CModel::Ready_Component()
 	return S_OK;
 }
 
-void CModel::Update_Component(float& dt)
+void CModel::Update_Component(_float& dt)
 {
 }
 
-void CModel::LateUpdate_Component(float& dt)
+void CModel::LateUpdate_Component(_float& dt)
 {
 }
 

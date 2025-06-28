@@ -210,6 +210,9 @@
     <ClInclude Include="..\Header\CMeshRenderer.h">
       <Filter>03. Component\04. Renderer\MeshRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CCamera.h">
+      <Filter>03. Component\03. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\CMeshRenderer.cpp">
       <Filter>03. Component\04. Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCamera.cpp">
+      <Filter>03. Component\03. Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
