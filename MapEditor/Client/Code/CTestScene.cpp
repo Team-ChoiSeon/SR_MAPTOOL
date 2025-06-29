@@ -58,6 +58,7 @@ void CTestScene::LateUpdate_Scene(_float& dt)
 	LateUpdate_Panel(dt);
 	m_mapLayer["Camera"]->LateUpdate_Layer(dt);
 	m_mapLayer["Object"]->LateUpdate_Layer(dt);
+
 }
 
 void CTestScene::Free()

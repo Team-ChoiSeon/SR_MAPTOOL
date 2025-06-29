@@ -53,6 +53,7 @@ void CScenePanel::Render_Panel()
 		return;
 
 	// m_sceneList에서 직접 c_str() 꺼내기
+	ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
 	ImGui::Begin("Scene_Select", &isOpen, ImGuiWindowFlags_AlwaysAutoResize);
 
 	if (ImGui::BeginCombo("##SceneCombo", m_sceneList[m_nowInex].c_str()))

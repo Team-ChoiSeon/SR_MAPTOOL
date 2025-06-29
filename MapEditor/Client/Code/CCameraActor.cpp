@@ -7,7 +7,7 @@
 #include "CInputMgr.h"
 
 CCameraActor::CCameraActor()
-	:m_pCamera(nullptr),m_pTransform(nullptr),m_eMode(Camera_Mode::WorldMove)
+	:m_pCamera(nullptr),m_pTransform(nullptr),m_eMode(Camera_Mode::Picking)
 {
 }
 
@@ -68,7 +68,7 @@ void CCameraActor::Mode_Check(_float& dt)
 void CCameraActor::Key_Check(_float& dt)
 {
 
-	_float Move_speed = 80;
+	_float Move_speed = 40;
 	_float Rotate_speed = 120;
 
 	_long x = CInputMgr::GetInstance()->Get_DIMouseMove(DIMS_X);

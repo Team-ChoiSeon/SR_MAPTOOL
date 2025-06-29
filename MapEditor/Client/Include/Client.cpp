@@ -90,7 +90,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     _ulong dwRefCnt(0);
     if (dwRefCnt = Engine::Safe_Release(pMainApp)) {
-        MSG_BOX("MainApp Release Failed");
+        //MSG_BOX("MainApp Release Failed");
         return FALSE;
     }
 
