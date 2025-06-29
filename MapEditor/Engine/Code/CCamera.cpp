@@ -4,7 +4,7 @@
 #include "CTransform.h"
 
 CCamera::CCamera()
-	:m_pTransform(nullptr),m_fPitch(0),m_fYaw(0),m_fRoll(0)
+	:m_pTransform(nullptr),m_fPitch(0),m_fYaw(90),m_fRoll(0)
 {
 }
 
@@ -32,10 +32,10 @@ HRESULT CCamera::Ready_Component()
 	m_vUp = { 0.f,1.f,0.f };
 	m_vLookDir = { 0.f,0.f,1.f};
 
-	m_fAspect = 45.f;
-	m_fFOV = (float)WINCX / WINCY;
+	m_fFOV = 45.f ;
+	m_fAspect = (float)WINCX / WINCY;
 	m_fNear = 0.1f;
-	m_fFar = 100.f;
+	m_fFar = 200.f;
 
 	return S_OK;
 }
@@ -102,6 +102,7 @@ void CCamera::UpdateDirFromAngles()
 	camDir.x = cosf(D3DXToRadian(m_fPitch)) * cosf(D3DXToRadian(m_fYaw));
 	camDir.y = sinf(D3DXToRadian(m_fPitch));
 	camDir.z = cosf(D3DXToRadian(m_fPitch)) * sinf(D3DXToRadian(m_fYaw));
+
 	D3DXVec3Normalize(&camDir, &camDir); //πÊ«‚ ∫§≈Õ∑Œ.
 	m_vLookDir = camDir;
 

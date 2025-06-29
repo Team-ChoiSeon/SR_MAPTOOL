@@ -160,6 +160,7 @@
     <ClInclude Include="..\..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Header\CCamera.h" />
+    <ClInclude Include="..\Header\CCameraMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
     <ClInclude Include="..\Header\CCubeMesh.h" />
     <ClInclude Include="..\Header\CFrame.h" />
@@ -200,11 +201,13 @@
     <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Code\CCamera.cpp" />
+    <ClCompile Include="..\Code\CCameraMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
     <ClCompile Include="..\Code\CCubeMesh.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />
+    <ClCompile Include="..\Code\CGameObject.cpp" />
     <ClCompile Include="..\Code\CGraphicDev.cpp" />
     <ClCompile Include="..\Code\CInputMgr.cpp" />
     <ClCompile Include="..\Code\CLayer.cpp" />
@@ -223,7 +226,6 @@
     <ClCompile Include="..\Code\GUISystem.cpp" />
     <ClCompile Include="..\Code\IMesh.cpp" />
     <ClCompile Include="..\Code\IPanel.cpp" />
-    <ClCompile Include="CGameObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

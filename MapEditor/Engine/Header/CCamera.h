@@ -31,6 +31,12 @@ public:
 
     _vec3 Get_Dir() { return m_vLookDir; };
     _vec3 Get_Up() { return m_vUp; };
+    _vec3 Get_Right() { 
+        _vec3 Right;
+        D3DXVec3Cross(&Right, &m_vUp, &m_vLookDir); 
+        return Right;
+    };
+
 private:
     void UpdateDirFromAngles();
 private:

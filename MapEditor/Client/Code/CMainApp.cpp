@@ -8,10 +8,10 @@
 #include "CFrameMgr.h"
 #include "CInputMgr.h"
 #include "CRenderMgr.h"
+#include "CCameraMgr.h"
 #include "GUISystem.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
-
 
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
@@ -39,6 +39,8 @@ HRESULT CMainApp::Ready_MainApp()
 	if (FAILED(CSceneMgr::GetInstance()->Ready_SceneMgr()))
 		return E_FAIL;	
 	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
+		return E_FAIL;	
+	if (FAILED(CCameraMgr::GetInstance()->Ready_CameraMgr()))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
@@ -48,6 +50,7 @@ HRESULT CMainApp::Ready_MainApp()
 
 	CSceneMgr::GetInstance()->Add_Scene("Test", CTestScene::Create());
 	CSceneMgr::GetInstance()->Change_Scene("Test");
+
 	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CEnviromentScene::Create());
 	return S_OK;
 }
@@ -55,6 +58,7 @@ HRESULT CMainApp::Ready_MainApp()
 int CMainApp::Update_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->Update_InputDev();
+	CCameraMgr::GetInstance()->Update_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->Update_Scene(fTimeDelta);
 
 	return 0;
@@ -63,6 +67,7 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->LateUpdate_InputDev();
+	CCameraMgr::GetInstance()->LateUpdate_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->LateUpdate_Scene(fTimeDelta);
 }
 
@@ -99,5 +104,6 @@ void CMainApp::Free()
 	GUISystem::GetInstance()->DestroyInstance();
 	CSceneMgr::GetInstance()->DestroyInstance();
 	CResourceMgr::GetInstance()->DestroyInstance();
+	CCameraMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

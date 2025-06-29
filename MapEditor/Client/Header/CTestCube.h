@@ -1,6 +1,9 @@
 #pragma once
 #include "CGameObject.h"
 
+namespace Engine {
+    class CTransform;
+}
 class CTestCube :
     public Engine::CGameObject
 {
@@ -14,6 +17,8 @@ public:
     void Update_GameObject(_float& dt) override;
     void LateUpdate_GameObject(_float& dt) override;
 
+private:
+    CTransform* m_pTransform;
 private:
     void Free() override;
 };

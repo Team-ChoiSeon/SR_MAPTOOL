@@ -3,6 +3,10 @@
 #include "CTestScene.h"
 #include "CScenePanel.h"
 #include "CTestCube.h"
+
+#include "CCamera.h"
+#include "CCameraActor.h"
+#include "CCameraMgr.h"
 #include "CLayer.h"
 
 CTestScene::CTestScene()
@@ -28,8 +32,15 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Add_Panel<CScenePanel>();
+
+	Create_Layer("Camera");
 	Create_Layer("Object");
-	m_mapLayer["Object"]->Add_Object(CTestCube::Create());
+
+	m_mapLayer["Camera"]->Add_Object("Camera01", CCameraActor::Create());
+	m_mapLayer["Object"]->Add_Object("Object01", CTestCube::Create());
+
+	CCamera* cam = (m_mapLayer["Camera"]->Find_Object("Camera01"))->Get_Component<CCamera>();
+	CCameraMgr::GetInstance()->Set_MainCamera(cam);
 
 	return S_OK;
 }
@@ -38,13 +49,14 @@ HRESULT CTestScene::Ready_Scene()
 void CTestScene::Update_Scene(_float& dt)
 {
 	Update_Panel(dt);
+	m_mapLayer["Camera"]->Update_Layer(dt);
 	m_mapLayer["Object"]->Update_Layer(dt);
-
 }
 
 void CTestScene::LateUpdate_Scene(_float& dt)
 {
 	LateUpdate_Panel(dt);
+	m_mapLayer["Camera"]->LateUpdate_Layer(dt);
 	m_mapLayer["Object"]->LateUpdate_Layer(dt);
 }
 

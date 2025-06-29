@@ -32,6 +32,9 @@
     <Filter Include="05. Objects\TestCube">
       <UniqueIdentifier>{8830b892-8082-41a5-bad1-7eac5df3eb79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Objects\CameraActor">
+      <UniqueIdentifier>{88de7d39-2db5-4d2f-9065-fe9cab0bf035}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -61,6 +64,9 @@
     <ClInclude Include="..\Header\CTestCube.h">
       <Filter>05. Objects\TestCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CCameraActor.h">
+      <Filter>05. Objects\CameraActor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -80,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\CTestCube.cpp">
       <Filter>05. Objects\TestCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCameraActor.cpp">
+      <Filter>05. Objects\CameraActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

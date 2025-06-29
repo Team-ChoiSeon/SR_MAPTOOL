@@ -30,6 +30,7 @@ HRESULT CTransform::Ready_Component()
 	m_vPivot = { 0.f,0.f,0.f };
 	m_vOrbit = { 0.f,0.f,0.f };
 	m_vLook = { 0.f,0.f,1.f };
+
 	//룩벡터 조금더 이해 필요함
 	m_pParent = nullptr;
 

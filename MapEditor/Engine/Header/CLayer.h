@@ -17,16 +17,16 @@ public:
     void LateUpdate_Layer(_float& dt);
 
 public:
-    void Add_Object(CGameObject* object);
-    void Add_ObjectList(vector<CGameObject*> obj);
-    void Remove_Object(function<bool(CGameObject*)> predicate);
-    vector<CGameObject*> Pop_Objects(function<bool(CGameObject*)> predicate);
+    void Add_Object(const string& tag, CGameObject* object);
+    CGameObject* Find_Object(const string& tag);
+    void Remove_Object(const string& tag);
 
 private:
     HRESULT Ready_Layer();
 
 private:
     vector<CGameObject*> m_ObjectList;
+    unordered_map<string,CGameObject*> m_ObjectMap;
 
 private:
     void Free();

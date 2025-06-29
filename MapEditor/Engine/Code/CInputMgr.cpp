@@ -57,12 +57,42 @@ HRESULT CInputMgr::Ready_InputDev(HINSTANCE hInst, HWND hWnd)
 void CInputMgr::Update_InputDev()
 {
 	memcpy(m_PrevByKeyState, m_CurByKeyState, sizeof(BYTE) * 256); //이전 프레임 값 복사
+	memcpy(&m_tPrevMouseState, &m_tCurMouseState, sizeof(DIMOUSESTATE)); //이전 프레임 값 복사
+
 	m_pKeyBoard->GetDeviceState(256, m_CurByKeyState);
-	m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
+	m_pMouse->GetDeviceState(sizeof(m_tCurMouseState), &m_tCurMouseState);
+
 }
 
 void CInputMgr::LateUpdate_InputDev(void)
 {
+}
+
+_bool CInputMgr::Mouse_Tap(MOUSEKEYSTATE eMouse)
+{
+	_bool now = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	_bool prev = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	return now&&!prev;
+}
+
+_bool CInputMgr::Mouse_Hold(MOUSEKEYSTATE eMouse)
+{
+	_bool now = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	_bool prev = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	return now && prev;
+}
+
+_bool CInputMgr::Mouse_Down(MOUSEKEYSTATE eMouse)
+{
+	_bool now = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	return now;
+}
+
+_bool CInputMgr::Mouse_Away(MOUSEKEYSTATE eMouse)
+{
+	_bool now = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	_bool prev = m_tCurMouseState.rgbButtons[eMouse] & 0x80;
+	return !now && prev;
 }
 
 _long CInputMgr::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
@@ -70,13 +100,13 @@ _long CInputMgr::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
 	switch (eMouseState)
 	{
 	case Engine::DIMS_X:
-		return m_tMouseState.lX;
+		return m_tCurMouseState.lX;
 
 	case Engine::DIMD_Y:
-		return m_tMouseState.lY;
+		return m_tCurMouseState.lY;
 
 	case Engine::DIMD_Z: // 마우스 휠 이동량  이게 휠!
-		return m_tMouseState.lZ;
+		return m_tCurMouseState.lZ;
 
 	case Engine::DIMS_END:
 		return 0;
@@ -91,11 +121,11 @@ _byte CInputMgr::Get_DIMouseState(MOUSEKEYSTATE eMouse)
 	switch (eMouse)
 	{
 	case Engine::DIM_LB:
-		return m_tMouseState.rgbButtons[0];
+		return m_tCurMouseState.rgbButtons[0];
 	case Engine::DIM_RB:
-		return m_tMouseState.rgbButtons[1];
+		return m_tCurMouseState.rgbButtons[1];
 	case Engine::DIM_MB:
-		return m_tMouseState.rgbButtons[2];
+		return m_tCurMouseState.rgbButtons[2];
 	case Engine::DIM_END:
 		return 0;
 	default:

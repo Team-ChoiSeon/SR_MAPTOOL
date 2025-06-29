@@ -91,6 +91,9 @@
     <Filter Include="03. Component\04. Renderer\MeshRenderer">
       <UniqueIdentifier>{1f2db26b-8b8d-460a-8d52-b14386fe02dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Managers\08. CameraMgr">
+      <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CGraphicDev.h">
@@ -213,6 +216,9 @@
     <ClInclude Include="..\Header\CCamera.h">
       <Filter>03. Component\03. Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CCameraMgr.h">
+      <Filter>01. Managers\08. CameraMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -235,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\CRenderMgr.cpp">
       <Filter>01. Managers\04. RenderMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CGameObject.cpp">
-      <Filter>02. GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CComponent.cpp">
       <Filter>03. Component</Filter>
@@ -307,6 +310,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\CCamera.cpp">
       <Filter>03. Component\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCameraMgr.cpp">
+      <Filter>01. Managers\08. CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CGameObject.cpp">
+      <Filter>02. GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
