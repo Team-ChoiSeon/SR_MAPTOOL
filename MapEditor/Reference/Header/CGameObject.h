@@ -18,6 +18,8 @@ public:
 	virtual HRESULT Ready_GameObject() PURE;
 	virtual void Update_GameObject(_float& dt) PURE;
 	virtual void LateUpdate_GameObject(_float& dt) PURE;
+	const string& Get_Name() { return ObjectName; }
+	void Set_Name(const string& name) { ObjectName = name; }
 
 protected:
 	void Update_Component(_float& dt);
@@ -35,6 +37,7 @@ public:
 	void Remove_Component();
 
 private:
+	string ObjectName;
 	unordered_map<type_index, CComponent*> m_ComponentMap;
 private:
 	virtual void Free() = 0;

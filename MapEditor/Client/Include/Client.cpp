@@ -120,7 +120,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     g_HInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-    RECT rc{ 0, 0, 800, 600 };
+    RECT rc{ 0, 0, WINCX, WINCY };
 
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 

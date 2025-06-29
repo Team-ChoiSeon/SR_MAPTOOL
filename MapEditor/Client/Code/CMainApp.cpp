@@ -76,17 +76,6 @@ void CMainApp::Render_MainApp()
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
 	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
 	GUISystem::GetInstance()->Render_GUI();
-	ImGui::NewFrame(); // ← 반드시 먼저 호출되어야 함 (렌더 루프 내에서 한 번만)
-
-	// 간단한 GUI 창 하나 출력
-	ImGui::Begin("Test Panel");
-	ImGui::Text("Hello, ImGui!");
-	static float f = 0.0f;
-	ImGui::SliderFloat("Float Value", &f, 0.0f, 1.0f);
-	ImGui::End();
-
-	ImGui::Render(); // ← 반드시 EndFrame 다음 호출
-	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData()); // DX9 렌더링
 	m_pDeviceClass->Render_End();
 }
 

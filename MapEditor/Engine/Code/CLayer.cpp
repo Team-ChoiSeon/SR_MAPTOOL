@@ -43,32 +43,26 @@ void CLayer::Add_Object(const string& tag, CGameObject* object)
 		return list == object;
 		});
 
-	//검색용 맵 검색 (같은 것 있으면 X)
-	auto mapIter = m_ObjectMap.find(tag);
-
 	if (iter != m_ObjectList.end()) {
 		MessageBoxW(0, L"Object Instnace is Already Exist", L"Error", MB_OK);
 		return;
 	}
 
-	if (mapIter != m_ObjectMap.end()) {
-		MessageBoxW(0, L"Object Tag is Already Exist", L"Error", MB_OK);
-		return;
-	}
-
+	object->Set_Name(tag);
 	m_ObjectList.push_back(object);
-	m_ObjectMap.insert({ tag,object });
 }
 
 CGameObject* CLayer::Find_Object(const string& tag)
 {
-	auto mapIter = m_ObjectMap.find(tag);
+	//순회용 벡터 검색 (같은 것 있으면 X)
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), 
+		[&tag](CGameObject* data)->bool {
+		return data->Get_Name() == tag;
+		});
 
-	if (mapIter == m_ObjectMap.end()) {
-		return nullptr;
+	if (iter != m_ObjectList.end()) {
+		return (*iter);
 	}
-
-	return mapIter->second;
 }
 
 
@@ -77,21 +71,14 @@ void CLayer::Remove_Object(const string& tag)
 {
 	CGameObject* target = nullptr;
 
-	auto mapIter = m_ObjectMap.find(tag);
-	if (mapIter != m_ObjectMap.end()) {
-		target = mapIter->second;
-		m_ObjectMap.erase(mapIter);
-	}
-
-	if (!target)
-		return;
-
 	//순회용 벡터 검색 (같은 것 있으면 X)
-	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), [&target](CGameObject* list)->bool {
-		return list == target;
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
+		[&tag](CGameObject* data)->bool {
+			return data->Get_Name() == tag;
 		});
 
 	if (iter != m_ObjectList.end()) {
+		target = (*iter);
 		m_ObjectList.erase(iter);
 	}
 

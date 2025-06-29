@@ -24,11 +24,16 @@ public:
     void Change_Scene(string sceneTag);
     const unordered_map<string, CScene*>& Get_SceneArr()const { return m_SceneContainer; }
 private:
+    void Render_SceneSelector();
+private:
+    int m_SceneIndex;
     CScene* m_CurScene;
     unordered_map<string, CScene*> m_SceneContainer;
+    vector<string> m_SceneList;
 
 private:
     void Free();
+
 
 };
 END

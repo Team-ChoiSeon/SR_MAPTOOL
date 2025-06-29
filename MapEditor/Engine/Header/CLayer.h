@@ -18,6 +18,7 @@ public:
 
 public:
     void Add_Object(const string& tag, CGameObject* object);
+    vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
     CGameObject* Find_Object(const string& tag);
     void Remove_Object(const string& tag);
 
@@ -26,7 +27,6 @@ private:
 
 private:
     vector<CGameObject*> m_ObjectList;
-    unordered_map<string,CGameObject*> m_ObjectMap;
 
 private:
     void Free();

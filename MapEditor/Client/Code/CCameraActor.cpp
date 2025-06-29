@@ -5,6 +5,7 @@
 #include "CTransform.h"
 #include "CCamera.h"
 #include "CInputMgr.h"
+#include "GUISystem.h"
 
 CCameraActor::CCameraActor()
 	:m_pCamera(nullptr),m_pTransform(nullptr),m_eMode(Camera_Mode::Picking)
@@ -38,6 +39,8 @@ HRESULT CCameraActor::Ready_GameObject()
 
 void CCameraActor::Update_GameObject(_float& dt)
 {
+	GUISystem::GetInstance()->RegisterPanel("CameraMode", [this]() {CamModePanel();});
+
 	Update_Component(dt);
 	Mode_Check(dt);
 	Key_Check(dt);
@@ -100,8 +103,30 @@ void CCameraActor::Key_Check(_float& dt)
 		//y만큼 위로
 		m_pTransform->Add_Pos(up *y * Move_speed * -dt);
 		//캔버스 잡아당기는 느낌 위해서 음수 곱하기
-		
 	}
+}
+
+void CCameraActor::CamModePanel()
+{
+	ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiCond_Once);
+	ImGui::Begin("CamMode", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	if (ImGui::Button("Move"))
+	{
+		m_eMode = Camera_Mode::WorldMove;
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Rotate"))
+	{
+		m_eMode = Camera_Mode::Rotate;
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Picking"))
+	{
+		m_eMode = Camera_Mode::Picking;
+	}
+	ImGui::End();
 }
 
 void CCameraActor::Free()

@@ -1,11 +1,12 @@
 #include "Engine_Define.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "GUISystem.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
 CSceneMgr::CSceneMgr()
-	:m_CurScene(nullptr)
+	:m_CurScene(nullptr),m_SceneIndex(0)
 {
 }
 
@@ -21,8 +22,13 @@ HRESULT CSceneMgr::Ready_SceneMgr()
 
 void CSceneMgr::Update_Scene(_float& dt)
 {
-	if (m_CurScene)
+	if (m_CurScene) {
+		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {
+			Render_SceneSelector();
+		});
+
 		m_CurScene->Update_Scene(dt);
+	}
 }
 
 void CSceneMgr::LateUpdate_Scene(_float& dt)
@@ -35,6 +41,7 @@ void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
 {
 	scene->Set_Name(sceneTag);
 	m_SceneContainer.insert({ sceneTag,scene });
+	m_SceneList.push_back(sceneTag);
 }
 
 void CSceneMgr::Change_Scene(string sceneTag)
@@ -68,4 +75,27 @@ void CSceneMgr::Free()
 		Safe_Release(Pair.second);
 	}
 	m_SceneContainer.clear();
+}
+
+void CSceneMgr::Render_SceneSelector()
+{
+	ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
+	ImGui::Begin("Scene_Select", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	const std::string& currentSceneName = m_SceneList[m_SceneIndex];
+
+	if (ImGui::BeginCombo("##SceneCombo", currentSceneName.c_str()))
+	{
+		for (int i = 0; i < m_SceneList.size(); ++i)
+		{
+			bool is_selected = (m_SceneIndex == i);
+			if (ImGui::Selectable(m_SceneList[i].c_str(), is_selected)) {
+				if (m_SceneIndex != i) {
+					m_SceneIndex = i;
+					Change_Scene(m_SceneList[i]);  // 여기서 씬 변경 실행
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::End();
 }

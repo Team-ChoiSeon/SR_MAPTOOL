@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_Typedef.h"
-
+#include <string>
+#include <functional>
 namespace Engine {
 
 	typedef struct tagVertexColor
@@ -53,5 +54,16 @@ namespace Engine {
 		_ulong	_2;
 
 	}INDEX32;
+
+	struct PANEL
+	{
+		bool bOpen = true;
+		std::function<void()> callback;
+
+		PANEL() = default;
+		PANEL(bool open, std::function<void()> cb)
+			: bOpen(open), callback(std::move(cb)) {
+		}
+	};
 
 }
