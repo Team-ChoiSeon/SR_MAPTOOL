@@ -26,7 +26,7 @@ HRESULT CResourceMgr::Ready_Resource()
 	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
 	if (!m_pDevice) return E_FAIL;
 
-	m_umMeshContainer.insert({"CUBE", CCubeMesh::Create()});
+	//m_umMeshContainer.insert({"CUBE", CCubeMesh::Create()});
 	LoadTexture("dirt_diff_4k.jpg");
 	LoadMaterialFromMTL("DirtObj.mtl");
 	LoadMeshFromOBJ("DirtObj.obj");
@@ -166,10 +166,10 @@ CMaterial* CResourceMgr::GetMaterial(const std::string& key)
 
 void CResourceMgr::Free()
 {
-	for (auto& data : m_umMeshContainer) {
-		Safe_Release(data.second);
-	}
-	m_umMeshContainer.clear();
+	//for (auto& data : m_umMeshContainer) {
+	//	Safe_Release(data.second);
+	//}
+	//m_umMeshContainer.clear();
 
 	for (auto& data : m_textureMap) {
 		Safe_Release(data.second);
