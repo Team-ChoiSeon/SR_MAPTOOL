@@ -1,18 +1,20 @@
 #include "Engine_Define.h"
 #include "CPickingMgr.h"
 #include "CGraphicDev.h"
-#include "CTransform.h"
 #include "CInputMgr.h"
-#include "GUISystem.h"
 #include "CSceneMgr.h"
+#include "GUISystem.h"
+#include "CCameraMgr.h"
+
 #include "CScene.h"
 #include "CLayer.h"
+
 #include "CGameObject.h"
 #include "CTransform.h"
+#include "CCamera.h"
 #include "CModel.h"
 #include "IMesh.h"
-#include "CCameraMgr.h"
-#include "CCamera.h"
+
 
 IMPLEMENT_SINGLETON(CPickingMgr)
 
@@ -43,9 +45,37 @@ void CPickingMgr::Update_Picking(_float& dt)
 	GetCursorPos(&pt);
 	ScreenToClient(m_hwnd, &pt);  // 스크린 → 클라이언트
 	m_CursorPos = pt;
+	if (GUISystem::GetInstance()->UsingUI()) return;
 
 	ComputeRay();
 	Start_RayCasting();
+	if (m_pTarget)
+	{
+		if (!CInputMgr::GetInstance()->Mouse_Hold(DIM_LB)) return;
+		//카메라와 물체의 방향 벡터를 구하고, 법선으로 지정. -> 근데 이건 {0,0,0} 하고 뷰스페이스 역행렬 곱해도 되겟다.
+		// 근데 이게 vRayDir네(아니네, 중점과 카메라 중점의 방향을 구해야 하네)
+		CTransform* transform = m_pTarget->Get_Component<CTransform>();
+		//그리고 그 물체의 위치와 방향 벡터를 외적하여, 평면을 만들어.
+		_vec3 objPos = transform->Get_Pos();
+		_vec3 normal = objPos-m_tRay.vRayPos;
+		D3DXVec3Normalize(&normal, &normal);
+		float d = -D3DXVec3Dot(&normal, &objPos); // 평면식: N 돗 P + d = 0
+
+		//그리고 그 평면과 레이캐스팅하여, 구한 좌표로 x,y,x이동 해.
+		_vec3 rayPos = m_tRay.vRayPos;
+		_vec3 rayDir = m_tRay.vRayDir;
+		float denom = D3DXVec3Dot(&normal, &rayDir);
+
+		if (fabs(denom) > 1e-6f)
+		{
+			float t = -(D3DXVec3Dot(&normal, &rayPos) + d) / denom;
+			if (t >= 0.f)
+			{
+				_vec3 hitPos = rayPos + rayDir * t;
+				transform->Set_Pos(hitPos);
+			}
+		}
+	}
 }
 
 void CPickingMgr::LateUpdate_Picking(_float& dt)
@@ -88,20 +118,10 @@ void CPickingMgr::ComputeRay()
 	D3DXVec3TransformNormal(&m_tRay.vRayDir, &m_tRay.vRayDir, &matView); //레이 디렉션을 월드 방향 벡터로 변환
 	D3DXVec3Normalize(&m_tRay.vRayDir, &m_tRay.vRayDir);
 
-	RAY tmp = m_tRay;
-
-	GUISystem::GetInstance()->RegisterPanel("Debug", [this, tmp, ndc]() {
-		ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiCond_Once); // ← 여기서 크기 설정
+	GUISystem::GetInstance()->RegisterPanel("Debug", [this]() {
+		ImGui::SetNextWindowSize(ImVec2(400, 0), ImGuiCond_Once); // ← 여기서 크기 설정
 		ImGui::Begin("Debug", nullptr, 0);
 		ImGui::Text("Cursor: %d, %d", m_CursorPos.x, m_CursorPos.y);
-
-		ImGui::Text("x : %.2f", ndc.x);
-		ImGui::Text("y : %.2f", ndc.y);
-		ImGui::Text("z : %.2f", ndc.z);
-
-		ImGui::Text("x : %.2f", tmp.vRayDir.x);
-		ImGui::Text("y : %.2f", tmp.vRayDir.y);
-		ImGui::Text("z : %.2f", tmp.vRayDir.z);
 		ImGui::End();
 		});
 	//여기까지 우선 월드 스페이스 기준 레이 위치와 방향임.
@@ -125,7 +145,6 @@ RAY CPickingMgr::RayToLocal(CTransform* transform)
 
 void CPickingMgr::Start_RayCasting()
 {
-	if (GUISystem::GetInstance()->UsingUI()) return;
 	if (!CInputMgr::GetInstance()->Mouse_Down(DIM_LB))  return;
 
 	CScene* nowScene = CSceneMgr::GetInstance()->Get_NowScene();
@@ -151,14 +170,10 @@ void CPickingMgr::Start_RayCasting()
 				distance = nowDistance;
 				pPickedObject = obj;
 			}
-
 		}
 	}
 
-	if (pPickedObject)
-	{
-		m_pTarget = pPickedObject;
-	}
+	m_pTarget = pPickedObject;
 }
 
 _float CPickingMgr::Calc_ObjRay(CGameObject* obj)
@@ -183,8 +198,6 @@ _float CPickingMgr::Calc_ObjRay(CGameObject* obj)
 
 	_float  tmin = -FLT_MAX;
 	_float  tmax = FLT_MAX;
-
-
 
 	for (int i = 0; i < 3; ++i) //각 축별로 계산 중임. (x : 1, y:2, z :3 )
 	{

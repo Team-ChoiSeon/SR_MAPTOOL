@@ -56,8 +56,7 @@ void CTestScene::Update_Scene(_float& dt)
 	}
 	GUISystem::GetInstance()->RegisterPanel("Object_Create", [this]() {Create_Object();});
 	
-	CGameObject* tmp = CPickingMgr::GetInstance()->Get_PickedObj();
-	if (tmp) pTarget = tmp;
+	pTarget = CPickingMgr::GetInstance()->Get_PickedObj();
 	GUISystem::GetInstance()->RegisterPanel("ObjectList", [this]() {Show_ObjectList();});
 
 	if(pTarget)
