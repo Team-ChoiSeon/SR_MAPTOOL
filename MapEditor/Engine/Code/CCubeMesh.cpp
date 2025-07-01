@@ -64,6 +64,9 @@ HRESULT CCubeMesh::Ready_Mesh()
         { {-s,-s,+s}, { 0,  0,  1 }, {0, 0} },  // 7
     };
 
+    m_tAABB.vMin = { -s,-s,-s } ;
+    m_tAABB.vMax = { +s,+s,+s };
+
     DWORD indices[] =
     {
         3,0,1,   3,1,2,     //¾Õ¸é

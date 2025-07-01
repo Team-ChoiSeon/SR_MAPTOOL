@@ -7,6 +7,8 @@ namespace Engine {
 class CTestCube :
     public Engine::CGameObject
 {
+public:
+    static int objCount;
 private:
     explicit CTestCube();
     virtual ~CTestCube();

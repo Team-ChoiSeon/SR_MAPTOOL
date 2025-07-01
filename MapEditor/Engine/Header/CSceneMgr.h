@@ -23,6 +23,7 @@ public:
     void Add_Scene(string sceneTag, CScene* scene);
     void Change_Scene(string sceneTag);
     const unordered_map<string, CScene*>& Get_SceneArr()const { return m_SceneContainer; }
+
 private:
     void Render_SceneSelector();
 private:

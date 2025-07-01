@@ -27,15 +27,17 @@ public:
 public:
     const string& Get_Name() { return m_Name; }
     void Set_Name(const string& name) { m_Name = name; };
+    CLayer* Get_Layer(LAYER_ID id);
 
 protected:
-    void Create_Layer(const string& key);
-    void Free_Layer(const string& key);
+    void Init_Layer();
+    void Swap_Layer(const string& from, const string& to);
+    void Free_Layer(LAYER_ID layer);
     void Free_AllLayer();
-
+    const char* Layer_ToString(LAYER_ID id);
 protected:
     string m_Name;
-    unordered_map<string, CLayer*> m_mapLayer;
+    unordered_map<LAYER_ID, CLayer*> m_mapLayer;
 
 private:
     virtual void Free() PURE;

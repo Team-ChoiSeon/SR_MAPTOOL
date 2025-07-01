@@ -20,7 +20,7 @@ public:
     void LateUpdate_Camera(_float& dt);
 public:
     void Set_MainCamera(CCamera* pCam);
-
+    CCamera* Get_MainCamera() { return m_pMainCam; };
 private:
     LPDIRECT3DDEVICE9 m_pDevice;
     CCamera* m_pMainCam;

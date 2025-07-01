@@ -167,6 +167,7 @@
     <ClInclude Include="..\Header\CLayer.h" />
     <ClInclude Include="..\Header\CMeshRenderer.h" />
     <ClInclude Include="..\Header\CModel.h" />
+    <ClInclude Include="..\Header\CPickingMgr.h" />
     <ClInclude Include="..\Header\CRenderer.h" />
     <ClInclude Include="..\Header\CRenderMgr.h" />
     <ClInclude Include="..\Header\CResourceMgr.h" />
@@ -209,6 +210,7 @@
     <ClCompile Include="..\Code\CLayer.cpp" />
     <ClCompile Include="..\Code\CMeshRenderer.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
+    <ClCompile Include="..\Code\CPickingMgr.cpp" />
     <ClCompile Include="..\Code\CRenderer.cpp" />
     <ClCompile Include="..\Code\CRenderMgr.cpp" />
     <ClCompile Include="..\Code\CResourceMgr.cpp" />

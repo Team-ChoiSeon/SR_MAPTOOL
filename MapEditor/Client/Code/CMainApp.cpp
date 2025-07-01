@@ -12,6 +12,7 @@
 #include "GUISystem.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
+#include "CPickingMgr.h"
 
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
@@ -41,6 +42,8 @@ HRESULT CMainApp::Ready_MainApp()
 	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
 		return E_FAIL;	
 	if (FAILED(CCameraMgr::GetInstance()->Ready_CameraMgr()))
+		return E_FAIL;	
+	if (FAILED(CPickingMgr::GetInstance()->Ready_Picking(g_hWnd)))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
@@ -58,6 +61,8 @@ HRESULT CMainApp::Ready_MainApp()
 int CMainApp::Update_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->Update_InputDev();
+	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
+	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CCameraMgr::GetInstance()->Update_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->Update_Scene(fTimeDelta);
 
@@ -69,6 +74,9 @@ void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 	CInputMgr::GetInstance()->LateUpdate_InputDev();
 	CCameraMgr::GetInstance()->LateUpdate_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->LateUpdate_Scene(fTimeDelta);
+	GUISystem::GetInstance()->LateUpdate_GUI(fTimeDelta);
+	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
+
 }
 
 void CMainApp::Render_MainApp()
@@ -105,5 +113,6 @@ void CMainApp::Free()
 	CSceneMgr::GetInstance()->DestroyInstance();
 	CResourceMgr::GetInstance()->DestroyInstance();
 	CCameraMgr::GetInstance()->DestroyInstance();
+	CPickingMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

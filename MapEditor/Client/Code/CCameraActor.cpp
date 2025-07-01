@@ -6,6 +6,7 @@
 #include "CCamera.h"
 #include "CInputMgr.h"
 #include "GUISystem.h"
+#include "CSceneMgr.h"
 
 CCameraActor::CCameraActor()
 	:m_pCamera(nullptr),m_pTransform(nullptr),m_eMode(Camera_Mode::Picking)
@@ -70,6 +71,7 @@ void CCameraActor::Mode_Check(_float& dt)
 
 void CCameraActor::Key_Check(_float& dt)
 {
+	if (GUISystem::GetInstance()->UsingUI()) return;
 
 	_float Move_speed = 40;
 	_float Rotate_speed = 120;
@@ -86,8 +88,7 @@ void CCameraActor::Key_Check(_float& dt)
 	m_pTransform->Add_Pos(MoveForward);
 
 	if (CInputMgr::GetInstance()->Mouse_Hold(DIM_LB)) {
-		GetCursorPos(&m_tAnchor);
-		ClientToScreen(g_hWnd, &m_tAnchor);
+
 	}
 	else {
 		return;
@@ -110,19 +111,20 @@ void CCameraActor::CamModePanel()
 {
 	ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiCond_Once);
 	ImGui::Begin("CamMode", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-	if (ImGui::Button("Move"))
+	
+	if (ImGui::Button("Move",ImVec2(70,30)))
 	{
 		m_eMode = Camera_Mode::WorldMove;
 	}
 	ImGui::SameLine();
 
-	if (ImGui::Button("Rotate"))
+	if (ImGui::Button("Rotate", ImVec2(70, 30)))
 	{
 		m_eMode = Camera_Mode::Rotate;
 	}
 	ImGui::SameLine();
 
-	if (ImGui::Button("Picking"))
+	if (ImGui::Button("Picking", ImVec2(70, 30)))
 	{
 		m_eMode = Camera_Mode::Picking;
 	}

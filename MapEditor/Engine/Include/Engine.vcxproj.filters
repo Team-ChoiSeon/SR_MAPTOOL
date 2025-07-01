@@ -97,6 +97,9 @@
     <Filter Include="04. GUI_panel\CamModePanel">
       <UniqueIdentifier>{9ff7b4fc-160c-4762-9bbf-da1f9a0a93f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Managers\09. PickingMgr">
+      <UniqueIdentifier>{bc221724-7d03-4389-a905-abf21b33616a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CGraphicDev.h">
@@ -207,6 +210,9 @@
     <ClInclude Include="..\Header\CCamModePanel.h">
       <Filter>04. GUI_panel\CamModePanel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CPickingMgr.h">
+      <Filter>01. Managers\09. PickingMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -307,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\CCamModePanel.cpp">
       <Filter>04. GUI_panel\CamModePanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CPickingMgr.cpp">
+      <Filter>01. Managers\09. PickingMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -26,8 +26,13 @@ namespace Engine {
 		RP_END            // enum 끝 표시 (배열 크기 지정 등 루프 용도)
 	};
 
-	enum class LAYER_ENUM
+	enum class LAYER_ID
 	{
-
+		L_DEFAULT,
+		L_CAMERA,
+		L_OBJECT,
+		L_PLAYER,
+		L_TILE,
+		L_END
 	};
 }

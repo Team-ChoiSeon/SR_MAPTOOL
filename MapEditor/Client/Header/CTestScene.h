@@ -24,6 +24,7 @@ public:
 private:
     void Edit_Object(CGameObject* obj);
     void Show_ObjectList();
+    void Create_Object();
 private:
     CGameObject* pTarget;
 private:

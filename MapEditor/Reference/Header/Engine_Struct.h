@@ -65,5 +65,16 @@ namespace Engine {
 			: bOpen(open), callback(std::move(cb)) {
 		}
 	};
+	
+	typedef struct  tagRay
+	{
+		_vec3 vRayPos;
+		_vec3 vRayDir;
+	}RAY;
 
+	typedef struct  tagAABB
+	{
+		_vec3 vMin;
+		_vec3 vMax;
+	}AABB;
 }

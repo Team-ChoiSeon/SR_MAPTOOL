@@ -26,6 +26,17 @@ HRESULT GUISystem::Ready_GUI(HWND hwnd)
 
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.DisplaySize = ImVec2(static_cast<float>(WINCX), static_cast<float>(WINCY));
+    /*HDC screen = GetDC(nullptr);
+    float dpi = GetDeviceCaps(screen, LOGPIXELSX);
+    ReleaseDC(nullptr, screen);
+    */
+    ImFont* bigFont = io.Fonts->AddFontFromFileTTF("../../font/NanumSquareNeo-cBd.ttf", 24.0f, nullptr, io.Fonts->GetGlyphRangesKorean()); // 큰 폰트
+    ImFont* regular = io.Fonts->AddFontFromFileTTF("../../font/NanumSquareNeo-bRg.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean()); //
+    io.FontDefault = regular; 
+    m_fontContainer.insert({ "Bold",bigFont });
+    m_fontContainer.insert({ "Regular",regular });
+
     ImGui::StyleColorsDark();  // 또는 Light, Classic
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 
@@ -35,6 +46,20 @@ HRESULT GUISystem::Ready_GUI(HWND hwnd)
         return E_FAIL;
 
     return S_OK;
+}
+
+void GUISystem::Update_GUI(_float& dt)
+{
+    if (!ImGui::IsAnyItemActive() && !ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow)) {
+        m_bUsingUI = false;
+    }
+    else {
+        m_bUsingUI = true;
+    }
+}
+
+void GUISystem::LateUpdate_GUI(_float& dt)
+{
 }
 
 void GUISystem::Render_GUI()
@@ -62,6 +87,15 @@ void GUISystem::Render_GUI()
     ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 
     m_PanelContainer.clear();
+}
+
+ImFont* GUISystem::Get_Font(const string& tag)
+{
+    auto iter = m_fontContainer.find(tag);
+    if (iter != m_fontContainer.end()) {
+        return iter->second;
+    }
+    return nullptr;
 }
 
 bool GUISystem::Set_Input(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

@@ -5,6 +5,8 @@
 #include "CModel.h"
 #include "CMeshRenderer.h"
 
+int CTestCube::objCount = 0;
+
 CTestCube::CTestCube()
 {
 }
@@ -21,7 +23,7 @@ CTestCube* CTestCube::Create()
 		Safe_Release(instance);
 		instance = nullptr;
 	}
-
+	objCount++;
 	return instance;
 }
 

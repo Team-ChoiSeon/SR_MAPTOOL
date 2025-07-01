@@ -65,7 +65,6 @@ CGameObject* CLayer::Find_Object(const string& tag)
 	}
 }
 
-
 //조건에 맞는 오브젝트 삭제
 void CLayer::Remove_Object(const string& tag)
 {
@@ -83,6 +82,14 @@ void CLayer::Remove_Object(const string& tag)
 	}
 
 	Safe_Release(target);
+}
+
+_bool CLayer::Has_Object(CGameObject* obj)
+{
+	for (const auto& o : m_ObjectList)
+		if (o == obj)
+			return true;
+	return false;
 }
 
 

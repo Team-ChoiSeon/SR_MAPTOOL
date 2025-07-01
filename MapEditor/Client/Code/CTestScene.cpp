@@ -10,7 +10,7 @@
 #include "CTransform.h"
 #include "CCameraActor.h"
 #include "CCameraMgr.h"
-
+#include "CPickingMgr.h"
 #include "GUISystem.h"
 
 CTestScene::CTestScene()
@@ -36,14 +36,12 @@ CTestScene* CTestScene::Create()
 
 HRESULT CTestScene::Ready_Scene()
 {
-	Create_Layer("Camera");
-	Create_Layer("Object");
+	Init_Layer();
 
-	m_mapLayer["Camera"]->Add_Object("Camera01", CCameraActor::Create());
-	m_mapLayer["Object"]->Add_Object("Object01", CTestCube::Create());
-	m_mapLayer["Object"]->Add_Object("Object02", CTestCube::Create());
+	m_mapLayer[LAYER_ID::L_CAMERA]->Add_Object("Camera01", CCameraActor::Create());
+	m_mapLayer[LAYER_ID::L_OBJECT]->Add_Object("Object01", CTestCube::Create());
 
-	CCamera* cam = (m_mapLayer["Camera"]->Find_Object("Camera01"))->Get_Component<CCamera>();
+	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera01"))->Get_Component<CCamera>();
 	CCameraMgr::GetInstance()->Set_MainCamera(cam);
 
 	return S_OK;
@@ -52,9 +50,14 @@ HRESULT CTestScene::Ready_Scene()
 
 void CTestScene::Update_Scene(_float& dt)
 {
-	m_mapLayer["Camera"]->Update_Layer(dt);
-	m_mapLayer["Object"]->Update_Layer(dt);
-
+	
+	for (auto& pair : m_mapLayer) {
+		pair.second->Update_Layer(dt);
+	}
+	GUISystem::GetInstance()->RegisterPanel("Object_Create", [this]() {Create_Object();});
+	
+	CGameObject* tmp = CPickingMgr::GetInstance()->Get_PickedObj();
+	if (tmp) pTarget = tmp;
 	GUISystem::GetInstance()->RegisterPanel("ObjectList", [this]() {Show_ObjectList();});
 
 	if(pTarget)
@@ -63,46 +66,166 @@ void CTestScene::Update_Scene(_float& dt)
 
 void CTestScene::LateUpdate_Scene(_float& dt)
 {
-	m_mapLayer["Camera"]->LateUpdate_Layer(dt);
-	m_mapLayer["Object"]->LateUpdate_Layer(dt);
+	for (auto& pair : m_mapLayer) {
+		pair.second->LateUpdate_Layer(dt);
+	}
 }
 
 void CTestScene::Edit_Object(CGameObject* obj)
 {
-	ImVec2 windowSize = ImGui::CalcTextSize("Object Editor");
-	windowSize.x += 250; // 예상 너비 추가
-
-	ImVec2 pos = ImVec2(WINCX - windowSize.x - 150, 10);
-	ImGui::SetNextWindowPos(pos, ImGuiCond_Once);
-
-	ImGui::Begin("Object Editor", nullptr,ImGuiWindowFlags_AlwaysAutoResize);
+	if (obj == nullptr)
+		return;
 
 	CTransform* transform = obj->Get_Component<CTransform>();
-	_vec3 scale = transform->Get_Scale();
-	_vec3 rotate = transform->Get_Rotate();
+	if (transform == nullptr)
+		return;
 
-	ImGui::SliderFloat3("Scale", (float*)&scale, 0.0f, 5.0f);
+	// 창 위치와 크기 강제 설정
+	ImVec2 windowPos = ImVec2(WINCX - 400, 20);
+	ImVec2 windowSize = ImVec2(200, 200);
+	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Once);
+	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Once);
 
-	ImGui::SliderFloat3("Rotate", (float*)&rotate, 0.0f, 360.0f);
+	if (ImGui::Begin("Object Editor", nullptr, ImGuiWindowFlags_None))
+	{
+		ImGui::Text(obj->Get_Name().c_str());
+		ImGui::Dummy(ImVec2(0, 2)); // 5픽셀 수직 간격
+		// 스케일
+		_vec3 scale = transform->Get_Scale();
+		float sx = scale.x, sy = scale.y, sz = scale.z;
+		ImGui::Text("Scale");
+		ImGui::Text("X"); ImGui::SameLine();
+		ImGui::InputFloat("##Xscale", &sx, 0.1f, 1.0f, "%.2f");
 
-	transform->Set_Scale({ scale });
-	transform->Set_Rotate({ rotate });
+		ImGui::Text("Y"); ImGui::SameLine();
+		ImGui::InputFloat("##Yscale", &sy, 0.1f, 1.0f, "%.2f");
+
+		ImGui::Text("Z"); ImGui::SameLine();
+		ImGui::InputFloat("##Zscale", &sz, 0.1f, 1.0f, "%.2f");
+
+		transform->Set_Scale({ sx, sy, sz });
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		// 회전
+		_vec3 rotate = transform->Get_Rotate();
+		float rx = rotate.x, ry = rotate.y, rz = rotate.z;
+
+		ImGui::Text("Rotate");
+		ImGui::Text("X"); ImGui::SameLine();
+		ImGui::InputFloat("##XRotate", &rx, 0.1f, 1.0f, "%.2f");
+
+		ImGui::Text("Y"); ImGui::SameLine();
+		ImGui::InputFloat("##YRotate", &ry, 0.1f, 1.0f, "%.2f");
+
+		ImGui::Text("Z"); ImGui::SameLine();		
+		ImGui::InputFloat("##ZRotate", &rz, 0.1f, 1.0f, "%.2f");
+
+		transform->Set_Rotate({ rx, ry, rz });
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		_vec3 position = transform->Get_Pos();
+		float px = position.x, py = position.y, pz = position.z;
+
+		ImGui::Text("Position");
+		ImGui::Text("X"); ImGui::SameLine();
+		ImGui::InputFloat("##XPosition", &px, 0.1f, 1.0f, "%.2f");
+
+		ImGui::Text("Y"); ImGui::SameLine();
+		ImGui::InputFloat("##YPosition", &py, 0.1f, 1.0f, "%.2f");
+
+		ImGui::Text("Z"); ImGui::SameLine();
+		ImGui::InputFloat("##ZPosition", &pz, 0.1f, 1.0f, "%.2f");
+
+		transform->Set_Pos({ px, py, pz });
+	}
+
 	ImGui::End();
 }
 
 void CTestScene::Show_ObjectList()
 {
-	if (ImGui::BeginListBox("Object List", ImVec2(250, 300)))
+	ImVec2 windowSize = ImVec2(250, WINCY);
+	ImVec2 windowPos = ImVec2(WINCX - 250, 0);
+
+	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Once);
+	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+
+	if (ImGui::Begin("Object List", nullptr, ImGuiWindowFlags_None))
 	{
-		for (const auto& item : m_mapLayer["Object"]->Get_Object())
+		for (const auto& pair : m_mapLayer)
 		{
-			bool is_selected = (pTarget == item);
-			if (ImGui::Selectable(item->Get_Name().c_str(), is_selected))
+			CLayer* pLayer = pair.second;
+
+			// 레이어 이름과 고유 ID 조합
+			std::string layerName = Layer_ToString(pair.first);
+			std::string label = "Layer: " + layerName ;
+
+			// 레이어 사이 여백
+			ImGui::Dummy(ImVec2(0, 8));
+
+			// 레이어 이름 굵은 글씨
+			ImGui::PushFont(GUISystem::GetInstance()->Get_Font("Bold"));
+			bool opened = ImGui::TreeNode(label.c_str());
+			ImGui::PopFont();
+
+			if (opened)
 			{
-				pTarget = item;
+				for (const auto& item : pLayer->Get_Object())
+				{
+					ImGui::Dummy(ImVec2(0, 2));
+
+					// 현재 선택된 오브젝트인지 확인
+					bool is_selected = (pTarget == item);
+
+					// 클릭 시 타겟 설정
+					if (ImGui::Selectable(item->Get_Name().c_str(), is_selected)) {
+						pTarget = item;
+						CPickingMgr::GetInstance()->Set_PickedObj(pTarget);
+					}
+				}
+
+				ImGui::TreePop();
 			}
 		}
-		ImGui::EndListBox();
+	}
+
+	ImGui::End();
+}
+
+
+void CTestScene::Create_Object()
+{
+	// 화면 아무 곳에서든 우클릭 시 팝업 열기
+	if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && !ImGui::IsAnyItemHovered())
+	{
+		ImGui::OpenPopup("GlobalContextMenu");
+	}
+
+	// 팝업 본체
+	if (ImGui::BeginPopup("GlobalContextMenu"))
+	{
+		if (ImGui::MenuItem("Create Cube")) {
+			CTestCube* instance = CTestCube::Create();
+			string count;
+			if (CTestCube::objCount < 10) {
+				count= "0"+to_string(CTestCube::objCount);
+			}
+			else {
+				count = to_string(CTestCube::objCount);
+			}
+			string ObjectName = "Cube_" + count;
+			m_mapLayer[LAYER_ID::L_DEFAULT]->Add_Object(ObjectName,instance);
+		}
+		if (ImGui::MenuItem("Create Sphere")) { /* 처리 */ }
+		if (ImGui::MenuItem("Create Camera")) { /* 처리 */ }
+		if (ImGui::MenuItem("Create Light")) { /* 처리 */ }
+		ImGui::EndPopup();
 	}
 }
 
