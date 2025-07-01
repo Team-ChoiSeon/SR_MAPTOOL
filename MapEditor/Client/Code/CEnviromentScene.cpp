@@ -1,7 +1,6 @@
 #include"pch.h"
 #include "Engine_Define.h"
 #include "CEnviromentScene.h"
-#include "CScenePanel.h"
 
 CEnviromentScene::CEnviromentScene()
 {

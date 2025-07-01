@@ -49,14 +49,8 @@ void CMeshRenderer::Render(LPDIRECT3DDEVICE9 pDevice)
 
 	// Transform Àû¿ë
 	pDevice->SetTransform(D3DTS_WORLD, &m_pTransform->Get_WorldMatrix());
+	m_pModel->Render(pDevice);
 
-	IMesh* mesh = m_pModel->Get_Mesh();
-
-	pDevice->SetFVF(mesh->GetFVF());
-
-	pDevice->SetStreamSource(0, mesh->Get_VertexBuffer(), 0, sizeof(VTXTILE));
-	pDevice->SetIndices(mesh->Get_IndexBuffer());
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12);
 }
 
 CComponent* CMeshRenderer::Clone() const

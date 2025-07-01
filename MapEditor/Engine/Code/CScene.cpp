@@ -1,6 +1,5 @@
 #include "Engine_Define.h"
 #include "CScene.h"
-#include "IPanel.h"
 #include "CLayer.h"
 
 CScene::CScene()

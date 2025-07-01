@@ -1,7 +1,8 @@
 #include "Engine_Define.h"
 #include "CModel.h"
 #include "CResourceMgr.h"
-#include "IMesh.h"
+#include "CMesh.h"
+#include "CMaterial.h"
 
 CModel::CModel()
 	:m_pMesh(nullptr)
@@ -21,7 +22,7 @@ CModel* CModel::Create(const string& meshType)
 		instance = nullptr;
 	}
 
-	instance->Set_Mesh(meshType);
+	instance->Set_Model(meshType);
 	return instance;
 }
 
@@ -38,9 +39,10 @@ void CModel::LateUpdate_Component(_float& dt)
 {
 }
 
-void CModel::Render()
+void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 {
-
+	m_pMaterial->Apply(pDevice); // 텍스처 바인드
+	m_pMesh->Render(pDevice);    // 정점/인덱스 렌더링
 }
 
 CComponent* CModel::Clone() const
@@ -48,15 +50,24 @@ CComponent* CModel::Clone() const
 	return nullptr;
 }
 
-HRESULT CModel::Set_Mesh(const string& meshType)
+HRESULT CModel::Set_Model(const string& meshType)
 {
-	m_pMesh = CResourceMgr::GetInstance()->Get_Mesh(meshType);
+	string meshKey = meshType + ".obj";
+	string matKey = meshType + ".mtl";
+	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
 	m_pMesh->AddRef();
-
+	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
+	m_pMaterial->AddRef();
 	return S_OK;
+}
+
+CMesh* CModel::Get_Mesh()
+{
+	return  m_pMesh; ;
 }
 
 void CModel::Free()
 {
 	Safe_Release(m_pMesh);
+	Safe_Release(m_pMaterial);
 }

@@ -13,7 +13,7 @@
 #include "CTransform.h"
 #include "CCamera.h"
 #include "CModel.h"
-#include "IMesh.h"
+#include "CMesh.h"
 
 
 IMPLEMENT_SINGLETON(CPickingMgr)
@@ -178,64 +178,66 @@ void CPickingMgr::Start_RayCasting()
 
 _float CPickingMgr::Calc_ObjRay(CGameObject* obj)
 {
-	// 레이: 월드 → 로컬 변환
-	CTransform* transform = obj->Get_Component<CTransform>();
-	if (!transform) return -1.f;
-
-	RAY localRay = RayToLocal(transform);
-
-	CModel* model = obj->Get_Component<CModel>();
-	if (!model) return -1.f;
-
-	IMesh* mesh = model->Get_Mesh();
-	AABB objBox = mesh->Get_AABBBOX();
-
-	const D3DXVECTOR3& rayOriginLocal = localRay.vRayPos;
-	const D3DXVECTOR3& rayDirLocal = localRay.vRayDir;
-
-	const D3DXVECTOR3& localMin = objBox.vMin;
-	const D3DXVECTOR3& localMax = objBox.vMax;
-
-	_float  tmin = -FLT_MAX;
-	_float  tmax = FLT_MAX;
-
-	for (int i = 0; i < 3; ++i) //각 축별로 계산 중임. (x : 1, y:2, z :3 )
-	{
-		///광선의 x축 위치와 방향
-		_float  origin = ((_float*)&rayOriginLocal)[i];
-		_float  dir = ((_float*)&rayDirLocal)[i];
-
-		//박스 민/맥스의 x축 방향
-		_float  minB = ((_float*)&localMin)[i];
-		_float  maxB = ((_float*)&localMax)[i];
-
-		if (fabs(dir) < 1e-6f) //이게 대축 작다는 소리인 듯		(그리고 0으로 나누면 안되니까)
+		// 레이: 월드 → 로컬 변환
+		CTransform* transform = obj->Get_Component<CTransform>();
+		if (!transform) return -1.f;
+	
+		RAY localRay = RayToLocal(transform);
+	
+		CModel* model = obj->Get_Component<CModel>();
+		if (!model) return -1.f;
+	
+		CMesh* mesh = model->Get_Mesh();
+		if (!mesh) return -1.f;
+	
+		AABB objBox = mesh->Get_AABBBOX();
+	
+		const D3DXVECTOR3& rayOriginLocal = localRay.vRayPos;
+		const D3DXVECTOR3& rayDirLocal = localRay.vRayDir;
+	
+		const D3DXVECTOR3& localMin = objBox.vMin;
+		const D3DXVECTOR3& localMax = objBox.vMax;
+	
+		_float  tmin = -FLT_MAX;
+		_float  tmax = FLT_MAX;
+	
+		for (int i = 0; i < 3; ++i) //각 축별로 계산 중임. (x : 1, y:2, z :3 )
 		{
-			if (origin < minB || origin > maxB)	//위치가 min보다 작거나 max보다 크면 (그리고 축 방향성이 0이면)
-				return -1.f;											//충돌 안함 -> 왜냐면, 그 안에 있는 것도 아니면서 그 축을 벗어나지 않는다는 뜻이니까
+			///광선의 x축 위치와 방향
+			_float  origin = ((_float*)&rayOriginLocal)[i];
+			_float  dir = ((_float*)&rayDirLocal)[i];
+	
+			//박스 민/맥스의 x축 방향
+			_float  minB = ((_float*)&localMin)[i];
+			_float  maxB = ((_float*)&localMax)[i];
+	
+			if (fabs(dir) < 1e-6f) //이게 대축 작다는 소리인 듯		(그리고 0으로 나누면 안되니까)
+			{
+				if (origin < minB || origin > maxB)	//위치가 min보다 작거나 max보다 크면 (그리고 축 방향성이 0이면)
+					return -1.f;											//충돌 안함 -> 왜냐면, 그 안에 있는 것도 아니면서 그 축을 벗어나지 않는다는 뜻이니까
+			}
+			else
+			{
+				_float  t1 = (minB - origin) / dir;				//광선 위치에서 min까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
+				_float  t2 = (maxB - origin) / dir;				//광선 위치에서 max까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
+	
+				if (t1 > t2) swap(t1, t2);							//둘중 작은 거 큰거 바꾸고
+	
+				tmin = max(tmin, t1);	// 들어가는 시점 중 가장 늦은 순간(무한이랑 비교해야 가장 늦은 것을 할 수 있음)
+				tmax = min(tmax, t2); // 나오는 시점 중 가장 빠른 순간(무한이랑 비교해야 가장 빠른 것을 할 수 있음)
+	
+				
+				if (tmin > tmax)
+					return -1.f;
+			}
 		}
-		else
-		{
-			_float  t1 = (minB - origin) / dir;				//광선 위치에서 min까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
-			_float  t2 = (maxB - origin) / dir;				//광선 위치에서 max까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
-
-			if (t1 > t2) swap(t1, t2);							//둘중 작은 거 큰거 바꾸고
-
-			tmin = max(tmin, t1);	// 들어가는 시점 중 가장 늦은 순간(무한이랑 비교해야 가장 늦은 것을 할 수 있음)
-			tmax = min(tmax, t2); // 나오는 시점 중 가장 빠른 순간(무한이랑 비교해야 가장 빠른 것을 할 수 있음)
-
-			
-			if (tmin > tmax)
-				return -1.f;
-		}
-	}
-
-	// 광선이 박스 뒤에 있음
-	if (tmax < 0)
+	
+		// 광선이 박스 뒤에 있음
+		if (tmax < 0)
 		return -1.f;
-
-	// 교차 거리 반환
-	return tmin;
+	
+		// 교차 거리 반환
+		return tmin;
 }
 
 void CPickingMgr::Free()

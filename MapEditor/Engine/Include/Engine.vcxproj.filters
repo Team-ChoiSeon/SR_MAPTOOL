@@ -58,26 +58,8 @@
     <Filter Include="03. Component\03. Camera">
       <UniqueIdentifier>{0e4b168e-2b1a-4734-b41e-6a83044201da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. GUI_panel">
-      <UniqueIdentifier>{143fe901-17ec-4a42-a193-9697c04c83ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. GUI_panel\TextPanel">
-      <UniqueIdentifier>{1680d94f-03b5-4c70-8b64-39921de27add}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Function">
       <UniqueIdentifier>{1190a7fd-abc9-437f-8d37-2350687959c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. GUI_panel\ScenePanel">
-      <UniqueIdentifier>{5ce16c99-58e9-4420-95f8-9af4e7c43d9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Mesh">
-      <UniqueIdentifier>{f786a980-a3eb-4d27-a8eb-4b51830c83b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Mesh\CubeMesh">
-      <UniqueIdentifier>{c36514aa-56b4-4869-a5f4-e866427d2152}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Mesh\SphereMesh">
-      <UniqueIdentifier>{304e52a2-126a-439a-a56f-28879dda446d}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Managers\07. ResourceMgr">
       <UniqueIdentifier>{1fdcf425-e1d4-4226-8d5f-8e372cf7de84}</UniqueIdentifier>
@@ -94,11 +76,26 @@
     <Filter Include="01. Managers\08. CameraMgr">
       <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. GUI_panel\CamModePanel">
-      <UniqueIdentifier>{9ff7b4fc-160c-4762-9bbf-da1f9a0a93f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Managers\09. PickingMgr">
       <UniqueIdentifier>{bc221724-7d03-4389-a905-abf21b33616a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource">
+      <UniqueIdentifier>{f786a980-a3eb-4d27-a8eb-4b51830c83b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Mesh_Ex">
+      <UniqueIdentifier>{771f4f35-703f-4b33-b4b0-c83deedecc5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Mesh_Prev">
+      <UniqueIdentifier>{d4799638-7227-44c3-bc08-7fd93a3ad3d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Mesh_Prev\CubeMesh">
+      <UniqueIdentifier>{c36514aa-56b4-4869-a5f4-e866427d2152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Material">
+      <UniqueIdentifier>{6e80ed32-555c-440a-952f-3f4c3f5d3da7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Texture">
+      <UniqueIdentifier>{1f312a3d-cae9-47e9-89a5-bcaacac6f623}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,32 +159,20 @@
     <ClInclude Include="..\Header\CScene.h">
       <Filter>01. Managers\06. SceneMgr\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\IPanel.h">
-      <Filter>04. GUI_panel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Engine_GUI.h">
       <Filter>99. Header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CTextPanel.h">
-      <Filter>04. GUI_panel\TextPanel</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CFunction.h">
       <Filter>98. Function</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CScenePanel.h">
-      <Filter>04. GUI_panel\ScenePanel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\CTransform.h">
       <Filter>03. Component\00. Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\IMesh.h">
-      <Filter>05. Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CModel.h">
       <Filter>03. Component\01. Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CCubeMesh.h">
-      <Filter>05. Mesh\CubeMesh</Filter>
+      <Filter>04. Resource\Mesh_Prev\CubeMesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CResourceMgr.h">
       <Filter>01. Managers\07. ResourceMgr</Filter>
@@ -207,11 +192,20 @@
     <ClInclude Include="..\Header\CCameraMgr.h">
       <Filter>01. Managers\08. CameraMgr</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CCamModePanel.h">
-      <Filter>04. GUI_panel\CamModePanel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\CPickingMgr.h">
       <Filter>01. Managers\09. PickingMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\IMesh.h">
+      <Filter>04. Resource\Mesh_Prev</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMesh.h">
+      <Filter>04. Resource\Mesh_Ex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMaterial.h">
+      <Filter>04. Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTexture.h">
+      <Filter>04. Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,29 +260,17 @@
     <ClCompile Include="..\Code\CScene.cpp">
       <Filter>01. Managers\06. SceneMgr\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\IPanel.cpp">
-      <Filter>04. GUI_panel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTextPanel.cpp">
-      <Filter>04. GUI_panel\TextPanel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CFunction.cpp">
       <Filter>98. Function</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\CScenePanel.cpp">
-      <Filter>04. GUI_panel\ScenePanel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CTransform.cpp">
       <Filter>03. Component\00. Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\IMesh.cpp">
-      <Filter>05. Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CModel.cpp">
       <Filter>03. Component\01. Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CCubeMesh.cpp">
-      <Filter>05. Mesh\CubeMesh</Filter>
+      <Filter>04. Resource\Mesh_Prev\CubeMesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CResourceMgr.cpp">
       <Filter>01. Managers\07. ResourceMgr</Filter>
@@ -311,11 +293,20 @@
     <ClCompile Include="..\Code\CGameObject.cpp">
       <Filter>02. GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\CCamModePanel.cpp">
-      <Filter>04. GUI_panel\CamModePanel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CPickingMgr.cpp">
       <Filter>01. Managers\09. PickingMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\IMesh.cpp">
+      <Filter>04. Resource\Mesh_Prev</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMesh.cpp">
+      <Filter>04. Resource\Mesh_Ex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMaterial.cpp">
+      <Filter>04. Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTexture.cpp">
+      <Filter>04. Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

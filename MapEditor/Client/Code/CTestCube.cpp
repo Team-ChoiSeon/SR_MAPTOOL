@@ -32,7 +32,7 @@ HRESULT CTestCube::Ready_GameObject()
 	m_pTransform = Add_Component<CTransform>();
 	m_pTransform->Set_Pos({ 0.f,0.f,20.f });
 
-	Add_Component<CModel>("CUBE");
+	Add_Component<CModel>("DirtObj");
 	CMeshRenderer* renderer = Add_Component<CMeshRenderer>();
 	renderer->Render_Setting();
 
