@@ -195,10 +195,13 @@
     <ClInclude Include="..\Header\CTexture.h">
       <Filter>04. Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\ImGuiFileDialog.h">
+    <ClInclude Include="..\..\imgui\common.h">
       <Filter>01. Managers\05. GUISystem\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\ImGuiFileDialogConfig.h">
+    <ClInclude Include="..\..\imgui\nfd_common.h">
+      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\nfd.h">
       <Filter>01. Managers\05. GUISystem\imgui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -296,7 +299,10 @@
     <ClCompile Include="..\Code\CTexture.cpp">
       <Filter>04. Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\imgui\ImGuiFileDialog.cpp">
+    <ClCompile Include="..\..\imgui\nfd_common.c">
+      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\nfd_win.cpp">
       <Filter>01. Managers\05. GUISystem\imgui</Filter>
     </ClCompile>
   </ItemGroup>

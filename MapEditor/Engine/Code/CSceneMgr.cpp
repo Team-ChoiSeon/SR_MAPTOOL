@@ -144,11 +144,10 @@ void CSceneMgr::Save_LoadPanel()
 
 	// 2. 버튼 눌렀을 때만 OpenDialog 호출
 	if (ImGui::Button("Open File")) {
-		
+		GUISystem::GetInstance()->Open_FileDialogue();
 	}
 
 	ImGui::End();
-
 
 }
 

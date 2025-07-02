@@ -4,6 +4,7 @@
 //--윈도우--//
 #define NOMINMAX   // ← 반드시 windows.h 전에 정의해야 함
 #include <windows.h>
+#pragma warning(disable: 4996)//nfd에서 사용하는 함수에 대한 경고 무시
 
 #include <fstream>       // std::ifstream
 #include <sstream>       // std::istringstream
