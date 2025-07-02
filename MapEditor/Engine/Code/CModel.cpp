@@ -55,10 +55,26 @@ HRESULT CModel::Set_Model(const string& meshType)
 	string meshKey = meshType + ".obj";
 	string matKey = meshType + ".mtl";
 	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
-	m_pMesh->AddRef();
+	if (m_pMesh)
+		m_pMesh->AddRef();
 	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
-	m_pMaterial->AddRef();
+	if (m_pMaterial)
+		m_pMaterial->AddRef();
 	return S_OK;
+}
+
+HRESULT CModel::Set_Model(const string& meshType, const string& matType)
+{
+	string meshKey = meshType;
+	string matKey = matType;
+	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
+	if (m_pMesh)
+		m_pMesh->AddRef();
+	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
+	if (m_pMaterial)
+		m_pMaterial->AddRef();
+
+	return E_NOTIMPL;
 }
 
 CMesh* CModel::Get_Mesh()

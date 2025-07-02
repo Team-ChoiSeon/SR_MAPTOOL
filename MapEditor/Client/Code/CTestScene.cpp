@@ -12,6 +12,7 @@
 #include "CCameraMgr.h"
 #include "CPickingMgr.h"
 #include "GUISystem.h"
+#include "CFunction.h"
 
 CTestScene::CTestScene()
 	:pTarget(nullptr)
@@ -37,10 +38,10 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Init_Layer();
-	Add_Object("Camera01", LAYER_ID::L_CAMERA, CCameraActor::Create());
-	Add_Object("Object01", LAYER_ID::L_OBJECT, CTestCube::Create());
+	Add_Object(LAYER_ID::L_CAMERA, CCameraActor::Create());
+	Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
 
-	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera01"))->Get_Component<CCamera>();
+	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera0"))->Get_Component<CCamera>();
 	CCameraMgr::GetInstance()->Set_MainCamera(cam);
 
 	return S_OK;
@@ -80,7 +81,7 @@ void CTestScene::Edit_Object(CGameObject* obj)
 
 	// 창 위치와 크기 강제 설정
 	ImVec2 windowPos = ImVec2(WINCX - 400, 20);
-	ImVec2 windowSize = ImVec2(200, 200);
+	ImVec2 windowSize = ImVec2(300, WINCY - 100);
 	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Once);
 	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Once);
 
@@ -145,6 +146,28 @@ void CTestScene::Edit_Object(CGameObject* obj)
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
+		
+		ImGui::Text("Class Name");
+
+		// 버퍼 준비
+		std::string name = obj->Get_Name();
+		static char buffer[128];
+		strncpy(buffer, name.c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		// 인풋 필드
+		ImGui::InputText("##Name", buffer, IM_ARRAYSIZE(buffer));
+		ImGui::SameLine();
+
+		// 버튼은 항상 눌릴 수 있도록 별도 처리
+		if (ImGui::Button("Change")) {
+			obj->Set_Name(buffer);
+		}
+
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
 
 		// ▼레이어 드롭다운
 		ImGui::Text("Layer");
@@ -161,13 +184,13 @@ void CTestScene::Edit_Object(CGameObject* obj)
 				LAYER_ID nextLayer = static_cast<LAYER_ID>(newLayer);
 
 				// 새로운 레이어에 추가
-				if (FAILED(Add_Object(obj->Get_Name(), nextLayer,obj)))
+				if (FAILED(nextLayer, obj))
 				{
 					return;
 				}
 				else
 				{
-					m_mapLayer[prevLayer]->Pop_Object(obj->Get_Name());
+					m_mapLayer[prevLayer]->Pop_Object(obj->Get_InstanceName());
 				}
 			}
 		}
@@ -214,18 +237,17 @@ void CTestScene::Show_ObjectList()
 					bool is_selected = (pTarget == item);
 
 					// 클릭 시 타겟 설정
-					if (ImGui::Selectable(item->Get_Name().c_str(), is_selected)) {
+					if (ImGui::Selectable(item->Get_InstanceName().c_str(), is_selected)) {
 						pTarget = item;
 						CPickingMgr::GetInstance()->Set_PickedObj(pTarget);
 					}
-
-					ImGui::TreePop();
 				}
+				ImGui::TreePop();
 			}
 		}
 
 	}
-		ImGui::End();
+	ImGui::End();
 }
 
 
@@ -242,15 +264,7 @@ void CTestScene::Create_Object()
 	{
 		if (ImGui::MenuItem("Create Cube")) {
 			CTestCube* instance = CTestCube::Create();
-			string count;
-			if (CTestCube::objCount < 10) {
-				count = "0" + to_string(CTestCube::objCount);
-			}
-			else {
-				count = to_string(CTestCube::objCount);
-			}
-			string ObjectName = "Cube_" + count;
-			Add_Object(ObjectName, LAYER_ID::L_DEFAULT, instance);
+			Add_Object(LAYER_ID::L_DEFAULT, instance);
 		}
 		if (ImGui::MenuItem("Create Sphere")) { /* 처리 */ }
 		if (ImGui::MenuItem("Create Camera")) { /* 처리 */ }

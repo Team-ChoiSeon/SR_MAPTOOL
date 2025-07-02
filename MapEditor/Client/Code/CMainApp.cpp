@@ -13,9 +13,11 @@
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 #include "CPickingMgr.h"
+#include "CFactoryMgr.h"
 
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
+#include "CTestCube.h"
 
 CMainApp::CMainApp()
 	:m_pDeviceClass(nullptr)
@@ -47,7 +49,6 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
-
 	m_pGraphicDev = m_pDeviceClass->Get_GraphicDev();
 	m_pGraphicDev->AddRef();
 

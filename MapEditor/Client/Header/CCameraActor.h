@@ -11,7 +11,6 @@ class CCameraActor :
 {
 public :
     enum class Camera_Mode {Picking, WorldMove, Rotate };
-
 private:
     explicit CCameraActor();
     virtual ~CCameraActor();

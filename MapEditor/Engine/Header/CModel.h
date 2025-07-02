@@ -23,6 +23,7 @@ public:
 
 public:
     HRESULT Set_Model(const string& meshType);
+    HRESULT Set_Model(const string& meshType, const string& matType );
     CMesh* Get_Mesh();
     CMaterial* Get_Material();
 

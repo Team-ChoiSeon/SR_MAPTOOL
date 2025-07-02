@@ -16,6 +16,8 @@ public:
     void Set_Diffuse(CTexture* tex);
     void Set_Normal(CTexture* tex);
     void Set_Roughness(CTexture* tex);
+    void Set_Emissive(CTexture* tex);
+    void Set_Specular(CTexture* tex);
 
     CTexture* Get_Diffuse() const { return m_pDiffuse; }
     CTexture* Get_Normal() const { return m_pNormal; }

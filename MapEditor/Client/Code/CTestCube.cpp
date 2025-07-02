@@ -4,8 +4,7 @@
 #include "CTransform.h"
 #include "CModel.h"
 #include "CMeshRenderer.h"
-
-int CTestCube::objCount = 0;
+#include "CFactoryMgr.h"
 
 CTestCube::CTestCube()
 {
@@ -23,7 +22,9 @@ CTestCube* CTestCube::Create()
 		Safe_Release(instance);
 		instance = nullptr;
 	}
-	objCount++;
+	instance->Set_Name("CTestCube");
+	instance->ObjCount = TypeID<CTestCube>::GetCount();
+
 	return instance;
 }
 
@@ -54,3 +55,5 @@ void CTestCube::Free()
 {
 	Release_Component();
 }
+
+REGISTER_OBJECT(CTestCube)

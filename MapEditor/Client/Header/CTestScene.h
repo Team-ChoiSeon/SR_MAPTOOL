@@ -27,6 +27,8 @@ private:
     void Create_Object();
 private:
     CGameObject* pTarget;
+    string curBuffer;
+    string prevBuffer;
 private:
     void Free() override;
 

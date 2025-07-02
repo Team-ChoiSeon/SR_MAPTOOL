@@ -20,8 +20,9 @@ public:
     virtual CComponent* Clone() const;
 
 public:
-    void Set_View(_vec3 _vEye, _vec3 _vUP);
-    void Set_Proj(_float _FOV, _float _aspect, _float _near, _float _far);
+    void Set_View(_vec3 _vEye, _vec3 _vUP, _vec3 _vDir);
+    void Set_Proj(_float _FOV, _float _near, _float _far);
+    void Set_YawPitchRoll(_vec3 axis);
 
     _matrix& Get_ViewMatrix() { return m_matView; }
     _matrix& Get_ProjMatrix() { return m_matProj; }

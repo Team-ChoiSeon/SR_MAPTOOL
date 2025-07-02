@@ -11,6 +11,8 @@
 #include "CCamera.h"
 #include "CTexture.h"
 #include "CFunction.h"
+#include "CFactoryMgr.h"
+#include "CResourceMgr.h"
 //#include "CLight.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
@@ -162,6 +164,7 @@ void CSceneMgr::Save_LoadPanel()
 	ImGui::SameLine();
 	if (ImGui::Button("Open File")) {
 		const wstring file = GUISystem::GetInstance()->Open_FileDialogue();
+		Load_JsonToCScene(file);
 	}
 
 	ImGui::End();
@@ -179,7 +182,8 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 			json jObj;
 
 			jObj["Layer"] = m_CurScene->Layer_ToString(static_cast<LAYER_ID>(i));
-			jObj["name"] = obj->Get_Name();
+			jObj["class"] = obj->Get_Name();
+			jObj["name"] = obj->Get_InstanceName();
 
 			// === Transform
 			if (auto transform = obj->Get_Component<CTransform>())
@@ -215,6 +219,7 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 
 				if (auto mat = model->Get_Material())
 				{
+					jObj["matKey"] = mat->Get_Key();
 					jObj["material"]["diffuse"] = mat->Get_Diffuse() ? mat->Get_Diffuse()->GetKey() : "";
 					jObj["material"]["normal"] = mat->Get_Normal() ? mat->Get_Normal()->GetKey() : "";
 					jObj["material"]["roughness"] = mat->Get_Roughness() ? mat->Get_Roughness()->GetKey() : "";
@@ -273,82 +278,97 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 
 void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
 {
-	// 1. 파일 열기 (UTF-8 바이너리로 읽기)
 	HANDLE hFile = ::CreateFileW(
-		path.c_str(),
-		GENERIC_READ,
-		FILE_SHARE_READ,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);
+		path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if (hFile == INVALID_HANDLE_VALUE)
-	{
+	if (hFile == INVALID_HANDLE_VALUE) {
 		MessageBoxW(nullptr, L"파일 열기 실패", L"Error", MB_OK);
 		return;
 	}
 
-	// 2. 파일 크기 확인
-	DWORD fileSize = ::GetFileSize(hFile, NULL);
-	if (fileSize == INVALID_FILE_SIZE || fileSize == 0)
-	{
-		::CloseHandle(hFile);
-		MessageBoxW(nullptr, L"파일 크기 오류", L"Error", MB_OK);
-		return;
-	}
-
-	// 3. 버퍼에 파일 내용 읽기
-	std::vector<char> buffer(fileSize + 1); // +1 for null-terminator
+	DWORD fileSize = GetFileSize(hFile, NULL);
+	std::string jsonText(fileSize, '\0');
 	DWORD bytesRead = 0;
-	if (!::ReadFile(hFile, buffer.data(), fileSize, &bytesRead, NULL))
-	{
-		::CloseHandle(hFile);
-		MessageBoxW(nullptr, L"파일 읽기 실패", L"Error", MB_OK);
-		return;
-	}
-	::CloseHandle(hFile);
-	buffer[bytesRead] = '\0'; // 안전하게 null 종료
+	ReadFile(hFile, jsonText.data(), fileSize, &bytesRead, NULL);
+	CloseHandle(hFile);
 
-	// 4. JSON 파싱
-	json jScene;
+	json jScene = json::parse(jsonText);
 
-	try {
-		jScene = json::parse(buffer.begin(), buffer.end());
-	}
-	catch (const std::exception& e) {
-		MessageBoxA(nullptr, e.what(), "JSON 파싱 오류", MB_OK);
-		return;
-	}
-
-	// 5. 파싱된 json을 기반으로 오브젝트 생성
 	for (const auto& jObj : jScene["objects"])
 	{
-		std::string name = jObj["name"];
-		std::string layerStr = jObj["Layer"];
+		string className = jObj["class"];
+		string instanceName = jObj["name"];
+		string layerName = jObj["Layer"];
 
-		//// 예시: 새 오브젝트 생성
-		//CGameObject* obj = new CGameObject();
-		//obj->Set_Name(name);
-		//
-		//// Transform 설정
-		//if (auto transform = obj->Get_Component<CTransform>()) {
-		//	auto pos = jObj["position"];
-		//	auto rot = jObj["rotation"];
-		//	auto scale = jObj["scale"];
-		//
-		//	transform->Set_Pos({ pos[0], pos[1], pos[2] });
-		//	transform->Set_Rotate({ rot[0], rot[1], rot[2] });
-		//	transform->Set_Scale({ scale[0], scale[1], scale[2] });
-		//
-		//	// 필요시 orbit, pivot 등 추가 설정
-		//}
-		//
-		//// 나머지 mesh, material, camera 등 필요한 구성 요소 설정
-		//
-		//// 오브젝트 레이어에 삽입
-		////LAYER_ID layerID = m_CurScene->String_ToLayer(layerStr);
-		//m_CurScene->Get_Layer(layerID)->Add_Object(obj);
+		// 오브젝트 생성
+		CGameObject* pObj = CFactoryMgr::Create(className);
+
+		if (!pObj) {
+			//MessageBoxW(0, L"프로토 매니저 등록 실패", L"Error", MB_OK);
+			continue;
+		}
+
+		
+		pObj->Set_Name(className);
+
+		//Transform
+		if (auto transform = pObj->Get_Component<CTransform>()) {
+			auto pos = jObj["position"];
+			auto rot = jObj["rotation"];
+			auto scale = jObj["scale"];
+			auto pivot = jObj["pivot"];
+			auto orbit = jObj["orbit"];
+		
+			transform->Set_Pos({ pos[0], pos[1], pos[2] });
+			transform->Set_Rotate({ rot[0], rot[1], rot[2] });
+			transform->Set_Scale({ scale[0], scale[1], scale[2] });
+			transform->Set_Pivot({ pivot[0], pivot[1], pivot[2] });
+			transform->Set_Orbit({ orbit[0], orbit[1], orbit[2] });
+			// 부모는 나중에 처리 (전체 파싱 후 연결)
+		}
+		
+		// Model
+		if (auto model = pObj->Get_Component<CModel>()) {
+			// Model 키 존재 여부 확인
+			if (jObj.contains("mesh") && jObj.contains("matKey")) {
+				string meshKey = jObj["mesh"];
+				string materialKey = jObj["matKey"];
+
+				if (!meshKey.empty() && !materialKey.empty()) {
+					model->Set_Model(meshKey, materialKey);
+
+					if (auto mat = model->Get_Material()) {
+						if (jObj.contains("material")) {
+							auto& jMat = jObj["material"];
+
+							mat->Set_Diffuse(CResourceMgr::GetInstance()->LoadTexture(jMat.value("diffuse", "")));
+							mat->Set_Normal(CResourceMgr::GetInstance()->LoadTexture(jMat.value("normal", "")));
+							mat->Set_Roughness(CResourceMgr::GetInstance()->LoadTexture(jMat.value("roughness", "")));
+							mat->Set_Specular(CResourceMgr::GetInstance()->LoadTexture(jMat.value("specular", "")));
+							mat->Set_Emissive(CResourceMgr::GetInstance()->LoadTexture(jMat.value("emissive", "")));
+						}
+					}
+				}
+			}
+
+		}
+		
+		// Camera
+		if (jObj.contains("camera")) {
+			auto& jCam = jObj["camera"];
+			if (auto cam = pObj->Get_Component<CCamera>()) {
+				cam->Set_View(
+					{ jCam["eye"][0], jCam["eye"][1], jCam["eye"][2] }, 
+					{ jCam["up"][0], jCam["up"][1], jCam["up"][2] },
+					{ jCam["lookDir"][0], jCam["lookDir"][1], jCam["lookDir"][2] });
+				cam->Set_Proj(jCam["fov"], jCam["near"], jCam["far"]);
+				cam->Set_YawPitchRoll({ jCam["yaw"], jCam["pitch"], jCam["roll"] });
+			}
+		}
+		
+		// 레이어에 추가
+		LAYER_ID layerID = m_CurScene->String_ToLayer(layerName);
+		m_CurScene->Get_Layer(layerID)->Add_Object(pObj);
 	}
 }
 
