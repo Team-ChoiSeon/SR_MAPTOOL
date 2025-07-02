@@ -38,7 +38,7 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Init_Layer();
-	Add_Object( LAYER_ID::L_CAMERA, CCameraActor::Create());
+	Add_Object(LAYER_ID::L_CAMERA, CCameraActor::Create());
 	Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
 
 	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera0"))->Get_Component<CCamera>();
@@ -81,7 +81,7 @@ void CTestScene::Edit_Object(CGameObject* obj)
 
 	// 창 위치와 크기 강제 설정
 	ImVec2 windowPos = ImVec2(WINCX - 400, 20);
-	ImVec2 windowSize = ImVec2(200, 200);
+	ImVec2 windowSize = ImVec2(300, WINCY - 100);
 	ImGui::SetNextWindowPos(windowPos, ImGuiCond_Once);
 	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Once);
 
@@ -146,6 +146,28 @@ void CTestScene::Edit_Object(CGameObject* obj)
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
+		
+		ImGui::Text("Class Name");
+
+		// 버퍼 준비
+		std::string name = obj->Get_Name();
+		static char buffer[128];
+		strncpy(buffer, name.c_str(), sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+
+		// 인풋 필드
+		ImGui::InputText("##Name", buffer, IM_ARRAYSIZE(buffer));
+		ImGui::SameLine();
+
+		// 버튼은 항상 눌릴 수 있도록 별도 처리
+		if (ImGui::Button("Change")) {
+			obj->Set_Name(buffer);
+		}
+
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
 
 		// ▼레이어 드롭다운
 		ImGui::Text("Layer");
@@ -162,7 +184,7 @@ void CTestScene::Edit_Object(CGameObject* obj)
 				LAYER_ID nextLayer = static_cast<LAYER_ID>(newLayer);
 
 				// 새로운 레이어에 추가
-				if (FAILED( nextLayer,obj))
+				if (FAILED(nextLayer, obj))
 				{
 					return;
 				}
@@ -225,7 +247,7 @@ void CTestScene::Show_ObjectList()
 		}
 
 	}
-		ImGui::End();
+	ImGui::End();
 }
 
 
