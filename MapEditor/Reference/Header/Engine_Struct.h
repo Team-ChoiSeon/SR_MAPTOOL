@@ -77,4 +77,15 @@ namespace Engine {
 		_vec3 vMin;
 		_vec3 vMax;
 	}AABB;
+
+	template<typename T>
+	class TypeID {
+	public:
+		static int counter;
+		static int GetCount() {
+			static int counter = 0;
+			return counter++;
+		}
+	};
+
 }

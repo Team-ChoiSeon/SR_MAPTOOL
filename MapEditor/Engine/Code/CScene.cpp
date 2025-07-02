@@ -2,6 +2,7 @@
 #include "CScene.h"
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "CFunction.h"
 
 CScene::CScene()
 {
@@ -65,12 +66,11 @@ void CScene::Free_AllLayer()
 	m_mapLayer.clear();
 }
 
-HRESULT CScene::Add_Object(const string& tag, LAYER_ID layer, CGameObject* object)
+HRESULT CScene::Add_Object(LAYER_ID layer, CGameObject* object)
 {
 	if (FAILED(m_mapLayer[layer]->Add_Object(object))) {
 		return E_FAIL;
 	};
-	object->Set_Name(tag);
 	object->Set_LayerID(layer);
 	return S_OK;
 }
@@ -86,6 +86,17 @@ const char* CScene::Layer_ToString(LAYER_ID id)
 	case Engine::LAYER_ID::L_TILE:    return "TILE";
 	default:                          return "UnKnown";
 	}
+}
+
+LAYER_ID CScene::String_ToLayer(const std::string& name)
+{
+	if (name == "DEFAULT") return LAYER_ID::L_DEFAULT;
+	if (name == "CAMERA")  return LAYER_ID::L_CAMERA;
+	if (name == "OBJECT")  return LAYER_ID::L_OBJECT;
+	if (name == "PLAYER")  return LAYER_ID::L_PLAYER;
+	if (name == "TILE")    return LAYER_ID::L_TILE;
+
+	return LAYER_ID::L_DEFAULT; // 또는 예외 처리용 L_INVALID이 있으면 더 좋음
 }
 
 

@@ -37,6 +37,16 @@ void CMaterial::Set_Roughness(CTexture* tex)
     m_pRoughness = tex;
 }
 
+void CMaterial::Set_Emissive(CTexture* tex)
+{
+    m_pEmissive = tex;
+}
+
+void CMaterial::Set_Specular(CTexture* tex)
+{
+    m_pSpecular = tex;
+}
+
 void CMaterial::Apply(LPDIRECT3DDEVICE9 pDevice)
 {
     if (m_pDiffuse)

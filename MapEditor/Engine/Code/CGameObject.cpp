@@ -1,5 +1,6 @@
 #include "Engine_Define.h"
 #include "CGameObject.h"
+#include "CFunction.h"
 
 CGameObject::CGameObject()
 {
@@ -9,6 +10,11 @@ CGameObject::~CGameObject()
 {
 }
 
+string CGameObject::Get_InstanceName()
+{
+	//string m = this->Get_Name() + to_string(CFunction::Find_ObjectIndex(this->Get_Name()));
+	return this->Get_Name() + to_string(ObjCount);
+}
 
 void CGameObject::Update_Component(_float& dt)
 {

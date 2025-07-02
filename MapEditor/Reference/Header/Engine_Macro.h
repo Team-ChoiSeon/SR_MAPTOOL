@@ -64,4 +64,15 @@ public:																					\
 			m_pInstance = nullptr;															\
 		}																											  \
 	}		
+
+#define REGISTER_OBJECT(ClassName) \
+    namespace { \
+        struct ClassName##Register { \
+            ClassName##Register() { \
+                CFactoryMgr::Register(#ClassName, []() -> ClassName* { return ClassName::Create(); }); \
+            } \
+        }; \
+        static ClassName##Register _##ClassName##AutoRegister; \
+    }
+
 }

@@ -19,6 +19,8 @@ public:
 	virtual void Update_GameObject(_float& dt) PURE;
 	virtual void LateUpdate_GameObject(_float& dt) PURE;
 	const string& Get_Name() { return ObjectName; }
+	string Get_InstanceName();
+
 	LAYER_ID Get_LayerID() { return m_Layer; }
 
 	void Set_Name(const string& name) { ObjectName = name; }
@@ -39,7 +41,8 @@ public:
 	template<typename T>
 	void Remove_Component();
 
-private:
+protected:
+	int ObjCount;
 	string ObjectName;
 	LAYER_ID m_Layer;
 	unordered_map<type_index, CComponent*> m_ComponentMap;
@@ -58,7 +61,6 @@ inline T* CGameObject::Add_Component(Args && ...args)
 	m_ComponentMap.insert({ type_index(typeid(T)),comPtr });
 
 	return comPtr;
-
 }
 
 template<typename T>

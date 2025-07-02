@@ -16,13 +16,14 @@ public:
 	int Update_MainApp(_float&fTimeDelta);
 	void LateUpdate_MainApp(_float&fTimeDelta);
 	void Render_MainApp();
-
+	void PreLoad_Object();
 private:
 	CGraphicDev* m_pDeviceClass;
 	LPDIRECT3DDEVICE9		m_pGraphicDev;
 
 public:
 	static CMainApp* Create();
+
 private:
 	virtual void Free() override;
 };

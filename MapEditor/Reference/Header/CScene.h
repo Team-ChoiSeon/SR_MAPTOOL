@@ -27,15 +27,17 @@ public:
 public:
     const string& Get_Name() { return m_Name; }
     void Set_Name(const string& name) { m_Name = name; };
+
     CLayer* Get_Layer(LAYER_ID id);
     const char* Layer_ToString(LAYER_ID id);
+    LAYER_ID String_ToLayer(const string& name);
 
 protected:
     void Init_Layer();
     void Swap_Layer(const string& from, const string& to);
     void Free_Layer(LAYER_ID layer);
     void Free_AllLayer();
-    HRESULT Add_Object(const string& tag, LAYER_ID layer,CGameObject* object);
+    HRESULT Add_Object(LAYER_ID layer,CGameObject* object);
 protected:
     string m_Name;
     unordered_map<LAYER_ID, CLayer*> m_mapLayer;

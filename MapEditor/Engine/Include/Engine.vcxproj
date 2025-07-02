@@ -163,6 +163,7 @@
     <ClInclude Include="..\Header\CCamera.h" />
     <ClInclude Include="..\Header\CCameraMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
+    <ClInclude Include="..\Header\CFactoryMgr.h" />
     <ClInclude Include="..\Header\CFrame.h" />
     <ClInclude Include="..\Header\CFrameMgr.h" />
     <ClInclude Include="..\Header\CFunction.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="..\Code\CCamera.cpp" />
     <ClCompile Include="..\Code\CCameraMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
+    <ClCompile Include="..\Code\CFactoryMgr.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />

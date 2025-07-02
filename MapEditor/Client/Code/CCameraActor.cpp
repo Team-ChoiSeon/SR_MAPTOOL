@@ -6,6 +6,7 @@
 #include "CCamera.h"
 #include "CInputMgr.h"
 #include "CSceneMgr.h"
+#include "CFactoryMgr.h"
 
 CCameraActor::CCameraActor()
 	:m_pCamera(nullptr),m_pTransform(nullptr),m_eMode(Camera_Mode::Picking)
@@ -24,6 +25,8 @@ CCameraActor* CCameraActor::Create()
 		Safe_Release(instance);
 		instance = nullptr;
 	}
+	instance->Set_Name("Camera");
+	instance->ObjCount = TypeID<CCameraActor>::GetCount();
 
 	return instance;
 }
@@ -52,3 +55,5 @@ void CCameraActor::Free()
 {
 	Release_Component();
 }
+
+REGISTER_OBJECT(CCameraActor)

@@ -57,7 +57,7 @@ CGameObject* CLayer::Find_Object(const string& tag)
 	//순회용 벡터 검색 (같은 것 있으면 X)
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), 
 		[&tag](CGameObject* data)->bool {
-		return data->Get_Name() == tag;
+		return data->Get_InstanceName() == tag;
 		});
 
 	if (iter != m_ObjectList.end()) {
@@ -91,7 +91,7 @@ void CLayer::Pop_Object(const string& tag)
 	//순회용 벡터 검색
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
 		[&tag](CGameObject* data)->bool {
-			return data->Get_Name() == tag;
+			return data->Get_InstanceName() == tag;
 		});
 
 	if (iter != m_ObjectList.end()) {
