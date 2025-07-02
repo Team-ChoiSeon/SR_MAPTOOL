@@ -32,6 +32,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
+    SetProcessDPIAware();
+
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -46,7 +48,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     CMainApp* pMainApp = CMainApp::Create();
-    
     if (nullptr == pMainApp)
         return FALSE;
     
@@ -90,7 +91,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     _ulong dwRefCnt(0);
     if (dwRefCnt = Engine::Safe_Release(pMainApp)) {
-        MSG_BOX("MainApp Release Failed");
+        //MSG_BOX("MainApp Release Failed");
         return FALSE;
     }
 
@@ -120,7 +121,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     g_HInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-    RECT rc{ 0, 0, 800, 600 };
+    RECT rc{ 0, 0, WINCX, WINCY };
 
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 

@@ -8,10 +8,11 @@
 #include "CFrameMgr.h"
 #include "CInputMgr.h"
 #include "CRenderMgr.h"
+#include "CCameraMgr.h"
 #include "GUISystem.h"
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
-
+#include "CPickingMgr.h"
 
 #include "CTestScene.h"
 #include "CEnviromentScene.h"
@@ -39,6 +40,10 @@ HRESULT CMainApp::Ready_MainApp()
 	if (FAILED(CSceneMgr::GetInstance()->Ready_SceneMgr()))
 		return E_FAIL;	
 	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
+		return E_FAIL;	
+	if (FAILED(CCameraMgr::GetInstance()->Ready_CameraMgr()))
+		return E_FAIL;	
+	if (FAILED(CPickingMgr::GetInstance()->Ready_Picking(g_hWnd)))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
@@ -48,6 +53,7 @@ HRESULT CMainApp::Ready_MainApp()
 
 	CSceneMgr::GetInstance()->Add_Scene("Test", CTestScene::Create());
 	CSceneMgr::GetInstance()->Change_Scene("Test");
+
 	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CEnviromentScene::Create());
 	return S_OK;
 }
@@ -55,6 +61,9 @@ HRESULT CMainApp::Ready_MainApp()
 int CMainApp::Update_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->Update_InputDev();
+	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
+	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
+	CCameraMgr::GetInstance()->Update_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->Update_Scene(fTimeDelta);
 
 	return 0;
@@ -63,31 +72,18 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->LateUpdate_InputDev();
+	CCameraMgr::GetInstance()->LateUpdate_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->LateUpdate_Scene(fTimeDelta);
+	GUISystem::GetInstance()->LateUpdate_GUI(fTimeDelta);
+	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
+
 }
 
 void CMainApp::Render_MainApp()
 {
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
-
-	// 3. 카메라 설정
-	D3DXMATRIX matWorld, matView, matProj;
-	D3DXMatrixIdentity(&matWorld);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	D3DXVECTOR3 vEye(0.f, 0.f, -5.f);
-	D3DXVECTOR3 vAt(0.f, 0.f, 0.f);
-	D3DXVECTOR3 vUp(0.f, 1.f, 0.f);
-	D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
-	m_pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
-
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(60.f), 800.f / 600.f, 0.1f, 100.f);
-	m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &matProj);
-
 	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
-	// 5. 나머지 렌더 (GUI 등)
 	GUISystem::GetInstance()->Render_GUI();
-	// 6. 렌더 종료
 	m_pDeviceClass->Render_End();
 }
 
@@ -116,5 +112,7 @@ void CMainApp::Free()
 	GUISystem::GetInstance()->DestroyInstance();
 	CSceneMgr::GetInstance()->DestroyInstance();
 	CResourceMgr::GetInstance()->DestroyInstance();
+	CCameraMgr::GetInstance()->DestroyInstance();
+	CPickingMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

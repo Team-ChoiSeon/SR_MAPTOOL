@@ -1,6 +1,9 @@
 #pragma once
 #include "CScene.h"
 
+namespace Engine{
+    class CGameObject;
+}
 class  CTestScene :
     public Engine::CScene
 {
@@ -18,6 +21,12 @@ public:
     HRESULT Enter_Scene() override;
     HRESULT Exit_Scene() override;
 
+private:
+    void Edit_Object(CGameObject* obj);
+    void Show_ObjectList();
+    void Create_Object();
+private:
+    CGameObject* pTarget;
 private:
     void Free() override;
 

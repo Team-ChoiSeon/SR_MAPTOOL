@@ -114,7 +114,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ENGINE_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_EXPORTS;IMGUI_API=__declspec(dllexport);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>./;../Header; ../../Base;../../imgui;../../imgui/backends;</AdditionalIncludeDirectories>
     </ClCompile>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ENGINE_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENGINE_EXPORTS;IMGUI_API=__declspec(dllexport);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>./;../Header; ../../Base;../../imgui;../../imgui/backends;</AdditionalIncludeDirectories>
     </ClCompile>
@@ -152,15 +152,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imgui\backends\imgui_impl_dx9.h" />
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_win32.h" />
-    <ClInclude Include="..\..\imgui\imconfig.h" />
     <ClInclude Include="..\..\imgui\imgui.h" />
-    <ClInclude Include="..\..\imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\..\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\..\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Header\CCamera.h" />
+    <ClInclude Include="..\Header\CCameraMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
-    <ClInclude Include="..\Header\CCubeMesh.h" />
     <ClInclude Include="..\Header\CFrame.h" />
     <ClInclude Include="..\Header\CFrameMgr.h" />
     <ClInclude Include="..\Header\CFunction.h" />
@@ -168,15 +163,17 @@
     <ClInclude Include="..\Header\CGraphicDev.h" />
     <ClInclude Include="..\Header\CInputMgr.h" />
     <ClInclude Include="..\Header\CLayer.h" />
+    <ClInclude Include="..\Header\CMaterial.h" />
+    <ClInclude Include="..\Header\CMesh.h" />
     <ClInclude Include="..\Header\CMeshRenderer.h" />
     <ClInclude Include="..\Header\CModel.h" />
+    <ClInclude Include="..\Header\CPickingMgr.h" />
     <ClInclude Include="..\Header\CRenderer.h" />
     <ClInclude Include="..\Header\CRenderMgr.h" />
     <ClInclude Include="..\Header\CResourceMgr.h" />
     <ClInclude Include="..\Header\CScene.h" />
     <ClInclude Include="..\Header\CSceneMgr.h" />
-    <ClInclude Include="..\Header\CScenePanel.h" />
-    <ClInclude Include="..\Header\CTextPanel.h" />
+    <ClInclude Include="..\Header\CTexture.h" />
     <ClInclude Include="..\Header\CTimeMgr.h" />
     <ClInclude Include="..\Header\CTimer.h" />
     <ClInclude Include="..\Header\CTransform.h" />
@@ -188,8 +185,6 @@
     <ClInclude Include="..\Header\Engine_Struct.h" />
     <ClInclude Include="..\Header\Engine_Typedef.h" />
     <ClInclude Include="..\Header\GUISystem.h" />
-    <ClInclude Include="..\Header\IMesh.h" />
-    <ClInclude Include="..\Header\IPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_dx9.cpp" />
@@ -198,30 +193,31 @@
     <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Code\CCamera.cpp" />
+    <ClCompile Include="..\Code\CCameraMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
-    <ClCompile Include="..\Code\CCubeMesh.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />
+    <ClCompile Include="..\Code\CGameObject.cpp" />
     <ClCompile Include="..\Code\CGraphicDev.cpp" />
     <ClCompile Include="..\Code\CInputMgr.cpp" />
     <ClCompile Include="..\Code\CLayer.cpp" />
+    <ClCompile Include="..\Code\CMaterial.cpp" />
+    <ClCompile Include="..\Code\CMesh.cpp" />
     <ClCompile Include="..\Code\CMeshRenderer.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
+    <ClCompile Include="..\Code\CPickingMgr.cpp" />
     <ClCompile Include="..\Code\CRenderer.cpp" />
     <ClCompile Include="..\Code\CRenderMgr.cpp" />
     <ClCompile Include="..\Code\CResourceMgr.cpp" />
     <ClCompile Include="..\Code\CScene.cpp" />
     <ClCompile Include="..\Code\CSceneMgr.cpp" />
-    <ClCompile Include="..\Code\CScenePanel.cpp" />
-    <ClCompile Include="..\Code\CTextPanel.cpp" />
+    <ClCompile Include="..\Code\CTexture.cpp" />
     <ClCompile Include="..\Code\CTimeMgr.cpp" />
     <ClCompile Include="..\Code\CTimer.cpp" />
     <ClCompile Include="..\Code\CTransform.cpp" />
     <ClCompile Include="..\Code\GUISystem.cpp" />
-    <ClCompile Include="..\Code\IMesh.cpp" />
-    <ClCompile Include="..\Code\IPanel.cpp" />
-    <ClCompile Include="CGameObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

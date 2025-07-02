@@ -14,8 +14,8 @@ protected:
 
 public: 
     virtual HRESULT Ready_Component() PURE;
-    virtual void Update_Component(float& dt);
-    virtual void LateUpdate_Component(float& dt);
+    virtual void Update_Component(_float& dt);
+    virtual void LateUpdate_Component(_float& dt);
     virtual CComponent* Clone() const PURE;
 public:
     bool Get_ComponentActive() { return m_bActive; }

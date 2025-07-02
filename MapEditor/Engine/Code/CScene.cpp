@@ -1,7 +1,7 @@
 #include "Engine_Define.h"
 #include "CScene.h"
-#include "IPanel.h"
 #include "CLayer.h"
+#include "CGameObject.h"
 
 CScene::CScene()
 {
@@ -18,49 +18,36 @@ void CScene::Update_Scene(_float& dt)
 
 void CScene::LateUpdate_Scene(_float& dt)
 {
-	
+
 }
 
-void CScene::Render_Panel()
+CLayer* CScene::Get_Layer(LAYER_ID id)
 {
-	for (auto& panel : m_UIContainer) {
-		panel.second->Render_Panel();
+	auto iter = m_mapLayer.find(id);
+
+	if (iter == m_mapLayer.end())
+		return nullptr;
+	else
+		return (iter->second);
+}
+
+void CScene::Init_Layer()
+{
+	for (int i = 0; i < static_cast<int>(LAYER_ID::L_END); ++i) {
+		LAYER_ID id = static_cast<LAYER_ID>(i);
+		m_mapLayer[id] = CLayer::Create();
 	}
 }
 
-void CScene::Update_Panel(_float& dt)
+void CScene::Swap_Layer(const string& from, const string& to)
 {
-	for (auto& panel : m_UIContainer) {
-		panel.second->Update_Panel(dt);
-	}
+	//미구현 사항
 }
 
-void CScene::LateUpdate_Panel(_float& dt)
+
+void CScene::Free_Layer(LAYER_ID layer)
 {
-	for (auto& panel : m_UIContainer) {
-		panel.second->LateUpdate_Panel(dt);
-	}
-}
-
-void CScene::FreeUI()
-{
-	for (auto& panel : m_UIContainer) {
-		Safe_Release(panel.second);
-	}
-}
-
-void CScene::Create_Layer(const string& key)
-{
-	if (m_mapLayer.count(key)) return;
-
-	CLayer* tmp = CLayer::Create();
-	m_mapLayer.insert({ key,tmp });
-
-}
-
-void CScene::Free_Layer(const string& key)
-{
-	auto iter = m_mapLayer.find(key);
+	auto iter = m_mapLayer.find(layer);
 
 	if (iter == m_mapLayer.end()) return;
 
@@ -77,4 +64,28 @@ void CScene::Free_AllLayer()
 
 	m_mapLayer.clear();
 }
+
+HRESULT CScene::Add_Object(const string& tag, LAYER_ID layer, CGameObject* object)
+{
+	if (FAILED(m_mapLayer[layer]->Add_Object(object))) {
+		return E_FAIL;
+	};
+	object->Set_Name(tag);
+	object->Set_LayerID(layer);
+	return S_OK;
+}
+
+const char* CScene::Layer_ToString(LAYER_ID id)
+{
+	switch (id)
+	{
+	case Engine::LAYER_ID::L_DEFAULT: return "DEFAULT";
+	case Engine::LAYER_ID::L_CAMERA:  return "CAMERA";
+	case Engine::LAYER_ID::L_OBJECT:  return "OBJECT";
+	case Engine::LAYER_ID::L_PLAYER:  return "PLAYER";
+	case Engine::LAYER_ID::L_TILE:    return "TILE";
+	default:                          return "UnKnown";
+	}
+}
+
 

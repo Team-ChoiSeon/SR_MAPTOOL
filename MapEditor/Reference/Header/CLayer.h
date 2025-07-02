@@ -15,13 +15,14 @@ public:
     static CLayer* Create();
     void Update_Layer(_float& dt);
     void LateUpdate_Layer(_float& dt);
+    vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
 
 public:
-    void Add_Object(CGameObject* object);
-    void Add_ObjectList(vector<CGameObject*> obj);
-    void Remove_Object(function<bool(CGameObject*)> predicate);
-    vector<CGameObject*> Pop_Objects(function<bool(CGameObject*)> predicate);
-
+    HRESULT Add_Object(CGameObject* object);
+    CGameObject* Find_Object(const string& tag);
+    void Remove_Object(const string& tag);
+    void Pop_Object(const string& tag);
+    _bool Has_Object(CGameObject* obj);
 private:
     HRESULT Ready_Layer();
 

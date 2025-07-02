@@ -1,7 +1,6 @@
 #include"pch.h"
 #include "Engine_Define.h"
 #include "CEnviromentScene.h"
-#include "CScenePanel.h"
 
 CEnviromentScene::CEnviromentScene()
 {
@@ -25,23 +24,19 @@ CEnviromentScene* CEnviromentScene::Create()
 
 HRESULT CEnviromentScene::Ready_Scene()
 {
-	Add_Panel<CScenePanel>();
 	return S_OK;
 }
 
 void CEnviromentScene::Update_Scene(_float& dt)
 {
-	Update_Panel(dt);
 }
 
 void CEnviromentScene::LateUpdate_Scene(_float& dt)
 {
-	LateUpdate_Panel(dt);
 }
 
 void CEnviromentScene::Free()
 {
-	FreeUI();
 }
 
 HRESULT CEnviromentScene::Enter_Scene()

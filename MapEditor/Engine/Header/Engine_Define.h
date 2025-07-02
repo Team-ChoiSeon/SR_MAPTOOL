@@ -5,6 +5,10 @@
 #define NOMINMAX   // ← 반드시 windows.h 전에 정의해야 함
 #include <windows.h>
 
+#include <fstream>       // std::ifstream
+#include <sstream>       // std::istringstream
+#include <filesystem>    // std::filesystem::path (경로 처리)
+
 //--다이렉트X--//
 #include <d3d9.h>
 #include <d3dx9.h>

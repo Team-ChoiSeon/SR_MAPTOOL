@@ -36,54 +36,76 @@ void CLayer::LateUpdate_Layer(_float& dt)
 	}
 }
 
-void CLayer::Add_Object(CGameObject* object)
+HRESULT CLayer::Add_Object(CGameObject* object)
 {
+	//순회용 벡터 검색 (같은 것 있으면 X)
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), [&object](CGameObject* list)->bool {
 		return list == object;
 		});
 
-	if (iter == m_ObjectList.end())
-		m_ObjectList.push_back(object);
+	if (iter != m_ObjectList.end()) {
+		MessageBoxW(0, L"Object Instnace is Already Exist", L"Error", MB_OK);
+		return E_FAIL;
+	}
+
+	m_ObjectList.push_back(object);
+	return S_OK;
 }
 
-void CLayer::Add_ObjectList(vector<CGameObject*> obj)
+CGameObject* CLayer::Find_Object(const string& tag)
 {
-	for (CGameObject*& obj : obj) {
-		Add_Object(obj);
+	//순회용 벡터 검색 (같은 것 있으면 X)
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), 
+		[&tag](CGameObject* data)->bool {
+		return data->Get_Name() == tag;
+		});
+
+	if (iter != m_ObjectList.end()) {
+		return (*iter);
 	}
 }
 
-//조건에 맞는 오브젝트 추출
-void CLayer::Remove_Object(function<bool(CGameObject*)> predicate)
+//조건에 맞는 오브젝트 삭제
+void CLayer::Remove_Object(const string& tag)
 {
-	if (m_ObjectList.empty()) return;
+	CGameObject* target = nullptr;
 
-	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), predicate);
+	//순회용 벡터 검색
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
+		[&tag](CGameObject* data)->bool {
+			return data->Get_Name() == tag;
+		});
 
-	if (iter != m_ObjectList.end())
+	if (iter != m_ObjectList.end()) {
+		target = (*iter);
 		m_ObjectList.erase(iter);
-}
-
-//조건에 맞는 벡터 추출
-vector<CGameObject*> CLayer::Pop_Objects(function<bool(CGameObject*)> predicate)
-{
-	if (m_ObjectList.empty()) return vector<CGameObject*>();
-
-	vector<CGameObject*> result;
-
-	for (auto it = m_ObjectList.begin(); it != m_ObjectList.end(); )
-	{
-		if (predicate(*it))
-		{
-			result.push_back(*it);
-			it = m_ObjectList.erase(it); // 삭제되므로 다음으로 이동
-		}
-		else {
-			++it;
-		}
 	}
 
-	return result;
+	Safe_Release(target);
+}
+
+void CLayer::Pop_Object(const string& tag)
+{
+	CGameObject* target = nullptr;
+
+	//순회용 벡터 검색
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
+		[&tag](CGameObject* data)->bool {
+			return data->Get_Name() == tag;
+		});
+
+	if (iter != m_ObjectList.end()) {
+		target = (*iter);
+		m_ObjectList.erase(iter);
+	}
+}
+
+_bool CLayer::Has_Object(CGameObject* obj)
+{
+	for (const auto& o : m_ObjectList)
+		if (o == obj)
+			return true;
+	return false;
 }
 
 

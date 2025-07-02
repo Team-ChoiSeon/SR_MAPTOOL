@@ -4,12 +4,12 @@
 BEGIN(Engine)
 
 class ENGINE_DLL CInputMgr :
-    public CBase
+	public CBase
 {
-    DECLARE_SINGLETON(CInputMgr)
+	DECLARE_SINGLETON(CInputMgr)
 private:
-    explicit CInputMgr();
-    virtual ~CInputMgr();
+	explicit CInputMgr();
+	virtual ~CInputMgr();
 
 public:
 	HRESULT Ready_InputDev(HINSTANCE hInst, HWND hWnd);
@@ -17,11 +17,16 @@ public:
 	void	LateUpdate_InputDev(void);
 
 public:
-	_bool Key_Tap(int vkKey) { return  (m_CurByKeyState[vkKey] & 0x80) && !(m_PrevByKeyState[vkKey] & 0x80);}
-	_bool Key_Hold(int vkKey) { return (m_CurByKeyState[vkKey] & 0x80)&&(m_PrevByKeyState[vkKey] & 0x80); }
-	_bool Key_Down(int vkKey) { return m_CurByKeyState[vkKey]& 0x80; }
-	_bool Key_Away(int vkKey) { return!(m_CurByKeyState[vkKey] & 0x80) && (m_PrevByKeyState[vkKey] & 0x80);}
+	_bool Key_Tap(int vkKey) { return  (m_CurByKeyState[vkKey] & 0x80) && !(m_PrevByKeyState[vkKey] & 0x80); }
+	_bool Key_Hold(int vkKey) { return (m_CurByKeyState[vkKey] & 0x80) && (m_PrevByKeyState[vkKey] & 0x80); }
+	_bool Key_Down(int vkKey) { return m_CurByKeyState[vkKey] & 0x80; }
+	_bool Key_Away(int vkKey) { return!(m_CurByKeyState[vkKey] & 0x80) && (m_PrevByKeyState[vkKey] & 0x80); }
 	_bool Key_Release(int vkKey) { return!(m_CurByKeyState[vkKey] & 0x80); }
+public:
+	_bool	Mouse_Tap(MOUSEKEYSTATE eMouse);
+	_bool	Mouse_Hold(MOUSEKEYSTATE eMouse);
+	_bool	Mouse_Down(MOUSEKEYSTATE eMouse);
+	_bool	Mouse_Away(MOUSEKEYSTATE eMouse);
 
 public:
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
@@ -37,10 +42,11 @@ private:
 private:
 	_byte					m_CurByKeyState[256];		// 키보드에 있는 모든 키값을 저장하기 위한 변수 (현재 프레임)
 	_byte					m_PrevByKeyState[256];		// 키보드에 있는 모든 키값을 저장하기 위한 변수(이전 프레임)
-	DIMOUSESTATE			m_tMouseState; //마우스 상태
+	DIMOUSESTATE			m_tPrevMouseState; //이전 마우스 상태
+	DIMOUSESTATE			m_tCurMouseState; //현재 마우스 상태
 
 private:
-    void Free() override;
+	void Free() override;
 };
 
 END

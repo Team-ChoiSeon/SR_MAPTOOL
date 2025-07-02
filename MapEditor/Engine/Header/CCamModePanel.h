@@ -1,28 +1,25 @@
 #pragma once
 #include "IPanel.h"
+
 BEGIN(Engine)
-class ENGINE_DLL CScenePanel :
+class ENGINE_DLL CCamModePanel :
     public IPanel
 {
 private:
-    explicit CScenePanel();
-    virtual ~CScenePanel();
+    explicit CCamModePanel();
+    virtual ~CCamModePanel();
 public:
-    static CScenePanel* Create();
+    static CCamModePanel* Create();
+
 public:
     HRESULT Ready_Panel() override;
     void Update_Panel(_float& dt) override;
     void LateUpdate_Panel(_float& dt) override;
     void Render_Panel() override;
-
-public:
-    void Set_List();
-    void Request_SceneChange(const string& name);
-
 private:
-    bool isOpen;
-    static int m_nowInex;
-    vector<string> m_sceneList;
+    _bool m_bOpen;
+    //CGameObject* m_pTargetCam;
+
 private:
     void Free() override;
 };

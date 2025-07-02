@@ -30,17 +30,25 @@ HRESULT CTransform::Ready_Component()
 	m_vPivot = { 0.f,0.f,0.f };
 	m_vOrbit = { 0.f,0.f,0.f };
 	m_vLook = { 0.f,0.f,1.f };
+
 	//룩벡터 조금더 이해 필요함
 	m_pParent = nullptr;
 
 	return S_OK;
 }
 
-void CTransform::Update_Component(float& dt)
+void CTransform::Update_Component(_float& dt)
 {
-	D3DXMATRIX matScale, matRotateX, matRotateY, matRotateZ, matTrans;
+	D3DXMATRIX matScale, matAxisRot, matRotateX, matRotateY, matRotateZ, matTrans;
 	//크기
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	//축회전
+	float angle = D3DXVec3Length(&m_vAxisRotate); // 회전량(벡터 크기)
+	_vec3 axis;
+	D3DXVec3Normalize(&axis, &m_vAxisRotate);     // 회전축
+	D3DXMatrixRotationAxis(&matAxisRot, &axis, angle);
+
 	//자전
 	D3DXMatrixRotationX(&matRotateX, D3DXToRadian(m_vRotate.x));
 	D3DXMatrixRotationY(&matRotateY, D3DXToRadian(m_vRotate.y));
@@ -48,7 +56,7 @@ void CTransform::Update_Component(float& dt)
 	//이동
 	D3DXMatrixTranslation(&matTrans, m_vPos.x, m_vPos.y, m_vPos.z);
 
-	m_WorldMat = matScale * matRotateX * matRotateY * matRotateZ * matTrans;
+	m_WorldMat = matScale * matAxisRot* matRotateZ * matRotateY * matRotateX * matTrans;
 	m_WorldPosMat = matScale * matTrans;
 	//-----------------------------------------------------------//
 	//공전 
@@ -65,9 +73,10 @@ void CTransform::Update_Component(float& dt)
 	if (m_pParent) {
 		m_WorldMat *= m_pParent->Get_WorldMatrix();
 	}
+
 }
 
-void CTransform::LateUpdate_Component(float& dt)
+void CTransform::LateUpdate_Component(_float& dt)
 {
 
 
@@ -138,6 +147,13 @@ void CTransform::Add_Orbit(_vec3 orbit)
 	m_vOrbit += orbit;
 }
 
+void CTransform::Add_Axis(_vec3 axis)
+{
+	m_vAxisRotate += axis;
+}
+
+
 void CTransform::Free()
 {
+	
 }

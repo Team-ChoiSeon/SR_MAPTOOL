@@ -2,7 +2,8 @@
 #include "CComponent.h"
 BEGIN(Engine)
 
-class IMesh;
+class CMesh;
+class CMaterial;
 
 class ENGINE_DLL CModel :
     public CComponent
@@ -15,17 +16,18 @@ public:
 
 public:
     HRESULT Ready_Component() override;
-    virtual void Update_Component(float& dt);
-    virtual void LateUpdate_Component(float& dt);
-    void Render();
+    virtual void Update_Component(_float& dt);
+    virtual void LateUpdate_Component(_float& dt);
+    void Render(LPDIRECT3DDEVICE9 pDevice);
     CComponent* Clone() const override;
+
 public:
-    IMesh* Get_Mesh() { return m_pMesh; }
-private:
-    HRESULT Set_Mesh(const string& meshType);
+    HRESULT Set_Model(const string& meshType);
+    CMesh* Get_Mesh();
 
 private:
-    IMesh* m_pMesh;
+    CMesh* m_pMesh;
+    CMaterial* m_pMaterial;
 
 private:
     void Free() override;

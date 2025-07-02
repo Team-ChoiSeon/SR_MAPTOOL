@@ -4,7 +4,8 @@
 #include "CTransform.h"
 #include "CModel.h"
 #include "CMeshRenderer.h"
-#include "CInputMgr.h"
+
+int CTestCube::objCount = 0;
 
 CTestCube::CTestCube()
 {
@@ -22,14 +23,16 @@ CTestCube* CTestCube::Create()
 		Safe_Release(instance);
 		instance = nullptr;
 	}
-
+	objCount++;
 	return instance;
 }
 
 HRESULT CTestCube::Ready_GameObject()
 {
-	Add_Component<CTransform>();
-	Add_Component<CModel>("CUBE");
+	m_pTransform = Add_Component<CTransform>();
+	m_pTransform->Set_Pos({ 0.f,0.f,20.f });
+
+	Add_Component<CModel>("DirtObj");
 	CMeshRenderer* renderer = Add_Component<CMeshRenderer>();
 	renderer->Render_Setting();
 
@@ -39,9 +42,7 @@ HRESULT CTestCube::Ready_GameObject()
 void CTestCube::Update_GameObject(_float& dt)
 {
 	Update_Component(dt);
-	if (CInputMgr::GetInstance()->Key_Down(DIK_W)) {
-		Get_Component<CTransform>()->Add_Rotate({0,16* dt,0 });
-	}
+
 }
 
 void CTestCube::LateUpdate_GameObject(_float& dt)

@@ -18,6 +18,11 @@ public:
 	virtual HRESULT Ready_GameObject() PURE;
 	virtual void Update_GameObject(_float& dt) PURE;
 	virtual void LateUpdate_GameObject(_float& dt) PURE;
+	const string& Get_Name() { return ObjectName; }
+	LAYER_ID Get_LayerID() { return m_Layer; }
+
+	void Set_Name(const string& name) { ObjectName = name; }
+	void Set_LayerID(LAYER_ID layer) { m_Layer = layer; }
 
 protected:
 	void Update_Component(_float& dt);
@@ -35,6 +40,8 @@ public:
 	void Remove_Component();
 
 private:
+	string ObjectName;
+	LAYER_ID m_Layer;
 	unordered_map<type_index, CComponent*> m_ComponentMap;
 private:
 	virtual void Free() = 0;

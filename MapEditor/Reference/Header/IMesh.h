@@ -12,6 +12,7 @@ public:
    virtual DWORD GetFVF() const PURE;
    virtual const LPDIRECT3DVERTEXBUFFER9& Get_VertexBuffer() PURE;
    virtual const LPDIRECT3DINDEXBUFFER9& Get_IndexBuffer() PURE;
+   virtual const AABB& Get_AABBBOX() PURE;
 };
 
 END

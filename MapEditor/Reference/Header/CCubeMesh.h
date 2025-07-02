@@ -15,6 +15,7 @@ public:
     const LPDIRECT3DVERTEXBUFFER9& Get_VertexBuffer() override { return m_pVB; };
     const LPDIRECT3DINDEXBUFFER9& Get_IndexBuffer() override { return m_pIB; };
     DWORD GetFVF() const override { return m_FVF; };
+    const AABB& Get_AABBBOX() override { return m_tAABB; };
 
 private:
     DWORD m_FVF;
@@ -23,8 +24,9 @@ private:
     LPDIRECT3DDEVICE9 m_pDevice;
     const  DWORD numIndices;
     const  DWORD numVertices;
-
+    AABB m_tAABB;
 private:
     void Free() override;
+
 };
 END
