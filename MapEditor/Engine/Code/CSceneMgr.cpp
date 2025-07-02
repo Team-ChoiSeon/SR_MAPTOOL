@@ -157,13 +157,11 @@ void CSceneMgr::Save_LoadPanel()
 				MessageBoxW(nullptr, L"씬 이름이 비어 있습니다", L"에러", MB_OK);
 			}
 		}
-	
-
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Open File")) {
-		
+		const wstring file = GUISystem::GetInstance()->Open_FileDialogue();
 	}
 
 	ImGui::End();
@@ -272,4 +270,86 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 		MessageBoxW(nullptr, L"파일 저장 실패", L"Error", MB_OK);
 	}
 }
+
+void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
+{
+	// 1. 파일 열기 (UTF-8 바이너리로 읽기)
+	HANDLE hFile = ::CreateFileW(
+		path.c_str(),
+		GENERIC_READ,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		MessageBoxW(nullptr, L"파일 열기 실패", L"Error", MB_OK);
+		return;
+	}
+
+	// 2. 파일 크기 확인
+	DWORD fileSize = ::GetFileSize(hFile, NULL);
+	if (fileSize == INVALID_FILE_SIZE || fileSize == 0)
+	{
+		::CloseHandle(hFile);
+		MessageBoxW(nullptr, L"파일 크기 오류", L"Error", MB_OK);
+		return;
+	}
+
+	// 3. 버퍼에 파일 내용 읽기
+	std::vector<char> buffer(fileSize + 1); // +1 for null-terminator
+	DWORD bytesRead = 0;
+	if (!::ReadFile(hFile, buffer.data(), fileSize, &bytesRead, NULL))
+	{
+		::CloseHandle(hFile);
+		MessageBoxW(nullptr, L"파일 읽기 실패", L"Error", MB_OK);
+		return;
+	}
+	::CloseHandle(hFile);
+	buffer[bytesRead] = '\0'; // 안전하게 null 종료
+
+	// 4. JSON 파싱
+	json jScene;
+
+	try {
+		jScene = json::parse(buffer.begin(), buffer.end());
+	}
+	catch (const std::exception& e) {
+		MessageBoxA(nullptr, e.what(), "JSON 파싱 오류", MB_OK);
+		return;
+	}
+
+	// 5. 파싱된 json을 기반으로 오브젝트 생성
+	for (const auto& jObj : jScene["objects"])
+	{
+		std::string name = jObj["name"];
+		std::string layerStr = jObj["Layer"];
+
+		//// 예시: 새 오브젝트 생성
+		//CGameObject* obj = new CGameObject();
+		//obj->Set_Name(name);
+		//
+		//// Transform 설정
+		//if (auto transform = obj->Get_Component<CTransform>()) {
+		//	auto pos = jObj["position"];
+		//	auto rot = jObj["rotation"];
+		//	auto scale = jObj["scale"];
+		//
+		//	transform->Set_Pos({ pos[0], pos[1], pos[2] });
+		//	transform->Set_Rotate({ rot[0], rot[1], rot[2] });
+		//	transform->Set_Scale({ scale[0], scale[1], scale[2] });
+		//
+		//	// 필요시 orbit, pivot 등 추가 설정
+		//}
+		//
+		//// 나머지 mesh, material, camera 등 필요한 구성 요소 설정
+		//
+		//// 오브젝트 레이어에 삽입
+		////LAYER_ID layerID = m_CurScene->String_ToLayer(layerStr);
+		//m_CurScene->Get_Layer(layerID)->Add_Object(obj);
+	}
+}
+
 
