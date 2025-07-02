@@ -33,6 +33,7 @@ private:
     CScene* m_CurScene;
     unordered_map<string, CScene*> m_SceneContainer;
     vector<string> m_SceneList;
+    string g_lastPath = "."; // 초기 경로
 
 private:
     void Free();

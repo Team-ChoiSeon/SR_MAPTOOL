@@ -6,7 +6,7 @@
 IMPLEMENT_SINGLETON(CSceneMgr)
 
 CSceneMgr::CSceneMgr()
-	:m_CurScene(nullptr),m_SceneIndex(0)
+	:m_CurScene(nullptr), m_SceneIndex(0)
 {
 }
 
@@ -17,6 +17,7 @@ CSceneMgr::~CSceneMgr()
 
 HRESULT CSceneMgr::Ready_SceneMgr()
 {
+	
 	return S_OK;
 }
 
@@ -25,7 +26,7 @@ void CSceneMgr::Update_Scene(_float& dt)
 	if (m_CurScene) {
 		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {Render_SceneSelector();});
 		GUISystem::GetInstance()->RegisterPanel("SceneLoad", [this]() {Save_LoadPanel();});
-		
+	
 		m_CurScene->Update_Scene(dt);
 	}
 }
@@ -123,24 +124,32 @@ void CSceneMgr::Render_SceneSelector()
 
 void CSceneMgr::Save_LoadPanel()
 {
-	ImVec2 pos = ImVec2(WINCX - 600,10.0f);
-	ImVec2 size = ImVec2(300.0f,80.0f);  // 세로 크기 고정
+	ImVec2 pos = ImVec2(WINCX - 600, 10.0f);
+	ImVec2 size = ImVec2(300.0f, 80.0f);
 	ImGui::SetNextWindowPos(pos, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::Begin("Scene_Saver", nullptr,
 		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
 
 	ImGui::Spacing();
+
+	// 저장 버튼
 	if (ImGui::Button("Save", ImVec2(70, 30)))
 	{
-
+		// 저장 처리
 	}
+
 	ImGui::SameLine();
+	// 1. 전역 또는 static 변수로 이전 경로 기억
 
-	if (ImGui::Button("Load", ImVec2(70, 30)))
-	{
-
+	// 2. 버튼 눌렀을 때만 OpenDialog 호출
+	if (ImGui::Button("Open File")) {
+		
 	}
 
 	ImGui::End();
+
+
 }
+
+
