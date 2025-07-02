@@ -195,6 +195,12 @@
     <ClInclude Include="..\Header\CTexture.h">
       <Filter>04. Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\imgui\ImGuiFileDialog.h">
+      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\ImGuiFileDialogConfig.h">
+      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\CGraphicDev.cpp">
@@ -289,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\CTexture.cpp">
       <Filter>04. Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\ImGuiFileDialog.cpp">
+      <Filter>01. Managers\05. GUISystem\imgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
