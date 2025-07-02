@@ -115,14 +115,19 @@ void GUISystem::RemovePanel(const string& name)
     }
 }
 
-void GUISystem::Open_FileDialogue()
+const wstring& GUISystem::Open_FileDialogue()
 {
+    static std::wstring filePath = L""; // static 유지
     nfdchar_t* outPath = nullptr;
     nfdresult_t result = NFD_OpenDialog("", nullptr, &outPath);
 
     if (result == NFD_OKAY)
     {
-        // 사용
+        // UTF-8 → UTF-16 변환
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        filePath = converter.from_bytes(outPath);
+
+        printf("Selected file: %s\n", outPath); // 디버깅용
         free(outPath);
     }
     else
@@ -137,6 +142,8 @@ void GUISystem::Open_FileDialogue()
             if (err) printf("NFD Error: %s\n", err);
         }
     }
+
+    return filePath;
 }
 
 const std::wstring& GUISystem::Open_FolderDialogue()
