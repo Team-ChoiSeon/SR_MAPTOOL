@@ -22,6 +22,7 @@ public:
     void RemovePanel(const string& name);
     _bool UsingUI() { return m_bUsingUI; }
     void Open_FileDialogue();
+    const wstring& Open_FolderDialogue();
 private:
     LPDIRECT3DDEVICE9 m_pDevice;
     unordered_map<string, PANEL> m_PanelContainer;

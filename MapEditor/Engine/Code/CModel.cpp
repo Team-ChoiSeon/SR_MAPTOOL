@@ -66,6 +66,11 @@ CMesh* CModel::Get_Mesh()
 	return  m_pMesh; ;
 }
 
+CMaterial* CModel::Get_Material()
+{
+	return m_pMaterial;
+}
+
 void CModel::Free()
 {
 	Safe_Release(m_pMesh);

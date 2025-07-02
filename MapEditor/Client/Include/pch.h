@@ -3,7 +3,7 @@
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
-
+#include "json.hpp"
 extern HWND g_hWnd;
 extern HINSTANCE g_HInst;
 

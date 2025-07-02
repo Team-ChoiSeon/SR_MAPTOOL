@@ -2,6 +2,16 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "GUISystem.h"
+#include "CLayer.h"
+#include "CGameObject.h"
+#include "CTransform.h"
+#include "CModel.h"
+#include "CMesh.h"
+#include "CMaterial.h"
+#include "CCamera.h"
+#include "CTexture.h"
+#include "CFunction.h"
+//#include "CLight.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
@@ -134,21 +144,132 @@ void CSceneMgr::Save_LoadPanel()
 	ImGui::Spacing();
 
 	// 저장 버튼
-	if (ImGui::Button("Save", ImVec2(70, 30)))
+	if (ImGui::Button("Save"))
 	{
-		// 저장 처리
+		const wstring folder = GUISystem::GetInstance()->Open_FolderDialogue();
+		if (!folder.empty()) {
+			const std::string sceneName = m_CurScene->Get_Name();
+			if (!sceneName.empty()) {
+				std::wstring savePath = folder + L"/" + CFunction::toWString(sceneName) + L".json";
+				Save_SceneToJson(savePath);
+			}
+			else {
+				MessageBoxW(nullptr, L"씬 이름이 비어 있습니다", L"에러", MB_OK);
+			}
+		}
+	
+
 	}
 
 	ImGui::SameLine();
-	// 1. 전역 또는 static 변수로 이전 경로 기억
-
-	// 2. 버튼 눌렀을 때만 OpenDialog 호출
 	if (ImGui::Button("Open File")) {
-		GUISystem::GetInstance()->Open_FileDialogue();
+		
 	}
 
 	ImGui::End();
-
 }
 
+
+void CSceneMgr::Save_SceneToJson(const std::wstring& path)
+{
+	json jScene;
+
+	for (int i = 0; i < (int)LAYER_ID::L_END; ++i)
+	{
+		for (auto& obj : m_CurScene->Get_Layer(static_cast<LAYER_ID>(i))->Get_Object())
+		{
+			json jObj;
+
+			jObj["Layer"] = m_CurScene->Layer_ToString(static_cast<LAYER_ID>(i));
+			jObj["name"] = obj->Get_Name();
+
+			// === Transform
+			if (auto transform = obj->Get_Component<CTransform>())
+			{
+				auto pos = transform->Get_Pos();
+				auto rot = transform->Get_Rotate();
+				auto scale = transform->Get_Scale();
+				auto pivot = transform->Get_Pivot();
+				auto orbit = transform->Get_Orbit();
+				auto parent = transform->Get_Parent();
+
+				jObj["position"] = { pos.x, pos.y, pos.z };
+				jObj["rotation"] = { rot.x, rot.y, rot.z };
+				jObj["scale"] = { scale.x, scale.y, scale.z };
+				jObj["pivot"] = { pivot.x, pivot.y, pivot.z };
+				jObj["orbit"] = { orbit.x, orbit.y, orbit.z };
+				jObj["parent_obj"] = parent ? parent->Get_Name() : "";
+			}
+
+			// === Model
+			if (auto model = obj->Get_Component<CModel>())
+			{
+				if (auto mesh = model->Get_Mesh())
+				{
+					jObj["mesh"] = mesh->Get_Key();
+
+					const auto& max = mesh->Get_AABBBOX().vMax;
+					const auto& min = mesh->Get_AABBBOX().vMin;
+
+					jObj["AABB"]["max"] = { max.x, max.y, max.z };
+					jObj["AABB"]["min"] = { min.x, min.y, min.z };
+				}
+
+				if (auto mat = model->Get_Material())
+				{
+					jObj["material"]["diffuse"] = mat->Get_Diffuse() ? mat->Get_Diffuse()->GetKey() : "";
+					jObj["material"]["normal"] = mat->Get_Normal() ? mat->Get_Normal()->GetKey() : "";
+					jObj["material"]["roughness"] = mat->Get_Roughness() ? mat->Get_Roughness()->GetKey() : "";
+					jObj["material"]["specular"] = mat->Get_Specular() ? mat->Get_Specular()->GetKey() : "";
+					jObj["material"]["emissive"] = mat->Get_Emissive() ? mat->Get_Emissive()->GetKey() : "";
+				}
+			}
+
+			// === Camera
+			if (auto cam = obj->Get_Component<CCamera>())
+			{
+				json jCam;
+
+				jCam["fov"] = cam->Get_FOV();
+				jCam["near"] = cam->Get_Near();
+				jCam["far"] = cam->Get_Far();
+				jCam["pitch"] = cam->Get_Pitch();
+				jCam["yaw"] = cam->Get_Yaw();
+				jCam["roll"] = cam->Get_Roll();
+
+				jCam["eye"] = { cam->Get_Eye().x, cam->Get_Eye().y, cam->Get_Eye().z };
+				jCam["lookDir"] = { cam->Get_Dir().x, cam->Get_Dir().y, cam->Get_Dir().z };
+				jCam["up"] = { cam->Get_Up().x, cam->Get_Up().y, cam->Get_Up().z };
+
+				jObj["camera"] = jCam;
+			}
+
+			// === 최종 오브젝트 push
+			jScene["objects"].push_back(jObj);
+		}
+	}
+
+	//  여기서 한 번만 저장
+	std::string jsonText = jScene.dump(4); // UTF-8 문자열
+
+	HANDLE hFile = ::CreateFileW(
+		path.c_str(),
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		DWORD written = 0;
+		::WriteFile(hFile, jsonText.data(), (DWORD)jsonText.size(), &written, NULL);
+		::CloseHandle(hFile);
+	}
+	else
+	{
+		MessageBoxW(nullptr, L"파일 저장 실패", L"Error", MB_OK);
+	}
+}
 

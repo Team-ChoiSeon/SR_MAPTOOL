@@ -91,6 +91,9 @@
     <Filter Include="04. Resource\Mesh">
       <UniqueIdentifier>{771f4f35-703f-4b33-b4b0-c83deedecc5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Managers\07. ResourceMgr\Json">
+      <UniqueIdentifier>{303bfd44-0c57-4bd8-abe4-8ae7a842ba96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CGraphicDev.h">
@@ -203,6 +206,12 @@
     </ClInclude>
     <ClInclude Include="..\..\imgui\nfd.h">
       <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\json.hpp">
+      <Filter>01. Managers\07. ResourceMgr\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\json_fwd.hpp">
+      <Filter>01. Managers\07. ResourceMgr\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

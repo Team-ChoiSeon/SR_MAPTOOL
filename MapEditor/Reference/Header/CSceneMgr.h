@@ -27,6 +27,7 @@ public:
 private:
     void Render_SceneSelector();
     void Save_LoadPanel();
+    void Save_SceneToJson(const std::wstring& path);
 
 private:
     int m_SceneIndex;

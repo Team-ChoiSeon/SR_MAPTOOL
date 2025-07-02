@@ -16,6 +16,7 @@ public:
     void Render(LPDIRECT3DDEVICE9 pDevice);
 
     AABB Get_AABBBOX() { return m_tAABB; };
+    string& Get_Key() { return m_strKey; }
 private:
     HRESULT Ready_Mesh();
 
@@ -29,6 +30,8 @@ private:
     _uint m_iVertexStride = 0;
 
     AABB m_tAABB;
+    std::string m_strKey;
+
 private:
     void Free() override;
 };

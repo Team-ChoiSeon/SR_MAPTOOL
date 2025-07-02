@@ -35,6 +35,9 @@ public:
     _vec3 Get_Pivot() { return m_vPivot; }
     _vec3 Get_Orbit() { return m_vOrbit; }
     _vec3 Get_Look() { return m_vLook; }
+
+    CGameObject* Get_Parent() { if (m_pParent) return m_pParent->m_pOwner;  return nullptr; }
+
     const _matrix& Get_WorldMatrix() const { return m_WorldMat; }
     const _matrix& Get_WorldPosMatrix() const { return m_WorldPosMat; }
 

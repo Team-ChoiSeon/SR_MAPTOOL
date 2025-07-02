@@ -28,8 +28,18 @@ public:
 
     void Add_Yaw(_float angle);
     void Add_Pitch(_float angle);
+    _float Get_FOV() { return m_fFOV; }
+    _float Get_Aspect() { return m_fAspect; }
+    _float Get_Near() { return m_fNear; }
+    _float Get_Far() { return m_fFar; }
+
+    _float Get_Pitch() { return m_fPitch; }
+    _float Get_Yaw() { return m_fYaw; }
+    _float Get_Roll() { return m_fRoll; }
+    
 
     _vec3 Get_Dir() { return m_vLookDir; };
+    _vec3 Get_Eye() { return m_vEye; };
     _vec3 Get_Up() { return m_vUp; };
     _vec3 Get_Right() { 
         _vec3 Right;
