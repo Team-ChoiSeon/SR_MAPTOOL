@@ -3,7 +3,6 @@
 #include "CGraphicDev.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
-#include "Engine_GUI.h"
 
 IMPLEMENT_SINGLETON(GUISystem)
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -115,6 +114,59 @@ void GUISystem::RemovePanel(const string& name)
         m_PanelContainer.erase(iter);
     }
 }
+
+void GUISystem::Open_FileDialogue()
+{
+    nfdchar_t* outPath = nullptr;
+    nfdresult_t result = NFD_OpenDialog("", nullptr, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        // 사용
+        free(outPath);
+    }
+    else
+    {
+        // NFD_CANCEL, NFD_ERROR일 경우에도 outPath가 nullptr이 아닐 수 있다.
+        if (outPath)
+            free(outPath);
+
+        if (result == NFD_ERROR)
+        {
+            const char* err = NFD_GetError();
+            if (err) printf("NFD Error: %s\n", err);
+        }
+    }
+}
+
+const std::wstring& GUISystem::Open_FolderDialogue()
+{
+    static std::wstring folderPath = L""; // static 유지
+
+    nfdchar_t* outPath = nullptr;
+    nfdresult_t result = NFD_PickFolder(nullptr, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        // UTF-8 → UTF-16 변환
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        folderPath = converter.from_bytes(outPath);
+
+        printf("Selected folder: %s\n", outPath); // 디버깅용
+        free(outPath);
+    }
+    else
+    {
+        folderPath = L"";
+        if (result == NFD_CANCEL)
+            printf("User cancelled.\n");
+        else
+            printf("Error: %s\n", NFD_GetError());
+    }
+
+    return folderPath;
+}
+
 
 // 종료: 백엔드 및 컨텍스트 해제
 void GUISystem::Free()

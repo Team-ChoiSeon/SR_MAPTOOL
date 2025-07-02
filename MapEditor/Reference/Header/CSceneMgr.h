@@ -27,12 +27,14 @@ public:
 private:
     void Render_SceneSelector();
     void Save_LoadPanel();
+    void Save_SceneToJson(const std::wstring& path);
 
 private:
     int m_SceneIndex;
     CScene* m_CurScene;
     unordered_map<string, CScene*> m_SceneContainer;
     vector<string> m_SceneList;
+    string g_lastPath = "."; // 초기 경로
 
 private:
     void Free();

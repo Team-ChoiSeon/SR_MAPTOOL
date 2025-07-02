@@ -4,10 +4,13 @@
 //--윈도우--//
 #define NOMINMAX   // ← 반드시 windows.h 전에 정의해야 함
 #include <windows.h>
+#pragma warning(disable: 4996)//nfd에서 사용하는 함수에 대한 경고 무시
 
 #include <fstream>       // std::ifstream
 #include <sstream>       // std::istringstream
 #include <filesystem>    // std::filesystem::path (경로 처리)
+#include <codecvt>
+#include <locale>
 
 //--다이렉트X--//
 #include <d3d9.h>
@@ -44,6 +47,11 @@
 #pragma execution_character_set("utf-8")
 
 #pragma warning(disable :4251) //맵 컨테이너 경고 무시
+
+//---JSON -- //
+
+#include "json.hpp"  // 헤더만으로 충분
+using json = nlohmann::json;
 
 //#ifdef _DEBUG
 //#define _CRTDBG_MAP_ALLOC

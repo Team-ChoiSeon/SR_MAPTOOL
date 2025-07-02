@@ -10,3 +10,9 @@ string& CFunction::toString(const wstring& wstr)
     result = conv.to_bytes(wstr);
     return result;
 }
+
+std::wstring CFunction::toWString(const std::string& str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.from_bytes(str); // 복사 리턴
+}

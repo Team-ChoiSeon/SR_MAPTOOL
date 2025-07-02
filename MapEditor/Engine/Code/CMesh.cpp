@@ -144,6 +144,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	memcpy(pIBData, indices.data(), indices.size() * sizeof(DWORD));
 	m_pIB->Unlock();
 
+	m_strKey = path;
 	return S_OK;
 }
 

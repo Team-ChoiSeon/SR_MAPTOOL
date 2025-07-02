@@ -18,6 +18,12 @@ public:
     void Set_Roughness(CTexture* tex);
 
     CTexture* Get_Diffuse() const { return m_pDiffuse; }
+    CTexture* Get_Normal() const { return m_pNormal; }
+    CTexture* Get_Roughness() const { return m_pRoughness; }
+    CTexture* Get_Emissive() const { return m_pEmissive; }
+    CTexture* Get_Specular() const { return m_pSpecular; }
+
+    string& Get_Key() { return m_strKey; }
     void Apply(LPDIRECT3DDEVICE9 pDevice); // GPU ¹ÙÀÎµù
 
 private:
@@ -27,7 +33,11 @@ private:
     CTexture* m_pDiffuse = nullptr;
     CTexture* m_pNormal = nullptr;
     CTexture* m_pRoughness = nullptr;
+    CTexture* m_pEmissive = nullptr;
+    CTexture* m_pSpecular = nullptr;
 
+
+    std::string m_strKey;
 private:
     void Free() override;
 };
