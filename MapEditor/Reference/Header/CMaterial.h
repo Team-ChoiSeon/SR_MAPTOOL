@@ -22,6 +22,7 @@ public:
 
 private:
     HRESULT Ready_Material();
+
 private:
     CTexture* m_pDiffuse = nullptr;
     CTexture* m_pNormal = nullptr;

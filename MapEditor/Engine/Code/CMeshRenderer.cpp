@@ -4,7 +4,6 @@
 #include "CRenderMgr.h"
 #include "CTransform.h"
 #include "CModel.h"
-#include "IMesh.h"
 
 CMeshRenderer::CMeshRenderer()
 {

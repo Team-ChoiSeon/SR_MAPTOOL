@@ -1,6 +1,7 @@
 #include "Engine_Define.h"
 #include "CScene.h"
 #include "CLayer.h"
+#include "CGameObject.h"
 
 CScene::CScene()
 {
@@ -63,6 +64,17 @@ void CScene::Free_AllLayer()
 
 	m_mapLayer.clear();
 }
+
+HRESULT CScene::Add_Object(const string& tag, LAYER_ID layer, CGameObject* object)
+{
+	if (FAILED(m_mapLayer[layer]->Add_Object(object))) {
+		return E_FAIL;
+	};
+	object->Set_Name(tag);
+	object->Set_LayerID(layer);
+	return S_OK;
+}
+
 const char* CScene::Layer_ToString(LAYER_ID id)
 {
 	switch (id)

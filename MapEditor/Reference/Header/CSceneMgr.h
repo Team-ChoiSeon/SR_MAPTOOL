@@ -26,6 +26,8 @@ public:
 
 private:
     void Render_SceneSelector();
+    void Save_LoadPanel();
+
 private:
     int m_SceneIndex;
     CScene* m_CurScene;

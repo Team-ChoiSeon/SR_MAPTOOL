@@ -82,20 +82,14 @@
     <Filter Include="04. Resource">
       <UniqueIdentifier>{f786a980-a3eb-4d27-a8eb-4b51830c83b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Resource\Mesh_Ex">
-      <UniqueIdentifier>{771f4f35-703f-4b33-b4b0-c83deedecc5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource\Mesh_Prev">
-      <UniqueIdentifier>{d4799638-7227-44c3-bc08-7fd93a3ad3d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource\Mesh_Prev\CubeMesh">
-      <UniqueIdentifier>{c36514aa-56b4-4869-a5f4-e866427d2152}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Resource\Material">
       <UniqueIdentifier>{6e80ed32-555c-440a-952f-3f4c3f5d3da7}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Resource\Texture">
       <UniqueIdentifier>{1f312a3d-cae9-47e9-89a5-bcaacac6f623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Resource\Mesh">
+      <UniqueIdentifier>{771f4f35-703f-4b33-b4b0-c83deedecc5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +165,6 @@
     <ClInclude Include="..\Header\CModel.h">
       <Filter>03. Component\01. Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CCubeMesh.h">
-      <Filter>04. Resource\Mesh_Prev\CubeMesh</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\CResourceMgr.h">
       <Filter>01. Managers\07. ResourceMgr</Filter>
     </ClInclude>
@@ -195,11 +186,8 @@
     <ClInclude Include="..\Header\CPickingMgr.h">
       <Filter>01. Managers\09. PickingMgr</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\IMesh.h">
-      <Filter>04. Resource\Mesh_Prev</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\CMesh.h">
-      <Filter>04. Resource\Mesh_Ex</Filter>
+      <Filter>04. Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CMaterial.h">
       <Filter>04. Resource\Material</Filter>
@@ -269,9 +257,6 @@
     <ClCompile Include="..\Code\CModel.cpp">
       <Filter>03. Component\01. Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\CCubeMesh.cpp">
-      <Filter>04. Resource\Mesh_Prev\CubeMesh</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CResourceMgr.cpp">
       <Filter>01. Managers\07. ResourceMgr</Filter>
     </ClCompile>
@@ -296,11 +281,8 @@
     <ClCompile Include="..\Code\CPickingMgr.cpp">
       <Filter>01. Managers\09. PickingMgr</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\IMesh.cpp">
-      <Filter>04. Resource\Mesh_Prev</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CMesh.cpp">
-      <Filter>04. Resource\Mesh_Ex</Filter>
+      <Filter>04. Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CMaterial.cpp">
       <Filter>04. Resource\Material</Filter>

@@ -18,9 +18,10 @@ public:
     vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
 
 public:
-    void Add_Object(const string& tag, CGameObject* object);
+    HRESULT Add_Object(CGameObject* object);
     CGameObject* Find_Object(const string& tag);
     void Remove_Object(const string& tag);
+    void Pop_Object(const string& tag);
     _bool Has_Object(CGameObject* obj);
 private:
     HRESULT Ready_Layer();

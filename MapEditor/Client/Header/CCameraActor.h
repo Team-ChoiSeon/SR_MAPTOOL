@@ -23,10 +23,6 @@ public:
     void LateUpdate_GameObject(_float& dt) override;
 
 private:
-    void Mode_Check(_float& dt);
-    void Key_Check(_float& dt);
-    void CamModePanel();
-private:
     CTransform* m_pTransform;
     CCamera* m_pCamera;
     Camera_Mode m_eMode;

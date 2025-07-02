@@ -20,10 +20,8 @@ public:
     CComponent* Clone() const override;
 
 public:
+  
     void Set_Parent(CTransform* transform);
-    const _matrix& Get_WorldMatrix() const { return m_WorldMat; }
-    const _matrix& Get_WorldPosMatrix() const { return m_WorldPosMat; }
-
     void Set_Pos(_vec3 pos);
     void Set_Scale(_vec3 scale);
     void Set_Rotate(_vec3 rot);
@@ -37,12 +35,15 @@ public:
     _vec3 Get_Pivot() { return m_vPivot; }
     _vec3 Get_Orbit() { return m_vOrbit; }
     _vec3 Get_Look() { return m_vLook; }
+    const _matrix& Get_WorldMatrix() const { return m_WorldMat; }
+    const _matrix& Get_WorldPosMatrix() const { return m_WorldPosMat; }
 
     void Add_Pos(_vec3 pos);
     void Add_Scale(_vec3 scale);
     void Add_Rotate(_vec3 rot);
     void Add_Pivot(_vec3 pivot);
     void Add_Orbit(_vec3 orbit);
+    void Add_Axis(_vec3 axis);
 
 private:
     void Free() override;
@@ -51,10 +52,11 @@ private:
     _vec3 m_vPos;
     _vec3 m_vScale;
     _vec3 m_vRotate;
+    _vec3 m_vAxisRotate;
     _vec3 m_vPivot;
     _vec3 m_vOrbit;
+
     _vec3 m_vLook;
-    _vec3 m_vScreenPos;
 
     _matrix m_WorldMat;
     _matrix m_WorldPosMat;

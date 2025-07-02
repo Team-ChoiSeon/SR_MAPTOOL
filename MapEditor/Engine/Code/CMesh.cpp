@@ -103,7 +103,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	m_tAABB.vMin = { FLT_MAX, FLT_MAX, FLT_MAX };
 	m_tAABB.vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
 
-	for (const auto& pos : positions)
+	for (const auto& pos : positions) //로컬 좌표를 순회
 	{
 		if (pos.x < m_tAABB.vMin.x) m_tAABB.vMin.x = pos.x;
 		if (pos.y < m_tAABB.vMin.y) m_tAABB.vMin.y = pos.y;

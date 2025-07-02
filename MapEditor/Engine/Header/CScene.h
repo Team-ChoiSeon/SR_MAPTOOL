@@ -34,6 +34,7 @@ protected:
     void Swap_Layer(const string& from, const string& to);
     void Free_Layer(LAYER_ID layer);
     void Free_AllLayer();
+    HRESULT Add_Object(const string& tag, LAYER_ID layer,CGameObject* object);
     const char* Layer_ToString(LAYER_ID id);
 protected:
     string m_Name;

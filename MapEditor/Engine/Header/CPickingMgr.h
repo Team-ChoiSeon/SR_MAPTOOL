@@ -10,7 +10,8 @@ class ENGINE_DLL CPickingMgr :
 {
 	DECLARE_SINGLETON(CPickingMgr);
 
-	enum class Screen_Mode {MoveCam, RotateCam, MoveObj, RotateObj, ResizeObj };
+	enum class Screen_Mode {CamMode, ObjectMode };
+	enum class Move_Mode {Transform, Scale, Rotate };
 private:
 	explicit CPickingMgr();
 	virtual ~CPickingMgr();
@@ -30,7 +31,12 @@ private:
 	void Start_RayCasting(); //광선과 오브젝트 순회
 	_float Calc_ObjRay(CGameObject* obj); //오브젝트 광선 충돌 (AABB)
 
-private:
+private://피킹 모드 제어
+	void Mode_Check(_float& dt);
+	void Key_Check(_float& dt);
+	void Mode_Panel();
+	void MoveCamera(_float& dt);
+	void MoveObject(_float& dt);
 
 private:
 	HWND m_hwnd;
@@ -38,7 +44,9 @@ private:
 	LPDIRECT3DDEVICE9 m_pDevice;
 	RAY m_tRay;
 	Screen_Mode m_eMode;
+	Move_Mode m_eMove;
 	CGameObject* m_pTarget;
+
 private:
 	void Free();
 };

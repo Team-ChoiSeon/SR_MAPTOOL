@@ -34,7 +34,6 @@ public:
 
 private:
     LPDIRECT3DDEVICE9 m_pDevice;
-    unordered_map<string, IMesh*> m_umMeshContainer;
 
     std::unordered_map<std::string, CMesh*> m_meshMap;
     std::unordered_map<std::string, CTexture*> m_textureMap;

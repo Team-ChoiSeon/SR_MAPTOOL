@@ -19,7 +19,7 @@
 IMPLEMENT_SINGLETON(CPickingMgr)
 
 CPickingMgr::CPickingMgr()
-	:m_pDevice(nullptr),m_pTarget(nullptr)
+	:m_pDevice(nullptr), m_pTarget(nullptr)
 {
 }
 
@@ -45,37 +45,24 @@ void CPickingMgr::Update_Picking(_float& dt)
 	GetCursorPos(&pt);
 	ScreenToClient(m_hwnd, &pt);  // 스크린 → 클라이언트
 	m_CursorPos = pt;
-	if (GUISystem::GetInstance()->UsingUI()) return;
 
-	ComputeRay();
-	Start_RayCasting();
-	if (m_pTarget)
-	{
-		if (!CInputMgr::GetInstance()->Mouse_Hold(DIM_LB)) return;
-		//카메라와 물체의 방향 벡터를 구하고, 법선으로 지정. -> 근데 이건 {0,0,0} 하고 뷰스페이스 역행렬 곱해도 되겟다.
-		// 근데 이게 vRayDir네(아니네, 중점과 카메라 중점의 방향을 구해야 하네)
-		CTransform* transform = m_pTarget->Get_Component<CTransform>();
-		//그리고 그 물체의 위치와 방향 벡터를 외적하여, 평면을 만들어.
-		_vec3 objPos = transform->Get_Pos();
-		_vec3 normal = objPos-m_tRay.vRayPos;
-		D3DXVec3Normalize(&normal, &normal);
-		float d = -D3DXVec3Dot(&normal, &objPos); // 평면식: N 돗 P + d = 0
+	if (CInputMgr::GetInstance()->Mouse_Down(DIM_RB))  
+		m_pTarget =nullptr;
 
-		//그리고 그 평면과 레이캐스팅하여, 구한 좌표로 x,y,x이동 해.
-		_vec3 rayPos = m_tRay.vRayPos;
-		_vec3 rayDir = m_tRay.vRayDir;
-		float denom = D3DXVec3Dot(&normal, &rayDir);
+	Mode_Check(dt);
+	GUISystem::GetInstance()->RegisterPanel("Mode", [this]() {Mode_Panel();});
 
-		if (fabs(denom) > 1e-6f)
-		{
-			float t = -(D3DXVec3Dot(&normal, &rayPos) + d) / denom;
-			if (t >= 0.f)
-			{
-				_vec3 hitPos = rayPos + rayDir * t;
-				transform->Set_Pos(hitPos);
-			}
+	if (!GUISystem::GetInstance()->UsingUI()) {
+		ComputeRay();
+		Start_RayCasting();
+		if (CInputMgr::GetInstance()->Mouse_Hold(DIM_LB)) {
+			if (m_eMode == Screen_Mode::ObjectMode)
+				MoveObject(dt);
+			else if (m_eMode == Screen_Mode::CamMode)
+				MoveCamera(dt);
 		}
 	}
+
 }
 
 void CPickingMgr::LateUpdate_Picking(_float& dt)
@@ -118,19 +105,12 @@ void CPickingMgr::ComputeRay()
 	D3DXVec3TransformNormal(&m_tRay.vRayDir, &m_tRay.vRayDir, &matView); //레이 디렉션을 월드 방향 벡터로 변환
 	D3DXVec3Normalize(&m_tRay.vRayDir, &m_tRay.vRayDir);
 
-	GUISystem::GetInstance()->RegisterPanel("Debug", [this]() {
-		ImGui::SetNextWindowSize(ImVec2(400, 0), ImGuiCond_Once); // ← 여기서 크기 설정
-		ImGui::Begin("Debug", nullptr, 0);
-		ImGui::Text("Cursor: %d, %d", m_CursorPos.x, m_CursorPos.y);
-		ImGui::End();
-		});
-	//여기까지 우선 월드 스페이스 기준 레이 위치와 방향임.
 }
 
 RAY CPickingMgr::RayToLocal(CTransform* transform)
 {
 	RAY localRay;
-	
+
 	const D3DXMATRIX& worldMat = transform->Get_WorldMatrix(); //트랜스폼의 월드 매트릭스
 
 	D3DXMATRIX invWorldMat;
@@ -153,7 +133,7 @@ void CPickingMgr::Start_RayCasting()
 	CGameObject* pPickedObject = nullptr; //피킹된 순서대로 넣어줄 변수
 
 	int max = static_cast<int>(LAYER_ID::L_END);
-	for (int i = 0; i< max; ++i) {
+	for (int i = 0; i < max; ++i) {
 		LAYER_ID id = static_cast<LAYER_ID>(i);
 		CLayer* tmpLayer = nowScene->Get_Layer(id);
 		if (!tmpLayer) continue;
@@ -173,72 +153,222 @@ void CPickingMgr::Start_RayCasting()
 		}
 	}
 
-	m_pTarget = pPickedObject;
+	if(pPickedObject)
+		m_pTarget = pPickedObject;
 }
 
 _float CPickingMgr::Calc_ObjRay(CGameObject* obj)
 {
-		// 레이: 월드 → 로컬 변환
-		CTransform* transform = obj->Get_Component<CTransform>();
-		if (!transform) return -1.f;
-	
-		RAY localRay = RayToLocal(transform);
-	
-		CModel* model = obj->Get_Component<CModel>();
-		if (!model) return -1.f;
-	
-		CMesh* mesh = model->Get_Mesh();
-		if (!mesh) return -1.f;
-	
-		AABB objBox = mesh->Get_AABBBOX();
-	
-		const D3DXVECTOR3& rayOriginLocal = localRay.vRayPos;
-		const D3DXVECTOR3& rayDirLocal = localRay.vRayDir;
-	
-		const D3DXVECTOR3& localMin = objBox.vMin;
-		const D3DXVECTOR3& localMax = objBox.vMax;
-	
-		_float  tmin = -FLT_MAX;
-		_float  tmax = FLT_MAX;
-	
-		for (int i = 0; i < 3; ++i) //각 축별로 계산 중임. (x : 1, y:2, z :3 )
+	// 레이: 월드 → 로컬 변환
+	CTransform* transform = obj->Get_Component<CTransform>();
+	if (!transform) return -1.f;
+
+	RAY localRay = RayToLocal(transform);
+
+	CModel* model = obj->Get_Component<CModel>();
+	if (!model) return -1.f;
+
+	CMesh* mesh = model->Get_Mesh();
+	if (!mesh) return -1.f;
+
+	AABB objBox = mesh->Get_AABBBOX();
+
+	const D3DXVECTOR3& rayOriginLocal = localRay.vRayPos;
+	const D3DXVECTOR3& rayDirLocal = localRay.vRayDir;
+
+	const D3DXVECTOR3& localMin = objBox.vMin;
+	const D3DXVECTOR3& localMax = objBox.vMax;
+
+	_float  tmin = -FLT_MAX;
+	_float  tmax = FLT_MAX;
+
+	for (int i = 0; i < 3; ++i) //각 축별로 계산 중임. (x : 1, y:2, z :3 )
+	{
+		///광선의 x축 위치와 방향
+		_float  origin = ((_float*)&rayOriginLocal)[i];
+		_float  dir = ((_float*)&rayDirLocal)[i];
+
+		//박스 민/맥스의 x축 방향
+		_float  minB = ((_float*)&localMin)[i];
+		_float  maxB = ((_float*)&localMax)[i];
+
+		if (fabs(dir) < 1e-6f) //이게 대축 작다는 소리인 듯		(그리고 0으로 나누면 안되니까)
 		{
-			///광선의 x축 위치와 방향
-			_float  origin = ((_float*)&rayOriginLocal)[i];
-			_float  dir = ((_float*)&rayDirLocal)[i];
-	
-			//박스 민/맥스의 x축 방향
-			_float  minB = ((_float*)&localMin)[i];
-			_float  maxB = ((_float*)&localMax)[i];
-	
-			if (fabs(dir) < 1e-6f) //이게 대축 작다는 소리인 듯		(그리고 0으로 나누면 안되니까)
+			if (origin < minB || origin > maxB)	//위치가 min보다 작거나 max보다 크면 (그리고 축 방향성이 0이면)
+				return -1.f;											//충돌 안함 -> 왜냐면, 그 안에 있는 것도 아니면서 그 축을 벗어나지 않는다는 뜻이니까
+		}
+		else
+		{
+			_float  t1 = (minB - origin) / dir;				//광선 위치에서 min까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
+			_float  t2 = (maxB - origin) / dir;				//광선 위치에서 max까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
+
+			if (t1 > t2) swap(t1, t2);							//둘중 작은 거 큰거 바꾸고
+
+			tmin = max(tmin, t1);	// 들어가는 시점 중 가장 늦은 순간(무한이랑 비교해야 가장 늦은 것을 할 수 있음)
+			tmax = min(tmax, t2); // 나오는 시점 중 가장 빠른 순간(무한이랑 비교해야 가장 빠른 것을 할 수 있음)
+
+
+			if (tmin > tmax)
+				return -1.f;
+		}
+	}
+
+	// 광선이 박스 뒤에 있음
+	if (tmax < 0)
+		return -1.f;
+
+	// 교차 거리 반환
+	return tmin;
+}
+
+void CPickingMgr::Mode_Check(_float& dt)
+{
+	if (CInputMgr::GetInstance()->Key_Down(DIK_F1))
+		m_eMode = Screen_Mode::CamMode;
+	if (CInputMgr::GetInstance()->Key_Down(DIK_F2))
+		m_eMode = Screen_Mode::ObjectMode;
+	if (CInputMgr::GetInstance()->Key_Down(DIK_Q))
+		m_eMove = Move_Mode::Transform;
+	if (CInputMgr::GetInstance()->Key_Down(DIK_W))
+		m_eMove = Move_Mode::Scale;
+	if (CInputMgr::GetInstance()->Key_Down(DIK_E))
+		m_eMove = Move_Mode::Rotate;
+}
+
+void CPickingMgr::Mode_Panel()
+{
+	ImGui::Begin("Edit Mode", nullptr, 0);
+	ImVec2 Btn = { 90, 20 };
+
+	// --- Screen Mode ---
+	ImGui::Text("Screen Mode");
+
+	bool isCam = (m_eMode == Screen_Mode::CamMode);
+	if (ImGui::Selectable("F1 : Cam", isCam, ImGuiSelectableFlags_DontClosePopups,
+		Btn))  // 크기 지정
+		m_eMode = Screen_Mode::CamMode;
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("카메라 이동 및 회전 모드입니다.");
+
+	ImGui::SameLine();
+
+	bool isObject = (m_eMode == Screen_Mode::ObjectMode);
+	if (ImGui::Selectable("F2 : Object", isObject, ImGuiSelectableFlags_DontClosePopups,
+		Btn))
+		m_eMode = Screen_Mode::ObjectMode;
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("오브젝트를 선택하거나 조작할 수 있는 모드입니다.");
+
+	ImGui::Separator();
+
+	// --- Move Mode ---
+	ImGui::Text("Move Mode");
+	bool isMove = (m_eMove == Move_Mode::Transform);
+	if (ImGui::Selectable("Q : Move", isMove, ImGuiSelectableFlags_DontClosePopups,
+		Btn))
+		m_eMove = Move_Mode::Transform;
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("오브젝트를 이동시킵니다.");
+
+	ImGui::SameLine();
+
+	bool isScale = (m_eMove == Move_Mode::Scale);
+	if (ImGui::Selectable("W : Scale", isScale, ImGuiSelectableFlags_DontClosePopups,
+		Btn))
+		m_eMove = Move_Mode::Scale;
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("오브젝트의 크기를 조절합니다.");
+
+	ImGui::SameLine();
+
+	bool isRotate = (m_eMove == Move_Mode::Rotate);
+	if (ImGui::Selectable("E : Rotate", isRotate, ImGuiSelectableFlags_DontClosePopups,
+		Btn))
+		m_eMove = Move_Mode::Rotate;
+	if (ImGui::IsItemHovered())
+		ImGui::SetTooltip("오브젝트를 회전시킵니다.");
+
+	ImGui::End();
+}
+
+void CPickingMgr::MoveCamera(_float& dt)
+{
+	_float Move_speed = 25;
+	_float Rotate_speed = 80;
+
+	_long x = CInputMgr::GetInstance()->Get_DIMouseMove(DIMS_X);
+	_long y = CInputMgr::GetInstance()->Get_DIMouseMove(DIMD_Y);
+	_long wheel = CInputMgr::GetInstance()->Get_DIMouseMove(DIMD_Z);
+
+	CCamera* pCam = CCameraMgr::GetInstance()->Get_MainCamera();
+	CTransform* pTrans = pCam->m_pOwner->Get_Component<CTransform>();
+
+	_vec3 Look = pCam->Get_Dir();
+	_vec3 up = pCam->Get_Up();
+	_vec3 Right = pCam->Get_Right();
+
+	if (m_eMove == Move_Mode::Rotate) {
+			pCam->Add_Yaw(x * dt * Rotate_speed);
+			pCam->Add_Pitch(y * dt * Rotate_speed);
+	}
+	else if (m_eMove == Move_Mode::Transform) {
+		//x만큼 오른쪽으로 //y만큼 위로
+		pTrans->Add_Pos(-Right * x * Move_speed * dt);
+		pTrans->Add_Pos(up * y * Move_speed * dt);
+		_vec3 MoveForward = Look * Move_speed * wheel * dt;
+		pTrans->Add_Pos(MoveForward);
+	}
+	else if (m_eMove == Move_Mode::Scale) {
+
+	}
+}
+
+void CPickingMgr::MoveObject(_float& dt)
+{
+	if (!m_pTarget)	return;
+	_long x = CInputMgr::GetInstance()->Get_DIMouseMove(DIMS_X);
+	_long y = CInputMgr::GetInstance()->Get_DIMouseMove(DIMD_Y);
+	_long wheel = CInputMgr::GetInstance()->Get_DIMouseMove(DIMD_Z);
+	_float Rotate_speed = 80;
+	_float Scale_speed = 10;
+
+	CTransform* transform = m_pTarget->Get_Component<CTransform>();
+	_vec3 objPos = transform->Get_Pos();
+	_vec3 normal = objPos - m_tRay.vRayPos;
+
+	if (m_eMove == Move_Mode::Transform) {
+		//카메라와 물체의 방향 벡터를 구하고, 법선으로 지정. -> 근데 이건 {0,0,0} 하고 뷰스페이스 역행렬 곱해도 되겠다.
+		// 근데 이게 vRayDir네(아니네, 중점과 카메라 중점의 방향을 구해야 하네)
+		//그리고 그 물체의 위치와 방향 벡터를 외적하여, 평면을 만들어.
+		D3DXVec3Normalize(&normal, &normal);
+		float d = -D3DXVec3Dot(&normal, &objPos); // 평면식: N 돗 P + d = 0
+
+		//그리고 그 평면과 레이캐스팅하여, 구한 좌표로 x,y,x이동 해.
+		_vec3 rayPos = m_tRay.vRayPos;
+		_vec3 rayDir = m_tRay.vRayDir;
+		float denom = D3DXVec3Dot(&normal, &rayDir); //광선과 평면의 내적으로 각도를 확인
+
+		if (fabs(denom) > 1e-6f) //광선이 평면과 수직인지 확인하는 단계
+		{
+			float t = -(D3DXVec3Dot(&normal, &rayPos) + d) / denom;
+			if (t >= 0.f)
 			{
-				if (origin < minB || origin > maxB)	//위치가 min보다 작거나 max보다 크면 (그리고 축 방향성이 0이면)
-					return -1.f;											//충돌 안함 -> 왜냐면, 그 안에 있는 것도 아니면서 그 축을 벗어나지 않는다는 뜻이니까
-			}
-			else
-			{
-				_float  t1 = (minB - origin) / dir;				//광선 위치에서 min까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
-				_float  t2 = (maxB - origin) / dir;				//광선 위치에서 max까지 (무슨 방향?? 양 or 음)얼마나 이동해야 하는지
-	
-				if (t1 > t2) swap(t1, t2);							//둘중 작은 거 큰거 바꾸고
-	
-				tmin = max(tmin, t1);	// 들어가는 시점 중 가장 늦은 순간(무한이랑 비교해야 가장 늦은 것을 할 수 있음)
-				tmax = min(tmax, t2); // 나오는 시점 중 가장 빠른 순간(무한이랑 비교해야 가장 빠른 것을 할 수 있음)
-	
-				
-				if (tmin > tmax)
-					return -1.f;
+				_vec3 hitPos = rayPos + rayDir * t;	//광선과 평면의 교차점 공식
+				transform->Set_Pos(hitPos);
 			}
 		}
-	
-		// 광선이 박스 뒤에 있음
-		if (tmax < 0)
-		return -1.f;
-	
-		// 교차 거리 반환
-		return tmin;
+	}
+
+	else if (m_eMove == Move_Mode::Rotate) {
+		_vec3 Rotate = { y * Rotate_speed * dt,  x * Rotate_speed * dt,wheel * Rotate_speed * dt };
+		transform->Add_Rotate(-Rotate);
+	}
+	else if (m_eMove == Move_Mode::Scale) {
+		_vec3 Scale = { x * dt, -y * dt, wheel * dt };
+		transform->Add_Scale(Scale* Scale_speed);
+	}
 }
+
 
 void CPickingMgr::Free()
 {

@@ -23,9 +23,8 @@ HRESULT CSceneMgr::Ready_SceneMgr()
 void CSceneMgr::Update_Scene(_float& dt)
 {
 	if (m_CurScene) {
-		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {
-			Render_SceneSelector();
-			});
+		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {Render_SceneSelector();});
+		GUISystem::GetInstance()->RegisterPanel("SceneLoad", [this]() {Save_LoadPanel();});
 		
 		m_CurScene->Update_Scene(dt);
 	}
@@ -119,5 +118,29 @@ void CSceneMgr::Render_SceneSelector()
 	}
 
 	ImGui::PopStyleVar(); // FramePadding 복원
+	ImGui::End();
+}
+
+void CSceneMgr::Save_LoadPanel()
+{
+	ImVec2 pos = ImVec2(WINCX - 600,10.0f);
+	ImVec2 size = ImVec2(300.0f,80.0f);  // 세로 크기 고정
+	ImGui::SetNextWindowPos(pos, ImGuiCond_Always);
+	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
+	ImGui::Begin("Scene_Saver", nullptr,
+		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+
+	ImGui::Spacing();
+	if (ImGui::Button("Save", ImVec2(70, 30)))
+	{
+
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load", ImVec2(70, 30)))
+	{
+
+	}
+
 	ImGui::End();
 }

@@ -36,7 +36,7 @@ void CLayer::LateUpdate_Layer(_float& dt)
 	}
 }
 
-void CLayer::Add_Object(const string& tag, CGameObject* object)
+HRESULT CLayer::Add_Object(CGameObject* object)
 {
 	//순회용 벡터 검색 (같은 것 있으면 X)
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(), [&object](CGameObject* list)->bool {
@@ -45,11 +45,11 @@ void CLayer::Add_Object(const string& tag, CGameObject* object)
 
 	if (iter != m_ObjectList.end()) {
 		MessageBoxW(0, L"Object Instnace is Already Exist", L"Error", MB_OK);
-		return;
+		return E_FAIL;
 	}
 
-	object->Set_Name(tag);
 	m_ObjectList.push_back(object);
+	return S_OK;
 }
 
 CGameObject* CLayer::Find_Object(const string& tag)
@@ -70,7 +70,7 @@ void CLayer::Remove_Object(const string& tag)
 {
 	CGameObject* target = nullptr;
 
-	//순회용 벡터 검색 (같은 것 있으면 X)
+	//순회용 벡터 검색
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
 		[&tag](CGameObject* data)->bool {
 			return data->Get_Name() == tag;
@@ -82,6 +82,22 @@ void CLayer::Remove_Object(const string& tag)
 	}
 
 	Safe_Release(target);
+}
+
+void CLayer::Pop_Object(const string& tag)
+{
+	CGameObject* target = nullptr;
+
+	//순회용 벡터 검색
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
+		[&tag](CGameObject* data)->bool {
+			return data->Get_Name() == tag;
+		});
+
+	if (iter != m_ObjectList.end()) {
+		target = (*iter);
+		m_ObjectList.erase(iter);
+	}
 }
 
 _bool CLayer::Has_Object(CGameObject* obj)

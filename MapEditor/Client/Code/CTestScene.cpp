@@ -37,9 +37,8 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Init_Layer();
-
-	m_mapLayer[LAYER_ID::L_CAMERA]->Add_Object("Camera01", CCameraActor::Create());
-	m_mapLayer[LAYER_ID::L_OBJECT]->Add_Object("Object01", CTestCube::Create());
+	Add_Object("Camera01", LAYER_ID::L_CAMERA, CCameraActor::Create());
+	Add_Object("Object01", LAYER_ID::L_OBJECT, CTestCube::Create());
 
 	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera01"))->Get_Component<CCamera>();
 	CCameraMgr::GetInstance()->Set_MainCamera(cam);
@@ -50,16 +49,16 @@ HRESULT CTestScene::Ready_Scene()
 
 void CTestScene::Update_Scene(_float& dt)
 {
-	
+
 	for (auto& pair : m_mapLayer) {
 		pair.second->Update_Layer(dt);
 	}
 	GUISystem::GetInstance()->RegisterPanel("Object_Create", [this]() {Create_Object();});
-	
+
 	pTarget = CPickingMgr::GetInstance()->Get_PickedObj();
 	GUISystem::GetInstance()->RegisterPanel("ObjectList", [this]() {Show_ObjectList();});
 
-	if(pTarget)
+	if (pTarget)
 		GUISystem::GetInstance()->RegisterPanel("ObjectEditor", [this]() {Edit_Object(pTarget);});
 }
 
@@ -119,7 +118,7 @@ void CTestScene::Edit_Object(CGameObject* obj)
 		ImGui::Text("Y"); ImGui::SameLine();
 		ImGui::InputFloat("##YRotate", &ry, 0.1f, 1.0f, "%.2f");
 
-		ImGui::Text("Z"); ImGui::SameLine();		
+		ImGui::Text("Z"); ImGui::SameLine();
 		ImGui::InputFloat("##ZRotate", &rz, 0.1f, 1.0f, "%.2f");
 
 		transform->Set_Rotate({ rx, ry, rz });
@@ -142,9 +141,39 @@ void CTestScene::Edit_Object(CGameObject* obj)
 		ImGui::InputFloat("##ZPosition", &pz, 0.1f, 1.0f, "%.2f");
 
 		transform->Set_Pos({ px, py, pz });
-	}
 
-	ImGui::End();
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		// ▼레이어 드롭다운
+		ImGui::Text("Layer");
+
+		const char* layerNames[] = { "Deafult", "Camera", "Object","Player" ,"Tile" };
+		int currentLayer = static_cast<int>(obj->Get_LayerID());
+		int newLayer = currentLayer;
+
+		if (ImGui::Combo("##LayerCombo", &newLayer, layerNames, IM_ARRAYSIZE(layerNames)))
+		{
+			if (newLayer != currentLayer) // 같은 레이어일 경우 무시
+			{
+				LAYER_ID prevLayer = static_cast<LAYER_ID>(currentLayer);
+				LAYER_ID nextLayer = static_cast<LAYER_ID>(newLayer);
+
+				// 새로운 레이어에 추가
+				if (FAILED(Add_Object(obj->Get_Name(), nextLayer,obj)))
+				{
+					return;
+				}
+				else
+				{
+					m_mapLayer[prevLayer]->Pop_Object(obj->Get_Name());
+				}
+			}
+		}
+
+		ImGui::End();
+	}
 }
 
 void CTestScene::Show_ObjectList()
@@ -160,10 +189,12 @@ void CTestScene::Show_ObjectList()
 		for (const auto& pair : m_mapLayer)
 		{
 			CLayer* pLayer = pair.second;
+			if (pLayer->Get_Object().empty())
+				continue; // 레이어에 오브젝트가 없으면 건너뜀
 
 			// 레이어 이름과 고유 ID 조합
 			std::string layerName = Layer_ToString(pair.first);
-			std::string label = "Layer: " + layerName ;
+			std::string label = "Layer: " + layerName;
 
 			// 레이어 사이 여백
 			ImGui::Dummy(ImVec2(0, 8));
@@ -187,14 +218,14 @@ void CTestScene::Show_ObjectList()
 						pTarget = item;
 						CPickingMgr::GetInstance()->Set_PickedObj(pTarget);
 					}
-				}
 
-				ImGui::TreePop();
+					ImGui::TreePop();
+				}
 			}
 		}
-	}
 
-	ImGui::End();
+	}
+		ImGui::End();
 }
 
 
@@ -213,13 +244,13 @@ void CTestScene::Create_Object()
 			CTestCube* instance = CTestCube::Create();
 			string count;
 			if (CTestCube::objCount < 10) {
-				count= "0"+to_string(CTestCube::objCount);
+				count = "0" + to_string(CTestCube::objCount);
 			}
 			else {
 				count = to_string(CTestCube::objCount);
 			}
 			string ObjectName = "Cube_" + count;
-			m_mapLayer[LAYER_ID::L_DEFAULT]->Add_Object(ObjectName,instance);
+			Add_Object(ObjectName, LAYER_ID::L_DEFAULT, instance);
 		}
 		if (ImGui::MenuItem("Create Sphere")) { /* 처리 */ }
 		if (ImGui::MenuItem("Create Camera")) { /* 처리 */ }
@@ -227,7 +258,6 @@ void CTestScene::Create_Object()
 		ImGui::EndPopup();
 	}
 }
-
 void CTestScene::Free()
 {
 	Free_AllLayer();
