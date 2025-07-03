@@ -73,9 +73,6 @@
     <Filter Include="03. Component\04. Renderer\MeshRenderer">
       <UniqueIdentifier>{1f2db26b-8b8d-460a-8d52-b14386fe02dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Managers\08. CameraMgr">
-      <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Managers\09. PickingMgr">
       <UniqueIdentifier>{bc221724-7d03-4389-a905-abf21b33616a}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="01. Managers\10. FactoryMgr">
       <UniqueIdentifier>{5107cda4-61ae-4c5d-9132-f8779af864fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Managers\08. CameraMgr">
+      <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

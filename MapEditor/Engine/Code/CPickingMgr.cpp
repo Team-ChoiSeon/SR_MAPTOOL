@@ -294,8 +294,8 @@ void CPickingMgr::Mode_Panel()
 
 void CPickingMgr::MoveCamera(_float& dt)
 {
-	_float Move_speed = 25;
-	_float Rotate_speed = 80;
+	_float Move_speed = 5;
+	_float Rotate_speed = 20;
 
 	_long x = CInputMgr::GetInstance()->Get_DIMouseMove(DIMS_X);
 	_long y = CInputMgr::GetInstance()->Get_DIMouseMove(DIMD_Y);
@@ -336,7 +336,6 @@ void CPickingMgr::MoveObject(_float& dt)
 	CTransform* transform = m_pTarget->Get_Component<CTransform>();
 	_vec3 objPos = transform->Get_Pos();
 	_vec3 normal = objPos - m_tRay.vRayPos;
-	//_vec3 normal = { 0.f, 1.f, 0.f };
 
 	if (m_eMove == Move_Mode::Transform) {
 		//카메라와 물체의 방향 벡터를 구하고, 법선으로 지정. -> 근데 이건 {0,0,0} 하고 뷰스페이스 역행렬 곱해도 되겠다.
@@ -359,6 +358,8 @@ void CPickingMgr::MoveObject(_float& dt)
 				transform->Set_Pos(hitPos);
 			}
 		}
+		_vec3 MoveForward = normal * wheel * dt;
+		transform->Add_Pos(MoveForward);
 	}
 
 	else if (m_eMove == Move_Mode::Rotate) {

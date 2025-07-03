@@ -12,7 +12,7 @@ private:
     explicit CModel();
     virtual ~CModel();
 public:
-    static CModel* Create(const string& meshType);
+    static CModel* Create();
 
 public:
     HRESULT Ready_Component() override;

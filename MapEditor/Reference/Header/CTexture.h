@@ -15,6 +15,7 @@ public:
     void Bind(LPDIRECT3DDEVICE9 pDevice,_uint stage = 0);                // 텍스처 바인딩
 
     const std::string& GetKey() const { return m_strKey; }
+    void SetKey(const string& key) { m_strKey = key; }
 
 private:
     HRESULT Ready_Texture();

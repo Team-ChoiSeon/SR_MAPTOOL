@@ -53,17 +53,17 @@
 #include "json.hpp"  // 헤더만으로 충분
 using json = nlohmann::json;
 
-//#ifdef _DEBUG
-//#define _CRTDBG_MAP_ALLOC
-//#include <stdlib.h>
-//#include <crtdbg.h>
-//
-//#ifndef  DBG_NEW
-//#define DBG_NEW new(_NORMAL_BLOCK , __FILE__ , __LINE__)
-//#define new DBG_NEW
-//
-//#endif // ! DBG_NEW
-//#endif // _DEBUG
+#ifdef _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#ifndef  DBG_NEW
+#define DBG_NEW new(_NORMAL_BLOCK , __FILE__ , __LINE__)
+#define new DBG_NEW
+
+#endif // ! DBG_NEW
+#endif // _DEBUG
 #endif
 
 using namespace std;

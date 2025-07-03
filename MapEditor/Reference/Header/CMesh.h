@@ -17,6 +17,7 @@ public:
 
     AABB Get_AABBBOX() { return m_tAABB; };
     string& Get_Key() { return m_strKey; }
+    void Set_Key(const string& key) {  m_strKey = key; }
 private:
     HRESULT Ready_Mesh();
 

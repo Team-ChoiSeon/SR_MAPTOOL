@@ -38,11 +38,12 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Init_Layer();
-	Add_Object(LAYER_ID::L_CAMERA, CCameraActor::Create());
-	Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
+	auto pCam = CCameraActor::Create();
+	Add_Object(LAYER_ID::L_CAMERA, pCam);
+	//Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
 
-	CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("Camera0"))->Get_Component<CCamera>();
-	CCameraMgr::GetInstance()->Set_MainCamera(cam);
+	//CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("CCameraActor0"))->Get_Component<CCamera>();
+	CCameraMgr::GetInstance()->Set_MainCamera(pCam->Get_Component<CCamera>());
 
 	return S_OK;
 }
@@ -196,8 +197,8 @@ void CTestScene::Edit_Object(CGameObject* obj)
 			}
 		}
 
-		ImGui::End();
 	}
+		ImGui::End();
 }
 
 void CTestScene::Show_ObjectList()

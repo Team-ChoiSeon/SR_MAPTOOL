@@ -25,13 +25,15 @@ HRESULT CTexture::Load(LPDIRECT3DDEVICE9 pDevice, const std::string& filePath)
 {
     if (!pDevice) return E_FAIL;
 
+    if (filePath.empty())
+        return E_FAIL;
+
     if (FAILED(D3DXCreateTextureFromFileA(pDevice, filePath.c_str(), &m_pTexture)))
     {
         MessageBoxA(0, ("Failed to load texture: " + filePath).c_str(), "Error", MB_OK);
         return E_FAIL;
     }
 
-    m_strKey = filePath;
     return S_OK;
 }
 
