@@ -184,10 +184,11 @@ void CTestScene::Edit_Object(CGameObject* obj)
 				LAYER_ID nextLayer = static_cast<LAYER_ID>(newLayer);
 
 				// 새로운 레이어에 추가
-				if (FAILED(nextLayer, obj))
+				if (FAILED(m_mapLayer[nextLayer]->Add_Object(obj)))
 				{
 					return;
 				}
+
 				else
 				{
 					m_mapLayer[prevLayer]->Pop_Object(obj->Get_InstanceName());

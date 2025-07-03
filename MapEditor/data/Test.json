@@ -1,0 +1,370 @@
+{
+    "objects": [
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "DEFAULT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube5",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                0.0,
+                38.000030517578125,
+                20.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                1.0,
+                20.0
+            ]
+        },
+        {
+            "Layer": "CAMERA",
+            "camera": {
+                "eye": [
+                    -89.05683135986328,
+                    25.603130340576172,
+                    8.373838424682617
+                ],
+                "far": 200.0,
+                "fov": 45.0,
+                "lookDir": [
+                    0.9975193738937378,
+                    -0.06615892797708511,
+                    -0.024045763537287712
+                ],
+                "near": 0.10000000149011612,
+                "pitch": -3.793398380279541,
+                "roll": 0.0,
+                "up": [
+                    0.06613971292972565,
+                    0.997809112071991,
+                    -0.0015943348407745361
+                ],
+                "yaw": -1.380879521369934
+            },
+            "class": "Camera",
+            "name": "Camera0",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                -89.05683135986328,
+                25.603130340576172,
+                8.373838424682617
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "OBJECT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube0",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                0.0,
+                0.0,
+                20.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                1.0,
+                20.0
+            ]
+        },
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "OBJECT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube1",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                0.0,
+                19.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                20.0,
+                1.0
+            ]
+        },
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "OBJECT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube2",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                0.0,
+                19.0,
+                39.99992370605469
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                20.0,
+                1.0
+            ]
+        },
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "OBJECT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube3",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                20.0,
+                19.0,
+                20.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                20.0,
+                20.0
+            ]
+        },
+        {
+            "AABB": {
+                "max": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "min": [
+                    -1.0,
+                    -1.0,
+                    -1.0
+                ]
+            },
+            "Layer": "OBJECT",
+            "class": "CTestCube",
+            "matKey": "",
+            "material": {
+                "diffuse": "../Bin/Resource/Texture/dirt_diff_4k.jpg",
+                "emissive": "",
+                "normal": "",
+                "roughness": "",
+                "specular": ""
+            },
+            "mesh": "../Bin/Resource/Obj/DirtObj.obj",
+            "name": "CTestCube4",
+            "orbit": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "parent_obj": "",
+            "pivot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                -20.0,
+                19.0,
+                20.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                20.0,
+                20.0
+            ]
+        }
+    ]
+}

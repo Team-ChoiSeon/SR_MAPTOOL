@@ -141,7 +141,9 @@ void CSceneMgr::Save_LoadPanel()
 	ImGui::SetNextWindowPos(pos, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::Begin("Scene_Saver", nullptr,
-		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+		ImGuiWindowFlags_NoResize | 
+		ImGuiWindowFlags_NoCollapse | 
+		ImGuiWindowFlags_NoMove);
 
 	ImGui::Spacing();
 
