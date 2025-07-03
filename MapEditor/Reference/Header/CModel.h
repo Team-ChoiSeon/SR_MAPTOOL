@@ -24,8 +24,11 @@ public:
 public:
     HRESULT Set_Model(const string& meshType);
     HRESULT Set_Model(const string& meshType, const string& matType );
+    HRESULT Change_Model(const string& meshType, const string& matType);
+
     CMesh* Get_Mesh();
     CMaterial* Get_Material();
+
 
 private:
     CMesh* m_pMesh;
