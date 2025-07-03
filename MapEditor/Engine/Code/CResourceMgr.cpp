@@ -125,8 +125,8 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 
 	// 머티리얼 객체 생성 및 텍스처 설정
 	CMaterial* mat = CMaterial::Create();
+	mat->Set_Key(mtlPath);
 	mat->Set_Diffuse(tex);
-
 	// 머티리얼 맵에 등록 (이름으로 저장)
 	m_materialMap[mtlPath] = mat;
 

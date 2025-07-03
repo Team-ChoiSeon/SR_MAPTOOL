@@ -26,6 +26,7 @@ public:
     CTexture* Get_Specular() const { return m_pSpecular; }
 
     string& Get_Key() { return m_strKey; }
+    void Set_Key(const string& key) {  m_strKey = key; }
     void Apply(LPDIRECT3DDEVICE9 pDevice); // GPU ¹ÙÀÎµù
 
 private:
