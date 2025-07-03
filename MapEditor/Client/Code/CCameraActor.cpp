@@ -34,7 +34,7 @@ CCameraActor* CCameraActor::Create()
 HRESULT CCameraActor::Ready_GameObject()
 {
 	m_pTransform = Add_Component<CTransform>();
-	//m_pTransform->Set_Pos({ 0,0, -5.f });
+	m_pTransform->Set_Pos({ 0,0, -5.f });
 	m_pCamera = Add_Component<CCamera>();
 
 	return S_OK;

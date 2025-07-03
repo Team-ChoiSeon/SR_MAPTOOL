@@ -65,8 +65,8 @@ HRESULT CModel::Set_Model(const string& meshType)
 HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 {
 	//  이전 리소스 해제
-	Safe_Release(m_pMesh);
-	Safe_Release(m_pMaterial);
+	if (m_pMesh || m_pMaterial) return S_OK;
+	//Safe_Release(m_pMaterial);
 
 	// 새 리소스 할당 및 AddRef
 	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshType);

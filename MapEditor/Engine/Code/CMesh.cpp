@@ -87,7 +87,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 
 					// UV 스케일을 비례해서 설정
 					//D3DXVECTOR2 uvScale = { scale.x, scale.y };
-					D3DXVECTOR2 uvScale = { 3.f, 3.f };
+					D3DXVECTOR2 uvScale = { 1.f, 1.f };
 					vertex.vTexUV.x = texcoords[vti].x * uvScale.x;
 					vertex.vTexUV.y = texcoords[vti].y * uvScale.y;
 
@@ -158,7 +158,7 @@ void CMesh::Render(LPDIRECT3DDEVICE9 pDevice)
 	pDevice->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
 	pDevice->SetIndices(m_pIB);
 	// 렌더링
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iVtxCount, 0, m_iPrimitiveCount);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iVtxCount, 0, 12);
 }
 
 HRESULT CMesh::Ready_Mesh()

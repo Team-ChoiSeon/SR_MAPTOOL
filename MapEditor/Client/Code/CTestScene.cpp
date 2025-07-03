@@ -40,10 +40,9 @@ HRESULT CTestScene::Ready_Scene()
 	Init_Layer();
 	auto pCam = CCameraActor::Create();
 	Add_Object(LAYER_ID::L_CAMERA, pCam);
-	//Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
-
-	//CCamera* cam = (m_mapLayer[LAYER_ID::L_CAMERA]->Find_Object("CCameraActor0"))->Get_Component<CCamera>();
-	CCameraMgr::GetInstance()->Set_MainCamera(pCam->Get_Component<CCamera>());
+	Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
+	CCamera* cam = pCam->Get_Component<CCamera>();
+	CCameraMgr::GetInstance()->Set_MainCamera(cam);
 
 	return S_OK;
 }
