@@ -30,7 +30,6 @@ HRESULT CTransform::Ready_Component()
 	m_vPivot = { 0.f,0.f,0.f };
 	m_vOrbit = { 0.f,0.f,0.f };
 	m_vLook = { 0.f,0.f,1.f };
-
 	//룩벡터 조금더 이해 필요함
 	m_pParent = nullptr;
 
@@ -43,12 +42,12 @@ void CTransform::Update_Component(_float& dt)
 	//크기
 	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
 
-	//축회전
-	float angle = D3DXVec3Length(&m_vAxisRotate); // 회전량(벡터 크기)
-	_vec3 axis;
-	D3DXVec3Normalize(&axis, &m_vAxisRotate);     // 회전축
-	D3DXMatrixRotationAxis(&matAxisRot, &axis, angle);
-
+	////축회전
+	//float angle = D3DXVec3Length(&m_vAxisRotate); // 회전량(벡터 크기)
+	//_vec3 axis;
+	//D3DXVec3Normalize(&axis, &m_vAxisRotate);     // 회전축
+	//D3DXMatrixRotationAxis(&matAxisRot, &axis, angle);
+	D3DXMatrixIdentity(&matAxisRot);
 	//자전
 	D3DXMatrixRotationX(&matRotateX, D3DXToRadian(m_vRotate.x));
 	D3DXMatrixRotationY(&matRotateY, D3DXToRadian(m_vRotate.y));

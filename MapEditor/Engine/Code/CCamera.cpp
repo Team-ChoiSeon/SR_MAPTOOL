@@ -85,9 +85,9 @@ void CCamera::Set_Proj(_float _FOV, _float _near, _float _far)
 
 void CCamera::Set_YawPitchRoll(_vec3 axis)
 {
-	m_fYaw = axis.x; // Y축 회전
-	m_fPitch = axis.y; // X축 회전
-	m_fRoll = axis.z; // Z축 회전
+	//m_fYaw = axis.x; // Y축 회전
+	//m_fPitch = axis.y; // X축 회전
+	//m_fRoll = axis.z; // Z축 회전
 }
 
 void CCamera::Add_Yaw(_float angle)

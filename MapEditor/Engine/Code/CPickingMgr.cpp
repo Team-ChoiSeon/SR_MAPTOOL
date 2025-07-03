@@ -294,7 +294,7 @@ void CPickingMgr::Mode_Panel()
 
 void CPickingMgr::MoveCamera(_float& dt)
 {
-	_float Move_speed = 5;
+	_float Move_speed = 35;
 	_float Rotate_speed = 20;
 
 	_long x = CInputMgr::GetInstance()->Get_DIMouseMove(DIMS_X);
@@ -316,8 +316,7 @@ void CPickingMgr::MoveCamera(_float& dt)
 		//x만큼 오른쪽으로 //y만큼 위로
 		pTrans->Add_Pos(-Right * x * Move_speed * dt);
 		pTrans->Add_Pos(up * y * Move_speed * dt);
-		_vec3 MoveForward = Look * Move_speed * wheel * dt;
-		pTrans->Add_Pos(MoveForward);
+		pTrans->Add_Pos(Look * Move_speed * wheel * dt);
 	}
 	else if (m_eMove == Move_Mode::Scale) {
 
