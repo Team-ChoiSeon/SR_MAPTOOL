@@ -111,7 +111,7 @@ _bool CLayer::Has_Object(CGameObject* obj)
 
 HRESULT CLayer::Ready_Layer()
 {
-	m_ObjectList.reserve(5);
+	//m_ObjectList.reserve(5);
 	return S_OK;
 }
 

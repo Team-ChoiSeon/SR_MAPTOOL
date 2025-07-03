@@ -29,17 +29,16 @@ CSceneMgr::~CSceneMgr()
 
 HRESULT CSceneMgr::Ready_SceneMgr()
 {
-	
 	return S_OK;
 }
 
 void CSceneMgr::Update_Scene(_float& dt)
 {
 	if (m_CurScene) {
+		m_CurScene->Update_Scene(dt);
+
 		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {Render_SceneSelector();});
 		GUISystem::GetInstance()->RegisterPanel("SceneLoad", [this]() {Save_LoadPanel();});
-	
-		m_CurScene->Update_Scene(dt);
 	}
 }
 
@@ -179,6 +178,7 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 
 	for (int i = 0; i < (int)LAYER_ID::L_END; ++i)
 	{
+		if (static_cast<LAYER_ID>(i) != LAYER_ID::L_OBJECT) continue;
 		for (auto& obj : m_CurScene->Get_Layer(static_cast<LAYER_ID>(i))->Get_Object())
 		{
 			json jObj;
@@ -208,6 +208,8 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 			// === Model
 			if (auto model = obj->Get_Component<CModel>())
 			{
+				jObj["model"] = "able";
+
 				if (auto mesh = model->Get_Mesh())
 				{
 					jObj["mesh"] = mesh->Get_Key();
@@ -298,79 +300,107 @@ void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
 
 	for (const auto& jObj : jScene["objects"])
 	{
+		if (!jObj.contains("class") || !jObj.contains("name") || !jObj.contains("Layer"))
+			continue;
+
 		string className = jObj["class"];
 		string instanceName = jObj["name"];
 		string layerName = jObj["Layer"];
 
-		// 오브젝트 생성
 		CGameObject* pObj = CFactoryMgr::Create(className);
-
-		if (!pObj) {
-			//MessageBoxW(0, L"프로토 매니저 등록 실패", L"Error", MB_OK);
+		if (!pObj)
 			continue;
-		}
 
-		
-		pObj->Set_Name(className);
-
-		//Transform
+		// Transform
 		if (auto transform = pObj->Get_Component<CTransform>()) {
-			auto pos = jObj["position"];
-			auto rot = jObj["rotation"];
-			auto scale = jObj["scale"];
-			auto pivot = jObj["pivot"];
-			auto orbit = jObj["orbit"];
-		
-			transform->Set_Pos({ pos[0], pos[1], pos[2] });
-			transform->Set_Rotate({ rot[0], rot[1], rot[2] });
-			transform->Set_Scale({ scale[0], scale[1], scale[2] });
-			transform->Set_Pivot({ pivot[0], pivot[1], pivot[2] });
-			transform->Set_Orbit({ orbit[0], orbit[1], orbit[2] });
-			// 부모는 나중에 처리 (전체 파싱 후 연결)
+			if (jObj.contains("position") && jObj["position"].is_array() && jObj["position"].size() >= 3)
+				transform->Set_Pos({ jObj["position"][0], jObj["position"][1], jObj["position"][2] });
+
+			if (jObj.contains("rotation") && jObj["rotation"].is_array() && jObj["rotation"].size() >= 3)
+				transform->Set_Rotate({ jObj["rotation"][0], jObj["rotation"][1], jObj["rotation"][2] });
+
+			if (jObj.contains("scale") && jObj["scale"].is_array() && jObj["scale"].size() >= 3)
+				transform->Set_Scale({ jObj["scale"][0], jObj["scale"][1], jObj["scale"][2] });
+
+			if (jObj.contains("pivot") && jObj["pivot"].is_array() && jObj["pivot"].size() >= 3)
+				transform->Set_Pivot({ jObj["pivot"][0], jObj["pivot"][1], jObj["pivot"][2] });
+
+			if (jObj.contains("orbit") && jObj["orbit"].is_array() && jObj["orbit"].size() >= 3)
+				transform->Set_Orbit({ jObj["orbit"][0], jObj["orbit"][1], jObj["orbit"][2] });
 		}
-		
+
 		// Model
-		if (auto model = pObj->Get_Component<CModel>()) {
-			// Model 키 존재 여부 확인
-			if (jObj.contains("mesh") && jObj.contains("matKey")) {
-				string meshKey = jObj["mesh"];
-				string materialKey = jObj["matKey"];
+		if (jObj.contains("model") ) {
+			if (auto model = pObj->Get_Component<CModel>()) {
+				if (jObj.contains("mesh") && jObj.contains("matKey")) {
+					string meshKey = jObj["mesh"];
+					string materialKey = jObj["matKey"];
 
-				if (!meshKey.empty() && !materialKey.empty()) {
-					model->Set_Model(meshKey, materialKey);
+					if (!meshKey.empty() && !materialKey.empty())
+						model->Set_Model(meshKey, materialKey);
+				}
 
+				if (jObj.contains("material")) {
+					auto& jMat = jObj["material"];
 					if (auto mat = model->Get_Material()) {
-						if (jObj.contains("material")) {
-							auto& jMat = jObj["material"];
+						if (jMat.contains("diffuse")) {
+							std::string path = jMat["diffuse"];
+							if (!path.empty())
+								mat->Set_Diffuse(CResourceMgr::GetInstance()->LoadTexture(path));
+						}
 
-							mat->Set_Diffuse(CResourceMgr::GetInstance()->LoadTexture(jMat.value("diffuse", "")));
-							mat->Set_Normal(CResourceMgr::GetInstance()->LoadTexture(jMat.value("normal", "")));
-							mat->Set_Roughness(CResourceMgr::GetInstance()->LoadTexture(jMat.value("roughness", "")));
-							mat->Set_Specular(CResourceMgr::GetInstance()->LoadTexture(jMat.value("specular", "")));
-							mat->Set_Emissive(CResourceMgr::GetInstance()->LoadTexture(jMat.value("emissive", "")));
+						if (jMat.contains("normal")) {
+							std::string path = jMat["normal"];
+							if (!path.empty())
+								mat->Set_Normal(CResourceMgr::GetInstance()->LoadTexture(path));
+						}
+
+						if (jMat.contains("roughness")) {
+							std::string path = jMat["roughness"];
+							if (!path.empty())
+								mat->Set_Roughness(CResourceMgr::GetInstance()->LoadTexture(path));
+						}
+
+						if (jMat.contains("specular")) {
+							std::string path = jMat["specular"];
+							if (!path.empty())
+								mat->Set_Specular(CResourceMgr::GetInstance()->LoadTexture(path));
+						}
+
+						if (jMat.contains("emissive")) {
+							std::string path = jMat["emissive"];
+							if (!path.empty())
+								mat->Set_Emissive(CResourceMgr::GetInstance()->LoadTexture(path));
 						}
 					}
 				}
-			}
 
+			}
 		}
-		
+
 		// Camera
 		if (jObj.contains("camera")) {
 			auto& jCam = jObj["camera"];
 			if (auto cam = pObj->Get_Component<CCamera>()) {
-				cam->Set_View(
-					{ jCam["eye"][0], jCam["eye"][1], jCam["eye"][2] }, 
-					{ jCam["up"][0], jCam["up"][1], jCam["up"][2] },
-					{ jCam["lookDir"][0], jCam["lookDir"][1], jCam["lookDir"][2] });
-				cam->Set_Proj(jCam["fov"], jCam["near"], jCam["far"]);
-				cam->Set_YawPitchRoll({ jCam["yaw"], jCam["pitch"], jCam["roll"] });
+				if (jCam.contains("eye") && jCam.contains("up") && jCam.contains("lookDir")
+					&& jCam["eye"].size() >= 3 && jCam["up"].size() >= 3 && jCam["lookDir"].size() >= 3) {
+					cam->Set_View(
+						{ jCam["eye"][0], jCam["eye"][1], jCam["eye"][2] },
+						{ jCam["up"][0], jCam["up"][1], jCam["up"][2] },
+						{ jCam["lookDir"][0], jCam["lookDir"][1], jCam["lookDir"][2] });
+				}
+
+				if (jCam.contains("fov") && jCam.contains("near") && jCam.contains("far"))
+					cam->Set_Proj(jCam["fov"], jCam["near"], jCam["far"]);
+
+				if (jCam.contains("yaw") && jCam.contains("pitch") && jCam.contains("roll"))
+					cam->Set_YawPitchRoll({ jCam["yaw"], jCam["pitch"], jCam["roll"] });
 			}
 		}
-		
-		// 레이어에 추가
+
+		// 레이어 추가
 		LAYER_ID layerID = m_CurScene->String_ToLayer(layerName);
-		m_CurScene->Get_Layer(layerID)->Add_Object(pObj);
+		(m_CurScene->Get_Layer(layerID))->Add_Object(pObj);
 	}
 }
 

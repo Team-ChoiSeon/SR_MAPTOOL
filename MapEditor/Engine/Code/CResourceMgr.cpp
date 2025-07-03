@@ -40,12 +40,11 @@ CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 	string filePath = BasePath + objPath;
 
 	CMesh* mesh = CMesh::Create();
-
 	if (FAILED(mesh->LoadOBJ(m_pDevice,filePath))) {
 		Safe_Release(mesh);
 		return nullptr;
 	}
-
+	mesh->Set_Key(objPath);
 	m_meshMap[objPath] = mesh;
 	return mesh;
 }
@@ -56,6 +55,7 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	if (it != m_textureMap.end()) 
 		return it->second;
 
+
 	string BasePath = "../Bin/Resource/Texture/";
 	string filePath = BasePath + texturePath;
 
@@ -65,7 +65,7 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 		Safe_Release(tex);
 		return nullptr;
 	}
-
+	tex->SetKey(texturePath);
 	m_textureMap[texturePath] = tex;
 	return tex;
 }

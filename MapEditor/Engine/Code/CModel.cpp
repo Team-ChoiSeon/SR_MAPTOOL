@@ -5,7 +5,7 @@
 #include "CMaterial.h"
 
 CModel::CModel()
-	:m_pMesh(nullptr)
+	:m_pMesh(nullptr),m_pMaterial(nullptr)
 {
 }
 
@@ -13,7 +13,7 @@ CModel::~CModel()
 {
 }
 
-CModel* CModel::Create(const string& meshType)
+CModel* CModel::Create()
 {
 	CModel* instance = new CModel;
 
@@ -22,7 +22,7 @@ CModel* CModel::Create(const string& meshType)
 		instance = nullptr;
 	}
 
-	instance->Set_Model(meshType);
+	//instance->Set_Model(meshType);
 	return instance;
 }
 
@@ -52,34 +52,37 @@ CComponent* CModel::Clone() const
 
 HRESULT CModel::Set_Model(const string& meshType)
 {
-	string meshKey = meshType + ".obj";
-	string matKey = meshType + ".mtl";
-	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
-	if (m_pMesh)
-		m_pMesh->AddRef();
-	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
-	if (m_pMaterial)
-		m_pMaterial->AddRef();
+	//string meshKey = meshType + ".obj";
+	//string matKey = meshType + ".mtl";
+	//m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
+	//if (m_pMesh)
+	//	m_pMesh->AddRef();
+	//m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
+	//if (m_pMaterial)
+	//	m_pMaterial->AddRef();
 	return S_OK;
 }
-
 HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 {
-	string meshKey = meshType;
-	string matKey = matType;
-	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
+	//  이전 리소스 해제
+	Safe_Release(m_pMesh);
+	Safe_Release(m_pMaterial);
+
+	// 새 리소스 할당 및 AddRef
+	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshType);
 	if (m_pMesh)
 		m_pMesh->AddRef();
-	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
+
+	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matType);
 	if (m_pMaterial)
 		m_pMaterial->AddRef();
 
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 CMesh* CModel::Get_Mesh()
 {
-	return  m_pMesh; ;
+	return  m_pMesh; 
 }
 
 CMaterial* CModel::Get_Material()

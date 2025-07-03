@@ -25,7 +25,7 @@ CCameraActor* CCameraActor::Create()
 		Safe_Release(instance);
 		instance = nullptr;
 	}
-	instance->Set_Name("Camera");
+	instance->Set_Name("CCameraActor");
 	instance->ObjCount = TypeID<CCameraActor>::GetCount();
 
 	return instance;

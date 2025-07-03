@@ -59,4 +59,5 @@ CComponent* CMeshRenderer::Clone() const
 
 void CMeshRenderer::Free()
 {
+	Safe_Release(m_pModel);
 }
