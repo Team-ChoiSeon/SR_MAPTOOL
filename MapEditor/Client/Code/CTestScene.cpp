@@ -13,6 +13,7 @@
 #include "CPickingMgr.h"
 #include "GUISystem.h"
 #include "CFunction.h"
+#include "CModel.h"
 
 CTestScene::CTestScene()
 	:pTarget(nullptr)
@@ -148,7 +149,6 @@ void CTestScene::Edit_Object(CGameObject* obj)
 		ImGui::Spacing();
 		
 		ImGui::Text("Class Name");
-
 		// 버퍼 준비
 		std::string name = obj->Get_Name();
 		static char buffer[128];
@@ -164,6 +164,24 @@ void CTestScene::Edit_Object(CGameObject* obj)
 			obj->Set_Name(buffer);
 		}
 
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		ImGui::Text("texture");
+		// 버퍼 준비
+		static char txtBuff[128];
+		// 인풋 필드
+		ImGui::InputText("##texture", txtBuff, IM_ARRAYSIZE(txtBuff));
+		ImGui::SameLine();
+
+		// 버튼은 항상 눌릴 수 있도록 별도 처리
+		if (ImGui::Button("texture change")) {
+			auto model = obj->Get_Component<CModel>();
+			string key = string(txtBuff);
+
+			model->Change_Model(key+".obj", key+".mtl");
+		}
 
 		ImGui::Spacing();
 		ImGui::Separator();

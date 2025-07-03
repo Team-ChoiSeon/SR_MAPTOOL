@@ -279,7 +279,8 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
 {
 	HANDLE hFile = ::CreateFileW(
-		path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, 
+		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE) {
 		MessageBoxW(nullptr, L"파일 열기 실패", L"Error", MB_OK);

@@ -24,8 +24,16 @@ HRESULT CResourceMgr::Ready_Resource()
 	if (!m_pDevice) return E_FAIL;
 
 	LoadTexture("dirt_diff_4k.jpg");
+	LoadTexture("Ground054_4K_Color.jpg");
+
 	LoadMaterialFromMTL("DirtObj.mtl");
 	LoadMeshFromOBJ("DirtObj.obj");
+
+	LoadMaterialFromMTL("SandyTile.mtl");
+	LoadMeshFromOBJ("SandyTile.obj");
+
+	LoadMaterialFromMTL("BrickRoad.mtl");
+	LoadMeshFromOBJ("BrickRoad.obj");
 	return S_OK;
 }
 
