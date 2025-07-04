@@ -1,7 +1,7 @@
 #include "Engine_Define.h"
 #include "CRenderMgr.h"
-#include "CRenderer.h"
 #include "CResourceMgr.h"
+#include "CModel.h"
 
 IMPLEMENT_SINGLETON(CRenderMgr)
 
@@ -20,12 +20,12 @@ HRESULT CRenderMgr::Ready_RenderMgr(LPDIRECT3DDEVICE9 pDevice)
 	return S_OK;
 }
 
-void CRenderMgr::Add_Renderer(CRenderer* renderer)
+void CRenderMgr::Add_Renderer(CModel* renderer)
 {
 	RENDER_PASS pass = renderer->Get_RenderPass();
 
 	auto iter = find_if(m_Renderers[pass].begin(), m_Renderers[pass].end(),
-		[&renderer](CRenderer* data)->bool {
+		[&renderer](CModel* data)->bool {
 			return data == renderer;
 		});
 
@@ -33,12 +33,12 @@ void CRenderMgr::Add_Renderer(CRenderer* renderer)
 		m_Renderers[pass].push_back(renderer);
 }
 
-void CRenderMgr::Remove_Renderer(CRenderer* renderer)
+void CRenderMgr::Remove_Renderer(CModel* renderer)
 {
 	RENDER_PASS pass = renderer->Get_RenderPass();
 
 	auto iter = remove_if(m_Renderers[pass].begin(), m_Renderers[pass].end(),
-		[&renderer](CRenderer* data)->bool {
+		[&renderer](CModel* data)->bool {
 			return data == renderer;
 		});
 
@@ -68,23 +68,23 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- 렌더러의 통합을 고려 해�
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	//pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
- 	for (auto& renderer : m_Renderers[RENDER_PASS::RP_SHADOW])
-		renderer->Render(pDevice);
-
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_OPAQUE])
-		renderer->Render(pDevice);
-
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_STENCIL])
-		renderer->Render(pDevice);
-
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_TRANSPARENT])
-		renderer->Render(pDevice);
-
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_UI])
-		renderer->Render(pDevice);
-
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_POSTPROCESS])
-		renderer->Render(pDevice);
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_SHADOW])
+	//		renderer->Render(pDevice);
+	//
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_OPAQUE])
+	//		renderer->Render(pDevice);
+	//
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_STENCIL])
+	//		renderer->Render(pDevice);
+	//
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_TRANSPARENT])
+	//		renderer->Render(pDevice);
+	//
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_UI])
+	//		renderer->Render(pDevice);
+	//
+	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_POSTPROCESS])
+	//		renderer->Render(pDevice);
 
 	Clear();
 	//m_StateCache->Clear();

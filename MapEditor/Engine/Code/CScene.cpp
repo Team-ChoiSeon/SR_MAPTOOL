@@ -12,41 +12,82 @@ CScene::~CScene()
 {
 }
 
+CScene* CScene::Create()
+{
+	CScene* instance = new CScene;
+
+	if (FAILED(instance->Ready_Scene())) {
+		Safe_Release(instance);
+		instance = nullptr;
+	}
+
+	return instance;
+}
+
+HRESULT CScene::Ready_Scene()
+{
+	return S_OK;
+}
+
 void CScene::Update_Scene(_float& dt)
 {
-
+	for (auto& pair : m_mapLayer)
+	{
+		if (pair.second)
+			pair.second->Update_Layer(dt);
+	}
 }
 
 void CScene::LateUpdate_Scene(_float& dt)
 {
-
+	for (auto& pair : m_mapLayer)
+	{
+		if (pair.second)
+			pair.second->LateUpdate_Layer(dt);
+	}
 }
-
-CLayer* CScene::Get_Layer(LAYER_ID id)
+void CScene::Render_Panel()
 {
-	auto iter = m_mapLayer.find(id);
+	ImGui::Begin("Scene Panel", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-	if (iter == m_mapLayer.end())
-		return nullptr;
-	else
-		return (iter->second);
+	ImGui::Text("Scene: %s", m_Name.c_str());
+	ImGui::Separator();
+
+	for (const auto& pair : m_mapLayer)
+	{
+		string id = pair.first;
+		CLayer* pLayer = pair.second;
+		
+		if (!pLayer || id.empty())
+			continue;
+
+		if (ImGui::TreeNode(id.c_str()))
+		{
+			pLayer->Render_Panel(); // 오브젝트 리스트 패널 출력
+			ImGui::TreePop();
+		}
+	}
+
+	ImGui::End();
 }
+
 
 void CScene::Init_Layer()
 {
-	for (int i = 0; i < static_cast<int>(LAYER_ID::L_END); ++i) {
-		LAYER_ID id = static_cast<LAYER_ID>(i);
-		m_mapLayer[id] = CLayer::Create();
+	Add_Layer("Default");
+}
+
+void CScene::Add_Layer(const string& layerName)
+{
+	if (m_mapLayer.find(layerName) == m_mapLayer.end())
+	{
+		CLayer* layer = CLayer::Create();
+		m_mapLayer[layerName] = layer;
+		m_LayerNames.push_back(layerName);
 	}
 }
 
-void CScene::Swap_Layer(const string& from, const string& to)
-{
-	//미구현 사항
-}
-
-
-void CScene::Free_Layer(LAYER_ID layer)
+void CScene::Free_Layer(string layer)
 {
 	auto iter = m_mapLayer.find(layer);
 
@@ -66,37 +107,33 @@ void CScene::Free_AllLayer()
 	m_mapLayer.clear();
 }
 
-HRESULT CScene::Add_Object(LAYER_ID layer, CGameObject* object)
+HRESULT CScene::Add_Object(string layer, CGameObject* object)
 {
 	if (FAILED(m_mapLayer[layer]->Add_Object(object))) {
 		return E_FAIL;
 	};
-	object->Set_LayerID(layer);
 	return S_OK;
 }
 
-const char* CScene::Layer_ToString(LAYER_ID id)
+CLayer* CScene::Get_Layer(string id)
 {
-	switch (id)
-	{
-	case Engine::LAYER_ID::L_DEFAULT: return "DEFAULT";
-	case Engine::LAYER_ID::L_CAMERA:  return "CAMERA";
-	case Engine::LAYER_ID::L_OBJECT:  return "OBJECT";
-	case Engine::LAYER_ID::L_PLAYER:  return "PLAYER";
-	case Engine::LAYER_ID::L_TILE:    return "TILE";
-	default:                          return "UnKnown";
-	}
+	auto iter = m_mapLayer.find(id);
+
+	if (iter == m_mapLayer.end())
+		return nullptr;
+	else
+		return (iter->second);
 }
 
-LAYER_ID CScene::String_ToLayer(const std::string& name)
+void CScene::Serialize(json& jScene) const
 {
-	if (name == "DEFAULT") return LAYER_ID::L_DEFAULT;
-	if (name == "CAMERA")  return LAYER_ID::L_CAMERA;
-	if (name == "OBJECT")  return LAYER_ID::L_OBJECT;
-	if (name == "PLAYER")  return LAYER_ID::L_PLAYER;
-	if (name == "TILE")    return LAYER_ID::L_TILE;
+}
 
-	return LAYER_ID::L_DEFAULT; // 또는 예외 처리용 L_INVALID이 있으면 더 좋음
+void CScene::Deserialize(const json& jScene)
+{
 }
 
 
+void CScene::Free()
+{
+}

@@ -102,5 +102,27 @@ namespace Engine
 		}
 	};
 
+	template<typename T>
+	void Safe_Add(T& pInstance)
+	{
+		if (nullptr != pInstance)
+		{
+			pInstance->AddRef();
+		}
+	}
+
+	template<typename T>
+	void Safe_Change(T& lhs, T rhs) {
+		if (lhs != nullptr) {
+			Safe_Release(lhs);
+		}
+
+		lhs = rhs;
+
+		if (rhs != nullptr) {
+			rhs->AddRef();
+		}
+	}
+
 }
 

@@ -20,6 +20,11 @@ public:
     virtual CComponent* Clone() const;
 
 public:
+    void Render_Panel(ImVec2 size) override;
+    void Serialize(json& outJson) const override;
+    void Deserialize(const json& inJson) override;
+
+
     void Set_View(_vec3 _vEye, _vec3 _vUP, _vec3 _vDir);
     void Set_Proj(_float _FOV, _float _near, _float _far);
     void Set_YawPitchRoll(_vec3 axis);
@@ -70,6 +75,7 @@ private:
 
 private:
     void Free();
+
 };
 
 END

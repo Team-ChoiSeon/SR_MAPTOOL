@@ -2,18 +2,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "GUISystem.h"
-#include "CLayer.h"
-#include "CGameObject.h"
-#include "CTransform.h"
-#include "CModel.h"
-#include "CMesh.h"
-#include "CMaterial.h"
-#include "CCamera.h"
-#include "CTexture.h"
 #include "CFunction.h"
-#include "CFactoryMgr.h"
-#include "CResourceMgr.h"
-//#include "CLight.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
@@ -36,9 +25,12 @@ void CSceneMgr::Update_Scene(_float& dt)
 {
 	if (m_CurScene) {
 		m_CurScene->Update_Scene(dt);
+<<<<<<< Updated upstream
 
 		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {Render_SceneSelector();});
 		GUISystem::GetInstance()->RegisterPanel("SceneLoad", [this]() {Save_LoadPanel();});
+=======
+>>>>>>> Stashed changes
 	}
 }
 
@@ -46,6 +38,12 @@ void CSceneMgr::LateUpdate_Scene(_float& dt)
 {
 	if (m_CurScene)
 		m_CurScene->LateUpdate_Scene(dt);
+}
+
+void CSceneMgr::Render_Scene()
+{
+	if (m_CurScene)
+		m_CurScene->Render_Panel();
 }
 
 void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
@@ -62,20 +60,6 @@ void CSceneMgr::Change_Scene(string sceneTag)
 	if (iter == m_SceneContainer.end()) return;
 
 	CScene* next = iter->second;
-
-	if (m_CurScene) {
-		HRESULT exit = m_CurScene->Exit_Scene();
-		if (FAILED(exit)) {
-			MessageBoxW(0, L"씬 전환 실패, 씬 퇴장 오류", L"error", MB_OK);
-		}
-	}
-
-	HRESULT enter = next->Enter_Scene();
-
-	if (FAILED(enter)) {
-		MessageBoxW(0, L"씬 전환 실패, 씬 입장 오류", L"error", MB_OK);
-		return;
-	}
 
 	m_CurScene = next;
 }
@@ -151,10 +135,10 @@ void CSceneMgr::Save_LoadPanel()
 	{
 		const wstring folder = GUISystem::GetInstance()->Open_FolderDialogue();
 		if (!folder.empty()) {
-			const std::string sceneName = m_CurScene->Get_Name();
+			const string sceneName = m_CurScene->Get_Name();
 			if (!sceneName.empty()) {
 				std::wstring savePath = folder + L"/" + CFunction::toWString(sceneName) + L".json";
-				Save_SceneToJson(savePath);
+				SerializeScene(savePath);
 			}
 			else {
 				MessageBoxW(nullptr, L"씬 이름이 비어 있습니다", L"에러", MB_OK);
@@ -165,19 +149,17 @@ void CSceneMgr::Save_LoadPanel()
 	ImGui::SameLine();
 	if (ImGui::Button("Open File")) {
 		const wstring file = GUISystem::GetInstance()->Open_FileDialogue();
-		Load_JsonToCScene(file);
+		DeSerializeScene(file);
 	}
 
 	ImGui::End();
 }
 
-
-void CSceneMgr::Save_SceneToJson(const std::wstring& path)
+void CSceneMgr::SerializeScene(const wstring& path)
 {
-	json jScene;
-
-	for (int i = 0; i < (int)LAYER_ID::L_END; ++i)
+	if (!m_CurScene)
 	{
+<<<<<<< Updated upstream
 		if (static_cast<LAYER_ID>(i) != LAYER_ID::L_OBJECT) continue;
 		for (auto& obj : m_CurScene->Get_Layer(static_cast<LAYER_ID>(i))->Get_Object())
 		{
@@ -254,11 +236,20 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 			// === 최종 오브젝트 push
 			jScene["objects"].push_back(jObj);
 		}
+=======
+		MessageBoxW(nullptr, L"저장할 씬이 존재하지 않습니다", L"Error", MB_OK);
+		return;
+>>>>>>> Stashed changes
 	}
 
-	//  여기서 한 번만 저장
-	std::string jsonText = jScene.dump(4); // UTF-8 문자열
+	// 1. 씬 직렬화
+	json jScene;
+	m_CurScene->Serialize(jScene);
 
+	// 2. JSON 문자열로 변환 (들여쓰기 4칸)
+	string jsonText = jScene.dump(4); // UTF-8 문자열
+
+	// 3. 파일로 저장
 	HANDLE hFile = ::CreateFileW(
 		path.c_str(),
 		GENERIC_WRITE,
@@ -280,10 +271,10 @@ void CSceneMgr::Save_SceneToJson(const std::wstring& path)
 	}
 }
 
-void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
+void CSceneMgr::DeSerializeScene(const wstring& path)
 {
 	HANDLE hFile = ::CreateFileW(
-		path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, 
+		path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL,
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile == INVALID_HANDLE_VALUE) {
@@ -298,7 +289,9 @@ void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
 	CloseHandle(hFile);
 
 	json jScene = json::parse(jsonText);
+	std::string sceneName = jScene.value("scene_name", "");
 
+<<<<<<< Updated upstream
 	for (const auto& jObj : jScene["objects"])
 	{
 		if (!jObj.contains("class") || !jObj.contains("name") || !jObj.contains("Layer"))
@@ -402,6 +395,17 @@ void CSceneMgr::Load_JsonToCScene(const std::wstring& path)
 		// 레이어 추가
 		LAYER_ID layerID = m_CurScene->String_ToLayer(layerName);
 		(m_CurScene->Get_Layer(layerID))->Add_Object(pObj);
+=======
+	if (!sceneName.empty()) {
+		CScene* pScene = CScene::Create();
+		pScene->Set_Name(sceneName);
+		pScene->Deserialize(jScene);
+		Add_Scene(sceneName, pScene);
+		Change_Scene(sceneName); // 바로 전환까지
+	}
+	else {
+		MessageBoxW(nullptr, L"scene_name이 없습니다", L"Error", MB_OK);
+>>>>>>> Stashed changes
 	}
 }
 

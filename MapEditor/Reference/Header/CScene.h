@@ -15,35 +15,36 @@ protected:
     virtual ~CScene();
 
 public:
-    virtual HRESULT Ready_Scene() PURE;
+    static CScene* Create();
+    HRESULT Ready_Scene();
 
 public:
-    virtual void Update_Scene(_float& dt) PURE;
-    virtual void LateUpdate_Scene(_float& dt) PURE;
-public:
-    virtual HRESULT Enter_Scene()PURE;
-    virtual HRESULT Exit_Scene()PURE;
+    void Update_Scene(_float& dt) ;
+    void LateUpdate_Scene(_float& dt) ;
+    void Render_Panel() ;
 
 public:
     const string& Get_Name() { return m_Name; }
     void Set_Name(const string& name) { m_Name = name; };
-
-    CLayer* Get_Layer(LAYER_ID id);
-    const char* Layer_ToString(LAYER_ID id);
-    LAYER_ID String_ToLayer(const string& name);
+    CLayer* Get_Layer(string id);
+    const vector<string>& Get_LayerNames() const { return m_LayerNames; }
+    void Serialize(json& jScene) const;
+    void Deserialize(const json& jScene);
 
 protected:
     void Init_Layer();
-    void Swap_Layer(const string& from, const string& to);
-    void Free_Layer(LAYER_ID layer);
+    void Add_Layer(const string& layerName);
+    void Free_Layer(string layer);
     void Free_AllLayer();
-    HRESULT Add_Object(LAYER_ID layer,CGameObject* object);
+    HRESULT Add_Object(string layer,CGameObject* object);
+
 protected:
     string m_Name;
-    unordered_map<LAYER_ID, CLayer*> m_mapLayer;
+    unordered_map<string, CLayer*> m_mapLayer;
+    vector<string> m_LayerNames;
 
 private:
-    virtual void Free() PURE;
+    virtual void Free();
 
 };
 

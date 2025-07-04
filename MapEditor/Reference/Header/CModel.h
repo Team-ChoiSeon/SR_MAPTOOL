@@ -19,16 +19,17 @@ public:
     virtual void Update_Component(_float& dt);
     virtual void LateUpdate_Component(_float& dt);
     void Render(LPDIRECT3DDEVICE9 pDevice);
+    RENDER_PASS Get_RenderPass();
     CComponent* Clone() const override;
 
 public:
-    HRESULT Set_Model(const string& meshType);
     HRESULT Set_Model(const string& meshType, const string& matType );
-    HRESULT Change_Model(const string& meshType, const string& matType);
+    void Render_Panel(ImVec2 size) override;
+    void Serialize(json& outJson) const override;
+    void Deserialize(const json& inJson) override;
 
     CMesh* Get_Mesh();
     CMaterial* Get_Material();
-
 
 private:
     CMesh* m_pMesh;
@@ -36,6 +37,8 @@ private:
 
 private:
     void Free() override;
+
+   
 };
 
 END

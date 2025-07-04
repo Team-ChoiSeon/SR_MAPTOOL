@@ -26,10 +26,7 @@ HRESULT GUISystem::Ready_GUI(HWND hwnd)
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.DisplaySize = ImVec2(static_cast<float>(WINCX), static_cast<float>(WINCY));
-    /*HDC screen = GetDC(nullptr);
-    float dpi = GetDeviceCaps(screen, LOGPIXELSX);
-    ReleaseDC(nullptr, screen);
-    */
+
     ImFont* bigFont = io.Fonts->AddFontFromFileTTF("../../font/NanumSquareNeo-cBd.ttf", 24.0f, nullptr, io.Fonts->GetGlyphRangesKorean()); // 큰 폰트
     ImFont* regular = io.Fonts->AddFontFromFileTTF("../../font/NanumSquareNeo-bRg.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean()); //
     io.FontDefault = regular; 
@@ -97,10 +94,6 @@ ImFont* GUISystem::Get_Font(const string& tag)
     return nullptr;
 }
 
-bool GUISystem::Set_Input(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    return ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
-}
 
 void GUISystem::RegisterPanel(const string& name, function<void()> callback)
 {
@@ -117,7 +110,7 @@ void GUISystem::RemovePanel(const string& name)
 
 const wstring& GUISystem::Open_FileDialogue()
 {
-    static std::wstring filePath = L""; // static 유지
+    static wstring filePath = L""; // static 유지
     nfdchar_t* outPath = nullptr;
     nfdresult_t result = NFD_OpenDialog("", nullptr, &outPath);
 
@@ -146,7 +139,7 @@ const wstring& GUISystem::Open_FileDialogue()
     return filePath;
 }
 
-const std::wstring& GUISystem::Open_FolderDialogue()
+const wstring& GUISystem::Open_FolderDialogue()
 {
     static std::wstring folderPath = L""; // static 유지
 
@@ -172,6 +165,36 @@ const std::wstring& GUISystem::Open_FolderDialogue()
     }
 
     return folderPath;
+}
+
+const std::wstring& GUISystem::Open_SaveFileDialog()
+{
+    static std::wstring savePath = L"";
+
+    nfdchar_t* outPath = nullptr;
+    nfdresult_t result = NFD_SaveDialog(nullptr, nullptr, &outPath);
+
+    if (result == NFD_OKAY)
+    {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        savePath = converter.from_bytes(outPath);
+        free(outPath);
+    }
+    else
+    {
+        savePath = L"";
+        if (result == NFD_CANCEL)
+            printf("User cancelled save dialog.\n");
+        else
+            printf("Error: %s\n", NFD_GetError());
+    }
+
+    return savePath;
+}
+
+bool GUISystem::Set_Input(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    return ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
 }
 
 

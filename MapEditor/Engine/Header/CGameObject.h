@@ -10,30 +10,31 @@ class ENGINE_DLL CGameObject :
 protected:
 	explicit CGameObject();
 	virtual ~CGameObject() override;
+
 public:
 	CGameObject(const CGameObject&) = delete;
 	CGameObject& operator=(const CGameObject&) = delete;
 
 public:
-	virtual HRESULT Ready_GameObject() PURE;
-	virtual void Update_GameObject(_float& dt) PURE;
-	virtual void LateUpdate_GameObject(_float& dt) PURE;
-	const string& Get_Name() { return ObjectName; }
+	static CGameObject* Create(json jObj);
+	HRESULT Ready_GameObject(json jObj);
+	void Update_GameObject(_float& dt);
+	void LateUpdate_GameObject(_float& dt);
+	void Render_Panel();
+public:
+	void Serialize(json& outJson) const;
+	void Deserialize(const json& inJson);
+
+	const string& Get_Name() { return ClassName; }
+	void Set_Name(const string& name) { InstanceName = name; }
 	string Get_InstanceName();
-
-	LAYER_ID Get_LayerID() { return m_Layer; }
-
-	void Set_Name(const string& name) { ObjectName = name; }
-	void Set_LayerID(LAYER_ID layer) { m_Layer = layer; }
-
-protected:
-	void Update_Component(_float& dt);
-	void LateUpdate_Component(_float& dt);
-	void Release_Component();
 
 public:
 	template<typename T, typename ...Args>
 	T* Add_Component(Args&& ...args);
+
+	template<typename T>
+	void TryLoadComponent(CGameObject* obj, const json& jComponents, const char* compName);
 
 	template<typename T>
 	T* Get_Component();
@@ -43,11 +44,14 @@ public:
 
 protected:
 	int ObjCount;
-	string ObjectName;
-	LAYER_ID m_Layer;
+	string ClassName;
+	string InstanceName;
+	string LayerName;
+	ImVec2 size{ 300, 400 };
 	unordered_map<type_index, CComponent*> m_ComponentMap;
+
 private:
-	virtual void Free() = 0;
+	virtual void Free();
 };
 
 template<typename T, typename ...Args>
@@ -61,6 +65,15 @@ inline T* CGameObject::Add_Component(Args && ...args)
 	m_ComponentMap.insert({ type_index(typeid(T)),comPtr });
 
 	return comPtr;
+}
+
+template<typename T>
+inline void CGameObject::TryLoadComponent(CGameObject* obj, const json& jComponents, const char* compName)
+{
+	if (jComponents.contains(compName)) {
+		T* comp = obj->Add_Component<T>();
+		comp->Deserialize(jComponents[compName]);//추후 추가
+	}
 }
 
 template<typename T>
@@ -88,6 +101,5 @@ inline void CGameObject::Remove_Component()
 	m_ComponentMap.erase(iter);
 	Safe_Release(target);
 }
-
 
 END

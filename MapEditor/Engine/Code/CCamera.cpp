@@ -2,6 +2,7 @@
 #include "CCamera.h"
 #include "CGameObject.h"
 #include "CTransform.h"
+#include "CCameraMgr.h"
 
 CCamera::CCamera()
 	:m_pTransform(nullptr),m_fPitch(0),m_fYaw(90),m_fRoll(0)
@@ -129,3 +130,74 @@ void CCamera::Free()
 	Safe_Release(m_pTransform);
 }
 
+void CCamera::Render_Panel(ImVec2 size)
+{
+	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::BeginChild("##CameraChild", size, true);
+
+		ImGui::Checkbox("Active##Camera", &m_bActive);
+
+		bool isMain = (CCameraMgr::GetInstance()->Get_MainCamera() == this);
+		if (ImGui::Selectable("Set as Main Camera##CameraToggle", isMain)) {
+			if (!isMain)
+				CCameraMgr::GetInstance()->Set_MainCamera(this);
+		}
+
+		ImGui::Separator();
+
+		ImGui::Text("View Angles");
+		ImGui::SliderFloat("Yaw", &m_fYaw, -180.0f, 180.0f);
+		ImGui::SliderFloat("Pitch", &m_fPitch, -89.0f, 89.0f);
+		ImGui::SliderFloat("Roll", &m_fRoll, -180.0f, 180.0f);
+
+		ImGui::Separator();
+		ImGui::Text("Projection");
+		ImGui::SliderFloat("FOV", &m_fFOV, 10.0f, 120.0f);
+		ImGui::SliderFloat("Near", &m_fNear, 0.01f, 10.0f);
+		ImGui::SliderFloat("Far", &m_fFar, 10.0f, 1000.0f);
+
+		ImGui::EndChild();
+	}
+}
+
+void CCamera::Serialize(json& outJson) const
+{
+	outJson["yaw"] = m_fYaw;
+	outJson["pitch"] = m_fPitch;
+	outJson["roll"] = m_fRoll;
+
+	outJson["fov"] = m_fFOV;
+	outJson["near"] = m_fNear;
+	outJson["far"] = m_fFar;
+
+	outJson["eye"] = { m_vEye.x, m_vEye.y, m_vEye.z };
+	outJson["look"] = { m_vLookDir.x, m_vLookDir.y, m_vLookDir.z };
+	outJson["up"] = { m_vUp.x, m_vUp.y, m_vUp.z };
+}
+
+void CCamera::Deserialize(const json& inJson)
+{
+	if (inJson.contains("yaw"))   m_fYaw = inJson["yaw"];
+	if (inJson.contains("pitch")) m_fPitch = inJson["pitch"];
+	if (inJson.contains("roll"))  m_fRoll = inJson["roll"];
+
+	if (inJson.contains("fov"))   m_fFOV = inJson["fov"];
+	if (inJson.contains("near"))  m_fNear = inJson["near"];
+	if (inJson.contains("far"))   m_fFar = inJson["far"];
+
+	if (inJson.contains("eye")) {
+		const auto& e = inJson["eye"];
+		m_vEye = { e[0], e[1], e[2] };
+	}
+
+	if (inJson.contains("look")) {
+		const auto& l = inJson["look"];
+		m_vLookDir = { l[0], l[1], l[2] };
+	}
+
+	if (inJson.contains("up")) {
+		const auto& u = inJson["up"];
+		m_vUp = { u[0], u[1], u[2] };
+	}
+}

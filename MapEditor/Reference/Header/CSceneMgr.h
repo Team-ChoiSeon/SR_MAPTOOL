@@ -17,25 +17,28 @@ public:
     HRESULT Ready_SceneMgr();
     void Update_Scene(_float& dt);
     void LateUpdate_Scene(_float& dt);
+    void Render_Scene();
 
 public:
     CScene* Get_NowScene() { return m_CurScene; };
     void Add_Scene(string sceneTag, CScene* scene);
     void Change_Scene(string sceneTag);
     const unordered_map<string, CScene*>& Get_SceneArr()const { return m_SceneContainer; }
+    const vector<string>& SceneName() { return m_SceneList; };
 
 private:
     void Render_SceneSelector();
     void Save_LoadPanel();
-    void Save_SceneToJson(const std::wstring& path);
-    void Load_JsonToCScene(const std::wstring& path);
+
+public: 
+    void SerializeScene(const wstring& path);
+    void DeSerializeScene(const wstring& path);
 
 private:
-    int m_SceneIndex;
-    CScene* m_CurScene;
     unordered_map<string, CScene*> m_SceneContainer;
-    vector<string> m_SceneList;
-    string g_lastPath = "."; // 초기 경로
+    vector<string> m_SceneList;                      
+    int m_SceneIndex = 0;
+    CScene* m_CurScene;
 
 private:
     void Free();

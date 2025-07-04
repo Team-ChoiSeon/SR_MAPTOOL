@@ -153,10 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Header\CCameraActor.h" />
     <ClInclude Include="..\Header\CEnviromentScene.h" />
     <ClInclude Include="..\Header\CMainApp.h" />
-    <ClInclude Include="..\Header\CTestCube.h" />
     <ClInclude Include="..\Header\CTestScene.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
@@ -165,10 +163,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Code\CCameraActor.cpp" />
     <ClCompile Include="..\Code\CEnviromentScene.cpp" />
     <ClCompile Include="..\Code\CMainApp.cpp" />
-    <ClCompile Include="..\Code\CTestCube.cpp" />
     <ClCompile Include="..\Code\CTestScene.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="pch.cpp">
