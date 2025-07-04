@@ -22,10 +22,6 @@ CModel* CModel::Create()
 		instance = nullptr;
 	}
 
-<<<<<<< Updated upstream
-	//instance->Set_Model(meshType);
-=======
->>>>>>> Stashed changes
 	return instance;
 }
 
@@ -55,44 +51,17 @@ CComponent* CModel::Clone() const
 
 RENDER_PASS CModel::Get_RenderPass()
 {
-<<<<<<< Updated upstream
-	//string meshKey = meshType + ".obj";
-	//string matKey = meshType + ".mtl";
-	//m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshKey);
-	//if (m_pMesh)
-	//	m_pMesh->AddRef();
-	//m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matKey);
-	//if (m_pMaterial)
-	//	m_pMaterial->AddRef();
-	return S_OK;
-=======
 	return RENDER_PASS();
->>>>>>> Stashed changes
 }
 HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 {
-<<<<<<< Updated upstream
-	//  이전 리소스 해제
-	if (m_pMesh || m_pMaterial) return S_OK;
-	//Safe_Release(m_pMaterial);
 
-	// 새 리소스 할당 및 AddRef
-	m_pMesh = CResourceMgr::GetInstance()->GetMesh(meshType);
-	if (m_pMesh)
-		m_pMesh->AddRef();
-
-	m_pMaterial = CResourceMgr::GetInstance()->GetMaterial(matType);
-	if (m_pMaterial)
-		m_pMaterial->AddRef();
-
-=======
 	if (!meshType.empty())
 		Safe_Change(m_pMesh, CResourceMgr::GetInstance()->GetMesh(meshType));
 
 	if (!matType.empty())
 		Safe_Change(m_pMaterial, CResourceMgr::GetInstance()->GetMaterial(matType));
 
->>>>>>> Stashed changes
 	return S_OK;
 }
 

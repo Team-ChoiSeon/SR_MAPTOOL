@@ -159,87 +159,8 @@ void CSceneMgr::SerializeScene(const wstring& path)
 {
 	if (!m_CurScene)
 	{
-<<<<<<< Updated upstream
-		if (static_cast<LAYER_ID>(i) != LAYER_ID::L_OBJECT) continue;
-		for (auto& obj : m_CurScene->Get_Layer(static_cast<LAYER_ID>(i))->Get_Object())
-		{
-			json jObj;
-
-			jObj["Layer"] = m_CurScene->Layer_ToString(static_cast<LAYER_ID>(i));
-			jObj["class"] = obj->Get_Name();
-			jObj["name"] = obj->Get_InstanceName();
-
-			// === Transform
-			if (auto transform = obj->Get_Component<CTransform>())
-			{
-				auto pos = transform->Get_Pos();
-				auto rot = transform->Get_Rotate();
-				auto scale = transform->Get_Scale();
-				auto pivot = transform->Get_Pivot();
-				auto orbit = transform->Get_Orbit();
-				auto parent = transform->Get_Parent();
-
-				jObj["position"] = { pos.x, pos.y, pos.z };
-				jObj["rotation"] = { rot.x, rot.y, rot.z };
-				jObj["scale"] = { scale.x, scale.y, scale.z };
-				jObj["pivot"] = { pivot.x, pivot.y, pivot.z };
-				jObj["orbit"] = { orbit.x, orbit.y, orbit.z };
-				jObj["parent_obj"] = parent ? parent->Get_Name() : "";
-			}
-
-			// === Model
-			if (auto model = obj->Get_Component<CModel>())
-			{
-				jObj["model"] = "able";
-
-				if (auto mesh = model->Get_Mesh())
-				{
-					jObj["mesh"] = mesh->Get_Key();
-
-					const auto& max = mesh->Get_AABBBOX().vMax;
-					const auto& min = mesh->Get_AABBBOX().vMin;
-
-					jObj["AABB"]["max"] = { max.x, max.y, max.z };
-					jObj["AABB"]["min"] = { min.x, min.y, min.z };
-				}
-
-				if (auto mat = model->Get_Material())
-				{
-					jObj["matKey"] = mat->Get_Key();
-					jObj["material"]["diffuse"] = mat->Get_Diffuse() ? mat->Get_Diffuse()->GetKey() : "";
-					jObj["material"]["normal"] = mat->Get_Normal() ? mat->Get_Normal()->GetKey() : "";
-					jObj["material"]["roughness"] = mat->Get_Roughness() ? mat->Get_Roughness()->GetKey() : "";
-					jObj["material"]["specular"] = mat->Get_Specular() ? mat->Get_Specular()->GetKey() : "";
-					jObj["material"]["emissive"] = mat->Get_Emissive() ? mat->Get_Emissive()->GetKey() : "";
-				}
-			}
-
-			// === Camera
-			if (auto cam = obj->Get_Component<CCamera>())
-			{
-				json jCam;
-
-				jCam["fov"] = cam->Get_FOV();
-				jCam["near"] = cam->Get_Near();
-				jCam["far"] = cam->Get_Far();
-				jCam["pitch"] = cam->Get_Pitch();
-				jCam["yaw"] = cam->Get_Yaw();
-				jCam["roll"] = cam->Get_Roll();
-
-				jCam["eye"] = { cam->Get_Eye().x, cam->Get_Eye().y, cam->Get_Eye().z };
-				jCam["lookDir"] = { cam->Get_Dir().x, cam->Get_Dir().y, cam->Get_Dir().z };
-				jCam["up"] = { cam->Get_Up().x, cam->Get_Up().y, cam->Get_Up().z };
-
-				jObj["camera"] = jCam;
-			}
-
-			// === 최종 오브젝트 push
-			jScene["objects"].push_back(jObj);
-		}
-=======
 		MessageBoxW(nullptr, L"저장할 씬이 존재하지 않습니다", L"Error", MB_OK);
 		return;
->>>>>>> Stashed changes
 	}
 
 	// 1. 씬 직렬화
@@ -291,111 +212,6 @@ void CSceneMgr::DeSerializeScene(const wstring& path)
 	json jScene = json::parse(jsonText);
 	std::string sceneName = jScene.value("scene_name", "");
 
-<<<<<<< Updated upstream
-	for (const auto& jObj : jScene["objects"])
-	{
-		if (!jObj.contains("class") || !jObj.contains("name") || !jObj.contains("Layer"))
-			continue;
-
-		string className = jObj["class"];
-		string instanceName = jObj["name"];
-		string layerName = jObj["Layer"];
-
-		CGameObject* pObj = CFactoryMgr::Create(className);
-		if (!pObj)
-			continue;
-
-		// Transform
-		if (auto transform = pObj->Get_Component<CTransform>()) {
-			if (jObj.contains("position") && jObj["position"].is_array() && jObj["position"].size() >= 3)
-				transform->Set_Pos({ jObj["position"][0], jObj["position"][1], jObj["position"][2] });
-
-			if (jObj.contains("rotation") && jObj["rotation"].is_array() && jObj["rotation"].size() >= 3)
-				transform->Set_Rotate({ jObj["rotation"][0], jObj["rotation"][1], jObj["rotation"][2] });
-
-			if (jObj.contains("scale") && jObj["scale"].is_array() && jObj["scale"].size() >= 3)
-				transform->Set_Scale({ jObj["scale"][0], jObj["scale"][1], jObj["scale"][2] });
-
-			if (jObj.contains("pivot") && jObj["pivot"].is_array() && jObj["pivot"].size() >= 3)
-				transform->Set_Pivot({ jObj["pivot"][0], jObj["pivot"][1], jObj["pivot"][2] });
-
-			if (jObj.contains("orbit") && jObj["orbit"].is_array() && jObj["orbit"].size() >= 3)
-				transform->Set_Orbit({ jObj["orbit"][0], jObj["orbit"][1], jObj["orbit"][2] });
-		}
-
-		// Model
-		if (jObj.contains("model") ) {
-			if (auto model = pObj->Get_Component<CModel>()) {
-				if (jObj.contains("mesh") && jObj.contains("matKey")) {
-					string meshKey = jObj["mesh"];
-					string materialKey = jObj["matKey"];
-
-					if (!meshKey.empty() && !materialKey.empty())
-						model->Set_Model(meshKey, materialKey);
-				}
-
-				if (jObj.contains("material")) {
-					auto& jMat = jObj["material"];
-					if (auto mat = model->Get_Material()) {
-						if (jMat.contains("diffuse")) {
-							std::string path = jMat["diffuse"];
-							if (!path.empty())
-								mat->Set_Diffuse(CResourceMgr::GetInstance()->LoadTexture(path));
-						}
-
-						if (jMat.contains("normal")) {
-							std::string path = jMat["normal"];
-							if (!path.empty())
-								mat->Set_Normal(CResourceMgr::GetInstance()->LoadTexture(path));
-						}
-
-						if (jMat.contains("roughness")) {
-							std::string path = jMat["roughness"];
-							if (!path.empty())
-								mat->Set_Roughness(CResourceMgr::GetInstance()->LoadTexture(path));
-						}
-
-						if (jMat.contains("specular")) {
-							std::string path = jMat["specular"];
-							if (!path.empty())
-								mat->Set_Specular(CResourceMgr::GetInstance()->LoadTexture(path));
-						}
-
-						if (jMat.contains("emissive")) {
-							std::string path = jMat["emissive"];
-							if (!path.empty())
-								mat->Set_Emissive(CResourceMgr::GetInstance()->LoadTexture(path));
-						}
-					}
-				}
-
-			}
-		}
-
-		// Camera
-		if (jObj.contains("camera")) {
-			auto& jCam = jObj["camera"];
-			if (auto cam = pObj->Get_Component<CCamera>()) {
-				if (jCam.contains("eye") && jCam.contains("up") && jCam.contains("lookDir")
-					&& jCam["eye"].size() >= 3 && jCam["up"].size() >= 3 && jCam["lookDir"].size() >= 3) {
-					cam->Set_View(
-						{ jCam["eye"][0], jCam["eye"][1], jCam["eye"][2] },
-						{ jCam["up"][0], jCam["up"][1], jCam["up"][2] },
-						{ jCam["lookDir"][0], jCam["lookDir"][1], jCam["lookDir"][2] });
-				}
-
-				if (jCam.contains("fov") && jCam.contains("near") && jCam.contains("far"))
-					cam->Set_Proj(jCam["fov"], jCam["near"], jCam["far"]);
-
-				if (jCam.contains("yaw") && jCam.contains("pitch") && jCam.contains("roll"))
-					cam->Set_YawPitchRoll({ jCam["yaw"], jCam["pitch"], jCam["roll"] });
-			}
-		}
-
-		// 레이어 추가
-		LAYER_ID layerID = m_CurScene->String_ToLayer(layerName);
-		(m_CurScene->Get_Layer(layerID))->Add_Object(pObj);
-=======
 	if (!sceneName.empty()) {
 		CScene* pScene = CScene::Create();
 		pScene->Set_Name(sceneName);
@@ -405,7 +221,6 @@ void CSceneMgr::DeSerializeScene(const wstring& path)
 	}
 	else {
 		MessageBoxW(nullptr, L"scene_name이 없습니다", L"Error", MB_OK);
->>>>>>> Stashed changes
 	}
 }
 

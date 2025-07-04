@@ -1,112 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="00. GraphicDev">
-      <UniqueIdentifier>{2e832055-ceea-49fe-9ad3-3283de0bcd4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Header">
-      <UniqueIdentifier>{4b0ee9ab-ab85-42d5-9736-8cb467145373}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers">
-      <UniqueIdentifier>{8d073477-080f-480c-ae83-ad2686e3480b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\01. TimeMgr">
-      <UniqueIdentifier>{4382b424-6721-413a-ba31-f332488bf3d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\01. TimeMgr\Timer">
-      <UniqueIdentifier>{09df53b2-647c-49f3-8b45-5fb6d2917cf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\02. FrameMgr">
-      <UniqueIdentifier>{96d94f9c-e206-4467-bddd-26e2bc68639e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\02. FrameMgr\Frame">
-      <UniqueIdentifier>{8b40c209-f9fd-426b-9912-fc1a6073a37d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\03. InputMgr">
-      <UniqueIdentifier>{063ce3c7-c16c-400f-a6b1-406c24dfa47d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\04. RenderMgr">
-      <UniqueIdentifier>{bbe0e487-5a2e-4b26-9815-295c7a40b246}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject">
-      <UniqueIdentifier>{fe08eba6-6bbc-4d86-9dde-a283a7234263}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component">
-      <UniqueIdentifier>{c535af65-779a-480d-9d7e-a8e405b7aeb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\05. GUISystem">
-      <UniqueIdentifier>{1e5d17db-5a5a-4376-a28e-cdb6bb577823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\05. GUISystem\imgui">
-      <UniqueIdentifier>{313cfd08-e31d-40e3-966e-86ad417245de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\06. SceneMgr">
-      <UniqueIdentifier>{34b81c0f-c568-4aac-b2a4-4f466b0c0d37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\06. SceneMgr\Scene">
-      <UniqueIdentifier>{7393b52f-1e09-4804-8cef-0a31a28c92f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component\00. Transform">
-      <UniqueIdentifier>{c4c324b7-1f08-4abf-8e72-9d1acd99170c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component\01. Model">
-      <UniqueIdentifier>{fc700f6d-5d44-4c37-bfdf-c7f6e21f0631}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component\02. Light">
-      <UniqueIdentifier>{b9ad0a21-61d6-48b6-868c-c71039f8fa6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component\03. Camera">
-      <UniqueIdentifier>{0e4b168e-2b1a-4734-b41e-6a83044201da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Function">
-      <UniqueIdentifier>{1190a7fd-abc9-437f-8d37-2350687959c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\07. ResourceMgr">
-      <UniqueIdentifier>{1fdcf425-e1d4-4226-8d5f-8e372cf7de84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\06. SceneMgr\Layer">
-      <UniqueIdentifier>{37ece630-2aa0-438f-9549-d59606e4d8ef}</UniqueIdentifier>
-    </Filter>
-<<<<<<< Updated upstream
-    <Filter Include="03. Component\04. Renderer">
-      <UniqueIdentifier>{0a5d7260-83e4-43f0-9cfe-d8a9859f6d44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Component\04. Renderer\MeshRenderer">
-      <UniqueIdentifier>{1f2db26b-8b8d-460a-8d52-b14386fe02dc}</UniqueIdentifier>
-=======
-    <Filter Include="01. Managers\08. CameraMgr">
-      <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
->>>>>>> Stashed changes
-    </Filter>
-    <Filter Include="01. Managers\09. PickingMgr">
-      <UniqueIdentifier>{bc221724-7d03-4389-a905-abf21b33616a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource">
-      <UniqueIdentifier>{f786a980-a3eb-4d27-a8eb-4b51830c83b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource\Material">
-      <UniqueIdentifier>{6e80ed32-555c-440a-952f-3f4c3f5d3da7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource\Texture">
-      <UniqueIdentifier>{1f312a3d-cae9-47e9-89a5-bcaacac6f623}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Resource\Mesh">
-      <UniqueIdentifier>{771f4f35-703f-4b33-b4b0-c83deedecc5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\07. ResourceMgr\Json">
-      <UniqueIdentifier>{303bfd44-0c57-4bd8-abe4-8ae7a842ba96}</UniqueIdentifier>
-    </Filter>
-<<<<<<< Updated upstream
-    <Filter Include="01. Managers\10. FactoryMgr">
-      <UniqueIdentifier>{5107cda4-61ae-4c5d-9132-f8779af864fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Managers\08. CameraMgr">
-      <UniqueIdentifier>{e59288e5-6135-403e-adc9-5d214a531e28}</UniqueIdentifier>
-    </Filter>
-=======
->>>>>>> Stashed changes
+    <ClCompile Include="..\Code\CCamera.cpp">
+      <Filter>03. Component\00. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CGraphicDev.cpp">
+      <Filter>00. GraphicDev</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCameraMgr.cpp">
+      <Filter>01. Manager\02. CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CComponent.cpp">
+      <Filter>03. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CFrame.cpp">
+      <Filter>01. Manager\01. FrameMgr\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CFrameMgr.cpp">
+      <Filter>01. Manager\01. FrameMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CGameObject.cpp">
+      <Filter>02. GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CInputMgr.cpp">
+      <Filter>01. Manager\03. InputMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CFunction.cpp">
+      <Filter>97. Function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CLayer.cpp">
+      <Filter>05. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CModel.cpp">
+      <Filter>03. Component\02. Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CPickingMgr.cpp">
+      <Filter>01. Manager\05. PickingMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CRenderMgr.cpp">
+      <Filter>01. Manager\06. RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CResourceMgr.cpp">
+      <Filter>01. Manager\07. ResourceMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CScene.cpp">
+      <Filter>04. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CSceneMgr.cpp">
+      <Filter>01. Manager\04. SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTimeMgr.cpp">
+      <Filter>01. Manager\00. TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTimer.cpp">
+      <Filter>01. Manager\00. TimeMgr\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTransform.cpp">
+      <Filter>03. Component\01. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\GUISystem.cpp">
+      <Filter>01. Manager\08. GUISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\backends\imgui_impl_dx9.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_tables.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\imgui_widgets.cpp">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\nfd_common.c">
+      <Filter>98. ThirdParty\NFD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui\nfd_win.cpp">
+      <Filter>98. ThirdParty\NFD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMaterial.cpp">
+      <Filter>06. Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CMesh.cpp">
+      <Filter>06. Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CTexture.cpp">
+      <Filter>06. Resource\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header\CCamera.h">
+      <Filter>03. Component\00. Camera</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\CGraphicDev.h">
       <Filter>00. GraphicDev</Filter>
     </ClInclude>
@@ -119,6 +111,9 @@
     <ClInclude Include="..\Header\Engine_Function.h">
       <Filter>99. Header</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Engine_GUI.h">
+      <Filter>99. Header</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Engine_Macro.h">
       <Filter>99. Header</Filter>
     </ClInclude>
@@ -128,190 +123,181 @@
     <ClInclude Include="..\Header\Engine_Typedef.h">
       <Filter>99. Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CTimeMgr.h">
-      <Filter>01. Managers\01. TimeMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CFrameMgr.h">
-      <Filter>01. Managers\02. FrameMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CTimer.h">
-      <Filter>01. Managers\01. TimeMgr\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CFrame.h">
-      <Filter>01. Managers\02. FrameMgr\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CRenderMgr.h">
-      <Filter>01. Managers\04. RenderMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CInputMgr.h">
-      <Filter>01. Managers\03. InputMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CGameObject.h">
-      <Filter>02. GameObject</Filter>
+    <ClInclude Include="..\Header\CCameraMgr.h">
+      <Filter>01. Manager\02. CameraMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CComponent.h">
       <Filter>03. Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_dx9.h">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    <ClInclude Include="..\Header\CFrame.h">
+      <Filter>01. Manager\01. FrameMgr\Frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\imgui.h">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    <ClInclude Include="..\Header\CFrameMgr.h">
+      <Filter>01. Manager\01. FrameMgr</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\GUISystem.h">
-      <Filter>01. Managers\05. GUISystem</Filter>
+    <ClInclude Include="..\Header\CGameObject.h">
+      <Filter>02. GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CSceneMgr.h">
-      <Filter>01. Managers\06. SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CScene.h">
-      <Filter>01. Managers\06. SceneMgr\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\Engine_GUI.h">
-      <Filter>99. Header</Filter>
+    <ClInclude Include="..\Header\CInputMgr.h">
+      <Filter>01. Manager\03. InputMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CFunction.h">
-      <Filter>98. Function</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CTransform.h">
-      <Filter>03. Component\00. Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CModel.h">
-      <Filter>03. Component\01. Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CResourceMgr.h">
-      <Filter>01. Managers\07. ResourceMgr</Filter>
+      <Filter>97. Function</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CLayer.h">
-      <Filter>01. Managers\06. SceneMgr\Layer</Filter>
+      <Filter>05. Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CCamera.h">
-      <Filter>03. Component\03. Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CCameraMgr.h">
-      <Filter>01. Managers\08. CameraMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CPickingMgr.h">
-      <Filter>01. Managers\09. PickingMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CMesh.h">
-      <Filter>04. Resource\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CMaterial.h">
-      <Filter>04. Resource\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CTexture.h">
-      <Filter>04. Resource\Texture</Filter>
+    <ClInclude Include="..\Header\CModel.h">
+      <Filter>03. Component\02. Model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\common.h">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+      <Filter>98. ThirdParty\NFD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\nfd_common.h">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    <ClInclude Include="..\Header\CPickingMgr.h">
+      <Filter>01. Manager\05. PickingMgr</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\imgui\nfd.h">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
+    <ClInclude Include="..\Header\CRenderMgr.h">
+      <Filter>01. Manager\06. RenderMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CResourceMgr.h">
+      <Filter>01. Manager\07. ResourceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CScene.h">
+      <Filter>04. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CSceneMgr.h">
+      <Filter>01. Manager\04. SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTimeMgr.h">
+      <Filter>01. Manager\00. TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTimer.h">
+      <Filter>01. Manager\00. TimeMgr\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTransform.h">
+      <Filter>03. Component\01. Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\GUISystem.h">
+      <Filter>01. Manager\08. GUISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\imgui.h">
+      <Filter>98. ThirdParty\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\backends\imgui_impl_dx9.h">
+      <Filter>98. ThirdParty\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\json.hpp">
-      <Filter>01. Managers\07. ResourceMgr\Json</Filter>
+      <Filter>98. ThirdParty\JSON</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\json_fwd.hpp">
-      <Filter>01. Managers\07. ResourceMgr\Json</Filter>
+      <Filter>98. ThirdParty\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\nfd.h">
+      <Filter>98. ThirdParty\NFD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui\nfd_common.h">
+      <Filter>98. ThirdParty\NFD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMaterial.h">
+      <Filter>06. Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CMesh.h">
+      <Filter>06. Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CTexture.h">
+      <Filter>06. Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Code\CGraphicDev.cpp">
-      <Filter>00. GraphicDev</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTimeMgr.cpp">
-      <Filter>01. Managers\01. TimeMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CFrameMgr.cpp">
-      <Filter>01. Managers\02. FrameMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTimer.cpp">
-      <Filter>01. Managers\01. TimeMgr\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CFrame.cpp">
-      <Filter>01. Managers\02. FrameMgr\Frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CInputMgr.cpp">
-      <Filter>01. Managers\03. InputMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CRenderMgr.cpp">
-      <Filter>01. Managers\04. RenderMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CComponent.cpp">
-      <Filter>03. Component</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_dx9.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_draw.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_tables.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\imgui_widgets.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\GUISystem.cpp">
-      <Filter>01. Managers\05. GUISystem</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CSceneMgr.cpp">
-      <Filter>01. Managers\06. SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CScene.cpp">
-      <Filter>01. Managers\06. SceneMgr\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CFunction.cpp">
-      <Filter>98. Function</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTransform.cpp">
-      <Filter>03. Component\00. Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CModel.cpp">
-      <Filter>03. Component\01. Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CResourceMgr.cpp">
-      <Filter>01. Managers\07. ResourceMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CLayer.cpp">
-      <Filter>01. Managers\06. SceneMgr\Layer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CCamera.cpp">
-      <Filter>03. Component\03. Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CCameraMgr.cpp">
-      <Filter>01. Managers\08. CameraMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CGameObject.cpp">
-      <Filter>02. GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CPickingMgr.cpp">
-      <Filter>01. Managers\09. PickingMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CMesh.cpp">
-      <Filter>04. Resource\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CMaterial.cpp">
-      <Filter>04. Resource\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTexture.cpp">
-      <Filter>04. Resource\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\nfd_common.c">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\imgui\nfd_win.cpp">
-      <Filter>01. Managers\05. GUISystem\imgui</Filter>
-    </ClCompile>
+    <Filter Include="00. GraphicDev">
+      <UniqueIdentifier>{7cb39b1d-5e98-40e7-8000-ce9ca3508964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Header">
+      <UniqueIdentifier>{397d2786-6416-48f8-8880-e41781464f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager">
+      <UniqueIdentifier>{980ea8fb-7987-4d34-a355-effd0ecd9e7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject">
+      <UniqueIdentifier>{449de0a4-e803-4014-9a27-beb6fb698ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component">
+      <UniqueIdentifier>{4f359b2c-10d2-408a-8526-e7eb7664826f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\00. Camera">
+      <UniqueIdentifier>{97da1eea-0927-4965-8e30-2e00fce862de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\01. Transform">
+      <UniqueIdentifier>{232a2ddd-10c6-4f84-9f8b-479e2cfc3a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\01. FrameMgr">
+      <UniqueIdentifier>{856c8475-c657-46fb-b7b9-0652b57d4ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\00. TimeMgr">
+      <UniqueIdentifier>{ef78fe43-b50a-4e8c-b3d1-539d7d782541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\00. TimeMgr\Timer">
+      <UniqueIdentifier>{c4b8d06c-8d83-442f-97b8-6e16762fa984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\02. CameraMgr">
+      <UniqueIdentifier>{498f26a0-9f8a-4a87-8fea-dc0d985e951e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\03. InputMgr">
+      <UniqueIdentifier>{5df57a1c-e380-45f9-abe4-e13647ff18ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\04. SceneMgr">
+      <UniqueIdentifier>{7b6c27b1-f41d-40c6-a0ad-ee8365569cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\01. FrameMgr\Frame">
+      <UniqueIdentifier>{9cf71b45-e7b4-4728-a194-621da1f1a09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Scene">
+      <UniqueIdentifier>{b0209ee6-dbe3-48ff-a01a-4b3f65909765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Layer">
+      <UniqueIdentifier>{f4c70b14-ca1a-465e-b07f-52b3fd18a5d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Resource">
+      <UniqueIdentifier>{193774ee-815e-49a4-b87f-82dd11730a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Function">
+      <UniqueIdentifier>{af6cc97a-652f-4520-941d-b4037656d401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ThirdParty">
+      <UniqueIdentifier>{13b0879c-733c-4288-b4a2-beb9a432162b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\02. Model">
+      <UniqueIdentifier>{3721a6a8-8093-4552-8ead-77c6a41c3a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ThirdParty\NFD">
+      <UniqueIdentifier>{9a55650b-7b4c-41d8-b098-b53234b3379c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\05. PickingMgr">
+      <UniqueIdentifier>{734fa5c0-3f3d-4b45-9652-894aadf37426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\06. RenderMgr">
+      <UniqueIdentifier>{39f80bbf-7427-461e-b65c-6cdf52f3e900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\07. ResourceMgr">
+      <UniqueIdentifier>{ca6b8c77-0400-4d97-a208-4d401910310c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ThirdParty\IMGUI">
+      <UniqueIdentifier>{b8dd1f13-1ccd-4559-9079-88cc19869084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\08. GUISystem">
+      <UniqueIdentifier>{ebb45bdb-6b42-4196-bc19-95202db16457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ThirdParty\JSON">
+      <UniqueIdentifier>{cb6afa17-8bdd-414d-b04a-8559dd68d4b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Resource\Material">
+      <UniqueIdentifier>{076dd176-a601-471b-8b2f-630c18e10de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Resource\Mesh">
+      <UniqueIdentifier>{fdf4f8e0-f5ba-4699-94b1-dcbbf1acabb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Resource\Texture">
+      <UniqueIdentifier>{7d3b7dc9-a067-4320-a986-f61ee959df76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
