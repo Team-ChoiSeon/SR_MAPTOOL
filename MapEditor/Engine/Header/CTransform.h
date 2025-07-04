@@ -20,7 +20,10 @@ public:
     CComponent* Clone() const override;
 
 public:
-  
+    void Render_Panel(ImVec2 size) override;
+    void Serialize(json& outJson) const override;
+    void Deserialize(const json& inJson) override;
+
     void Set_Parent(CTransform* transform);
     void Set_Pos(_vec3 pos);
     void Set_Scale(_vec3 scale);
@@ -64,6 +67,8 @@ private:
     _matrix m_WorldMat;
     _matrix m_WorldPosMat;
     CTransform* m_pParent;
+
+
 };
 
 END

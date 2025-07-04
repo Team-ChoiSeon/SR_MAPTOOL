@@ -163,7 +163,6 @@
     <ClInclude Include="..\Header\CCamera.h" />
     <ClInclude Include="..\Header\CCameraMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
-    <ClInclude Include="..\Header\CFactoryMgr.h" />
     <ClInclude Include="..\Header\CFrame.h" />
     <ClInclude Include="..\Header\CFrameMgr.h" />
     <ClInclude Include="..\Header\CFunction.h" />
@@ -173,10 +172,8 @@
     <ClInclude Include="..\Header\CLayer.h" />
     <ClInclude Include="..\Header\CMaterial.h" />
     <ClInclude Include="..\Header\CMesh.h" />
-    <ClInclude Include="..\Header\CMeshRenderer.h" />
     <ClInclude Include="..\Header\CModel.h" />
     <ClInclude Include="..\Header\CPickingMgr.h" />
-    <ClInclude Include="..\Header\CRenderer.h" />
     <ClInclude Include="..\Header\CRenderMgr.h" />
     <ClInclude Include="..\Header\CResourceMgr.h" />
     <ClInclude Include="..\Header\CScene.h" />
@@ -206,7 +203,6 @@
     <ClCompile Include="..\Code\CCamera.cpp" />
     <ClCompile Include="..\Code\CCameraMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
-    <ClCompile Include="..\Code\CFactoryMgr.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />
@@ -216,10 +212,8 @@
     <ClCompile Include="..\Code\CLayer.cpp" />
     <ClCompile Include="..\Code\CMaterial.cpp" />
     <ClCompile Include="..\Code\CMesh.cpp" />
-    <ClCompile Include="..\Code\CMeshRenderer.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
     <ClCompile Include="..\Code\CPickingMgr.cpp" />
-    <ClCompile Include="..\Code\CRenderer.cpp" />
     <ClCompile Include="..\Code\CRenderMgr.cpp" />
     <ClCompile Include="..\Code\CResourceMgr.cpp" />
     <ClCompile Include="..\Code\CScene.cpp" />

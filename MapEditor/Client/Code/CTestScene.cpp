@@ -4,12 +4,10 @@
 #include "CLayer.h"
 
 #include "CGameObject.h"
-#include "CTestCube.h"
-
 #include "CCamera.h"
 #include "CTransform.h"
-#include "CCameraActor.h"
 #include "CCameraMgr.h"
+
 #include "CPickingMgr.h"
 #include "GUISystem.h"
 #include "CFunction.h"
@@ -39,12 +37,15 @@ CTestScene* CTestScene::Create()
 HRESULT CTestScene::Ready_Scene()
 {
 	Init_Layer();
+<<<<<<< Updated upstream
 	auto pCam = CCameraActor::Create();
 	Add_Object(LAYER_ID::L_CAMERA, pCam);
 	Add_Object(LAYER_ID::L_OBJECT, CTestCube::Create());
 	CCamera* cam = pCam->Get_Component<CCamera>();
 	CCameraMgr::GetInstance()->Set_MainCamera(cam);
 
+=======
+>>>>>>> Stashed changes
 	return S_OK;
 }
 
@@ -55,6 +56,7 @@ void CTestScene::Update_Scene(_float& dt)
 	for (auto& pair : m_mapLayer) {
 		pair.second->Update_Layer(dt);
 	}
+
 	GUISystem::GetInstance()->RegisterPanel("Object_Create", [this]() {Create_Object();});
 
 	pTarget = CPickingMgr::GetInstance()->Get_PickedObj();

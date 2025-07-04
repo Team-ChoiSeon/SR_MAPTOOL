@@ -136,7 +136,7 @@ void CPickingMgr::Start_RayCasting()
 	int max = static_cast<int>(LAYER_ID::L_END);
 	for (int i = 0; i < max; ++i) {
 		LAYER_ID id = static_cast<LAYER_ID>(i);
-		CLayer* tmpLayer = nowScene->Get_Layer(id);
+		CLayer* tmpLayer = nowScene->Get_Layer("id");
 		if (!tmpLayer) continue;
 
 		vector<CGameObject*>& objVector = tmpLayer->Get_Object();

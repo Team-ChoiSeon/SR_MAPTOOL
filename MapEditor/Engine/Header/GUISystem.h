@@ -23,6 +23,7 @@ public:
     _bool UsingUI() { return m_bUsingUI; }
     const wstring& Open_FileDialogue();
     const wstring& Open_FolderDialogue();
+    const wstring& Open_SaveFileDialog();
 private:
     LPDIRECT3DDEVICE9 m_pDevice;
     unordered_map<string, PANEL> m_PanelContainer;

@@ -15,18 +15,23 @@ public:
     static CLayer* Create();
     void Update_Layer(_float& dt);
     void LateUpdate_Layer(_float& dt);
-    vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
+    void Render_Panel();
 
 public:
     HRESULT Add_Object(CGameObject* object);
-    CGameObject* Find_Object(const string& tag);
-    void Remove_Object(const string& tag);
     void Pop_Object(const string& tag);
-    _bool Has_Object(CGameObject* obj);
+    void Remove_Object(const string& tag);
+    vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
+
+public:
+    void Serialize(json& jLayer) const;
+    void Deserialize(const json& injLayer);
+
 private:
     HRESULT Ready_Layer();
 
 private:
+    string m_LayerName;
     vector<CGameObject*> m_ObjectList;
 
 private:
