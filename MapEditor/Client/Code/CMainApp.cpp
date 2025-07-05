@@ -15,6 +15,7 @@
 #include "CPickingMgr.h"
 #include "CPrefabMgr.h"
 #include "CEditorSystem.h"
+#include "CShaderMgr.h"
 CMainApp::CMainApp()
 	:m_pDeviceClass(nullptr)
 	, m_pGraphicDev(nullptr)
@@ -27,16 +28,21 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Ready_MainApp()
 {
+
+
+
 	if (FAILED(CGraphicDev::GetInstance()->Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass)))
 		return E_FAIL;
+	m_pDeviceClass->AddRef();
+	m_pGraphicDev = m_pDeviceClass->Get_GraphicDev();
+	m_pGraphicDev->AddRef();
+
 	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
 		return E_FAIL;
 	if (FAILED(CPrefabMgr::GetInstance()->Ready_Prefabs()))
 		return E_FAIL;	
-
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
-
 	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
 		return E_FAIL;
 	if (FAILED(GUISystem::GetInstance()->Ready_GUI(g_hWnd)))
@@ -49,10 +55,8 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;	
 	if (FAILED(CEditorSystem::GetInstance()->Ready_EditorSystem()))
 		return E_FAIL;
-
-	m_pDeviceClass->AddRef();
-	m_pGraphicDev = m_pDeviceClass->Get_GraphicDev();
-	m_pGraphicDev->AddRef();
+	if (FAILED(CShaderMgr::GetInstance()->Ready_Shader(m_pGraphicDev)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -130,5 +134,6 @@ void CMainApp::Free()
 	CPickingMgr::GetInstance()->DestroyInstance();
 	CPrefabMgr::GetInstance()->DestroyInstance();
 	CEditorSystem::GetInstance()->DestroyInstance();
+	CShaderMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

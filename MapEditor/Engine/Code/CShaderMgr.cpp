@@ -1,5 +1,7 @@
 #include "Engine_Define.h"
 #include "CShaderMgr.h"
+#include "CFunction.h"
+namespace fs = std::filesystem;
 
 IMPLEMENT_SINGLETON(CShaderMgr)
 
@@ -15,7 +17,23 @@ CShaderMgr::~CShaderMgr()
 HRESULT CShaderMgr::Ready_Shader(LPDIRECT3DDEVICE9 pDevice)
 {
 	m_pDevice = pDevice;
+	Load_AllShaders("../../Shader/");
 	return S_OK;
+}
+
+void CShaderMgr::Load_AllShaders(const string& folderPath)
+{
+	for (const auto& entry : fs::directory_iterator(folderPath))
+	{
+		if (entry.is_regular_file())   
+		{
+			const string& fileName = entry.path().filename().string();
+			if (entry.path().extension() == ".fx")
+			{
+				GetShader(fileName); 
+			}
+		}
+	}
 }
 
 LPD3DXEFFECT CShaderMgr::GetShader(const string& path)
@@ -25,14 +43,36 @@ LPD3DXEFFECT CShaderMgr::GetShader(const string& path)
 	if (it != m_mapShader.end())
 		return it->second;
 
-	LPD3DXEFFECT pEffect = nullptr;
-	HRESULT hr = D3DXCreateEffectFromFileA(m_pDevice, path.c_str(), nullptr, nullptr,
-		D3DXSHADER_DEBUG, nullptr, &pEffect, nullptr);
+	wstring fullPath = CFunction::toWString("../../Shader/" + path); // 경로 조합
 
-	if (FAILED(hr)) { return nullptr; }
+	LPD3DXEFFECT pEffect = nullptr;
+	LPD3DXBUFFER pError = nullptr;
+	HRESULT hr = D3DXCreateEffectFromFileW(
+		m_pDevice,
+		fullPath.c_str(),
+		nullptr,
+		nullptr,
+		D3DXSHADER_DEBUG,
+		nullptr,
+		&pEffect,
+		&pError // 여기서 컴파일 실패 시 상세 원인이 들어감
+	);
+
+
+	if (FAILED(hr)) {
+		if (pError) {
+			OutputDebugStringA((char*)pError->GetBufferPointer()); // 디버그 출력
+			MessageBox(nullptr, (char*)pError->GetBufferPointer(), "Shader Compile Error", MB_OK); // 창으로 표시
+			pError->Release();
+		}
+		else {
+			MessageBoxW(nullptr, (L"Failed to load: " + fullPath).c_str(), L"Shader Error", MB_OK);
+		}
+		return nullptr;
+	}
 
 	m_mapShader[path] = pEffect;
-
+	m_ShaderName.push_back(path);
 	return pEffect;
 }
 
