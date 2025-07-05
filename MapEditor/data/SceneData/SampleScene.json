@@ -29,10 +29,10 @@
                             ],
                             "yaw": 90.0
                         },
-                        "CInputSystem": null,
                         "CModel": {
                             "matKey": "SandyTile.mtl",
-                            "mesh": "SandyTile.obj"
+                            "mesh": "SandyTile.obj",
+                            "shader": "g_UVScale.fx"
                         },
                         "CPickable": null,
                         "CTransform": {
@@ -84,7 +84,8 @@
                         },
                         "CModel": {
                             "matKey": "SandyTile.mtl",
-                            "mesh": "SandyTile.obj"
+                            "mesh": "SandyTile.obj",
+                            "shader": "g_UVScale.fx"
                         },
                         "CPickable": null,
                         "CTransform": {

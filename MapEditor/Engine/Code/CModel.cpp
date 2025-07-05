@@ -7,9 +7,12 @@
 #include "CTexture.h"
 #include "CTransform.h"
 #include "CGameObject.h"
+#include "CShaderMgr.h"
+#include "CCameraMgr.h"
+#include "CCamera.h"
 
 CModel::CModel()
-	:m_pMesh(nullptr), m_pMaterial(nullptr)
+	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0)
 {
 }
 
@@ -57,6 +60,17 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 	LPD3DXEFFECT shader = m_pMaterial->Get_Effect();
 	UINT passCount = 0;
 	m_pMaterial->Apply(pDevice);
+	if (shader)
+	{
+		const D3DXVECTOR3& scale = pTransform->Get_Scale();
+		D3DXVECTOR4 uvScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
+		D3DXMATRIX world = pTransform->Get_WorldMatrix();
+		D3DXMATRIX view = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ViewMatrix();
+		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
+		D3DXMATRIX wvp = world * view * proj;
+		shader->SetMatrix("g_matWorldViewProj", &wvp);
+		shader->SetVector("g_UVScale", &uvScale);
+	}
 
 	if (shader) {
 		shader->Begin(&passCount, 0);
@@ -183,6 +197,26 @@ void CModel::Render_Panel(ImVec2 size)
 				ImGui::EndCombo();
 			}
 		}
+
+		// 셰이더 선택
+		const auto& shaderList = CShaderMgr::GetInstance()->Get_ShaderName();
+		if (!shaderList.empty()) {
+			if (m_iShaderIndex >= shaderList.size())
+				m_iShaderIndex = 0;
+
+			if (ImGui::BeginCombo("Shader", shaderList[m_iShaderIndex].c_str())) {
+				for (int i = 0; i < shaderList.size(); ++i) {
+					bool isSelected = (m_iShaderIndex == i);
+					if (ImGui::Selectable(shaderList[i].c_str(), isSelected)) {
+						m_iShaderIndex = i;
+						m_pMaterial->Set_Shader(shaderList[i]);
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+		}
 	}
 
 	ImGui::PopID(); // PushID에 대한 대응
@@ -195,12 +229,20 @@ void CModel::Serialize(json& outJson) const
 		outJson["mesh"] = m_pMesh->Get_Key();
 
 	if (m_pMaterial)
+	{
 		outJson["matKey"] = m_pMaterial->Get_MaterialKey();
+
+		const string& shaderPath = m_pMaterial->Get_ShaderKey(); 
+		if (!shaderPath.empty())
+			outJson["shader"] = shaderPath;
+	}
 }
+
 
 void CModel::Deserialize(const json& inJson)
 {
 	string meshKey, matKey;
+	string shaderPath;
 
 	if (inJson.contains("mesh"))
 		meshKey = inJson["mesh"];
@@ -208,5 +250,11 @@ void CModel::Deserialize(const json& inJson)
 	if (inJson.contains("matKey"))
 		matKey = inJson["matKey"];
 
+	if (inJson.contains("shader"))
+		shaderPath = inJson["shader"];
+
 	Set_Model(meshKey, matKey);
+
+	if (!shaderPath.empty() && m_pMaterial)
+		m_pMaterial->Set_Shader(shaderPath);
 }

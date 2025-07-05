@@ -38,6 +38,7 @@ private:
     CMaterial* m_pMaterial;
     int m_iMeshIndex;
     int m_iMaterialIndex;
+    int m_iShaderIndex;
 
 private:
     void Free() override;

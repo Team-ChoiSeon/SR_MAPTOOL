@@ -87,20 +87,27 @@ void CMaterial::Set_Specular(CTexture* tex)
 void CMaterial::Set_Shader(const string& path)
 {
 	m_pEffect = CShaderMgr::GetInstance()->GetShader(path);
-	if (!m_pEffect) return;
-	m_strShaderPath = path;
+	if (m_pEffect)
+		m_strShaderPath = path;
+	else
+		m_strShaderPath.clear(); // 로딩 실패 시 키 제거
 }
+
 
 void CMaterial::Apply(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (m_pEffect)
 	{
+
+
 		// 셰이더 파라미터 바인딩
 		if (m_pDiffuse)  m_pEffect->SetTexture("g_DiffuseTex", m_pDiffuse->Get_Handle());
 		if (m_pNormal)   m_pEffect->SetTexture("g_NormalTex", m_pNormal->Get_Handle());
 		if (m_pRoughness)m_pEffect->SetTexture("g_RoughnessTex", m_pRoughness->Get_Handle());
 		if (m_pEmissive) m_pEffect->SetTexture("g_EmissiveTex", m_pEmissive->Get_Handle());
 		if (m_pSpecular) m_pEffect->SetTexture("g_SpecularTex", m_pSpecular->Get_Handle());
+		//  추가: 기본 UVScale 지정 (디버깅 목적으로라도)
+
 		return;
 	}
 
