@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CScene;
+class CGameObject;
 
 class ENGINE_DLL CSceneMgr :
     public CBase
@@ -27,22 +28,24 @@ public:
     const vector<string>& SceneName() { return m_SceneList; };
 
 private:
+    void Load_SceneData(const string& scenePath);
     void Render_SceneSelector();
     void Save_LoadPanel();
 
 public: 
     void SerializeScene(const wstring& path);
     void DeSerializeScene(const wstring& path);
-
+    void Create_Object();
+    CGameObject* Get_SelectedObject() { return selectObj; };
+    void Set_SelectedObject(CGameObject* obj) { selectObj = obj; };
 private:
     unordered_map<string, CScene*> m_SceneContainer;
     vector<string> m_SceneList;                      
     int m_SceneIndex = 0;
     CScene* m_CurScene;
-
+    CGameObject* selectObj = nullptr;
 private:
     void Free();
-
 
 };
 END

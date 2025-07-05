@@ -1,6 +1,7 @@
 #include "Engine_Define.h"
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "CSceneMgr.h"
 
 CLayer::CLayer()
 {
@@ -35,22 +36,43 @@ void CLayer::LateUpdate_Layer(_float& dt)
 		obj->LateUpdate_GameObject(dt);
 	}
 }
-
 void CLayer::Render_Panel()
 {
-		if (ImGui::CollapsingHeader(m_LayerName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+	if (m_ObjectList.empty())
+		return;
+
+	// 오브젝트 리스트 출력 (트리 형식)
+	if (ImGui::TreeNode(("Objects (" + std::to_string(m_ObjectList.size()) + ")").c_str()))
+	{
+		for (auto* obj : m_ObjectList)
 		{
-			for (auto* obj : m_ObjectList)
+			if (!obj) continue;
+
+			string objID = "##" + obj->Get_InstanceName();
+			ImGui::PushID(objID.c_str());
+
+			bool isSelected = (CSceneMgr::GetInstance()->Get_SelectedObject() == obj);
+			if (ImGui::Selectable(obj->Get_InstanceName().c_str(), isSelected))
 			{
-				if (obj)
-				{
-					ImGui::PushID(obj); // ID 충돌 방지
-					obj->Render_Panel(); // 오브젝트 개별 패널
-					ImGui::PopID();
-				}
+				CSceneMgr::GetInstance()->Set_SelectedObject(obj);
 			}
+
+			ImGui::PopID();
 		}
+		ImGui::TreePop();
+	}
+
+	ImGui::Separator();
+
+	 //선택된 오브젝트의 에디터 패널 출력
+	if (CGameObject* selected = CSceneMgr::GetInstance()->Get_SelectedObject())
+	{
+			ImGui::PushID(selected);
+			selected->Render_Panel();
+			ImGui::PopID();
+	}
 }
+
 
 HRESULT CLayer::Add_Object(CGameObject* object)
 {
@@ -87,9 +109,17 @@ void CLayer::Remove_Object(const string& tag)
 	Safe_Release(target);
 }
 
+_bool CLayer::Has_Object(const string& tag)
+{
+	//일단은 레이어 속한 오브젝트만 보일 필요는 없어 보임
+	//
+	return false;
+}
+
 void CLayer::Serialize(json& jLayer) const
 {
-	jLayer["name"] = m_LayerName;
+	jLayer["objects"] = json::array(); // 무조건 배열로 초기화 (비어도 null 안 됨)
+
 	for (CGameObject* obj : m_ObjectList)
 	{
 		if (!obj) continue;
@@ -99,20 +129,18 @@ void CLayer::Serialize(json& jLayer) const
 	}
 }
 
+
 void CLayer::Deserialize(const json& jLayer)
 {
-	m_LayerName = jLayer.value("name", "Unnamed");
 
 	for (const auto& jObj : jLayer["objects"])
 	{
-		string className = jObj["class"];
-		CGameObject* obj = CGameObject::Create(jObj);
-		if (!obj) continue;
-
-		obj->Deserialize(jObj);
-		Add_Object(obj);
+		if (CGameObject* obj = CGameObject::Create(jObj)) {
+			Add_Object(obj);
+		}
 	}
 }
+
 
 void CLayer::Pop_Object(const string& tag)
 {

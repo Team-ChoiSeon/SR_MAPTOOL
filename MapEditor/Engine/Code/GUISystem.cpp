@@ -58,13 +58,15 @@ void GUISystem::LateUpdate_GUI(_float& dt)
 {
 }
 
+void GUISystem::Render_Begin()
+{
+    ImGui_ImplDX9_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+}
+
 void GUISystem::Render_GUI()
 {
-    
-    ImGui_ImplDX9_NewFrame();     
-    ImGui_ImplWin32_NewFrame();   
-    ImGui::NewFrame();          
-
     for (auto& pair : m_PanelContainer)
     {
         const string& name = pair.first;
@@ -78,6 +80,10 @@ void GUISystem::Render_GUI()
             panel.callback();
         //ImGui::End();
     }
+}
+
+void GUISystem::Render_End()
+{
 
     ImGui::Render();
     ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());

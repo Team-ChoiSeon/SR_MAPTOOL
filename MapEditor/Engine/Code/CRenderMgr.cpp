@@ -68,23 +68,23 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- 렌더러의 통합을 고려 해�
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	//pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_SHADOW])
-	//		renderer->Render(pDevice);
-	//
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_OPAQUE])
-	//		renderer->Render(pDevice);
-	//
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_STENCIL])
-	//		renderer->Render(pDevice);
-	//
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_TRANSPARENT])
-	//		renderer->Render(pDevice);
-	//
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_UI])
-	//		renderer->Render(pDevice);
-	//
-	//	for (auto& renderer : m_Renderers[RENDER_PASS::RP_POSTPROCESS])
-	//		renderer->Render(pDevice);
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_SHADOW])
+		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_OPAQUE])
+		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_STENCIL])
+		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_TRANSPARENT])
+		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_UI])
+		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Renderers[RENDER_PASS::RP_POSTPROCESS])
+		renderer->Render(pDevice);
 
 	Clear();
 	//m_StateCache->Clear();

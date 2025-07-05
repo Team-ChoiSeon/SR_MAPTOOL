@@ -1,0 +1,117 @@
+{
+    "layers": {
+        "Default": {
+            "objects": [
+                {
+                    "Layer": "",
+                    "class": "CPlayer",
+                    "components": {
+                        "CCamera": {
+                            "eye": [
+                                -0.6138990521430969,
+                                1.4496281147003174,
+                                0.0
+                            ],
+                            "far": 200.0,
+                            "fov": 45.0,
+                            "look": [
+                                -4.371138828673793e-08,
+                                0.0,
+                                1.0
+                            ],
+                            "near": 0.10000000149011612,
+                            "pitch": 0.0,
+                            "roll": 0.0,
+                            "up": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "yaw": 90.0
+                        },
+                        "CInputSystem": null,
+                        "CModel": {
+                            "matKey": "SandyTile.mtl",
+                            "mesh": "SandyTile.obj"
+                        },
+                        "CPickable": null,
+                        "CTransform": {
+                            "position": [
+                                -0.6138990521430969,
+                                1.4496281147003174,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.6642869114875793
+                            ],
+                            "scale": [
+                                0.9998945593833923,
+                                0.9998945593833923,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Player"
+                },
+                {
+                    "Layer": "",
+                    "class": "Crate",
+                    "components": {
+                        "CCamera": {
+                            "eye": [
+                                -3.2493433952331543,
+                                3.2769885063171387,
+                                0.0
+                            ],
+                            "far": 200.0,
+                            "fov": 45.0,
+                            "look": [
+                                -4.371138828673793e-08,
+                                0.0,
+                                1.0
+                            ],
+                            "near": 0.10000000149011612,
+                            "pitch": 0.0,
+                            "roll": 0.0,
+                            "up": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "yaw": 90.0
+                        },
+                        "CModel": {
+                            "matKey": "SandyTile.mtl",
+                            "mesh": "SandyTile.obj"
+                        },
+                        "CPickable": null,
+                        "CTransform": {
+                            "position": [
+                                -3.2493433952331543,
+                                3.2769885063171387,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Cube_1"
+                }
+            ]
+        },
+        "UI": {
+            "objects": []
+        }
+    },
+    "scene_name": "SampleScene"
+}

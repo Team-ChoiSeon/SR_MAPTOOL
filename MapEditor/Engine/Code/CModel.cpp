@@ -1,11 +1,15 @@
 #include "Engine_Define.h"
 #include "CModel.h"
+#include "CRenderMgr.h"
 #include "CResourceMgr.h"
 #include "CMesh.h"
 #include "CMaterial.h"
+#include "CTexture.h"
+#include "CTransform.h"
+#include "CGameObject.h"
 
 CModel::CModel()
-	:m_pMesh(nullptr),m_pMaterial(nullptr)
+	:m_pMesh(nullptr), m_pMaterial(nullptr)
 {
 }
 
@@ -36,12 +40,36 @@ void CModel::Update_Component(_float& dt)
 
 void CModel::LateUpdate_Component(_float& dt)
 {
+	CRenderMgr::GetInstance()->Add_Renderer(this);
 }
 
 void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 {
-	m_pMaterial->Apply(pDevice); // 텍스처 바인드
-	m_pMesh->Render(pDevice);    // 정점/인덱스 렌더링
+
+	if (!pDevice || !m_pOwner || !m_pMesh || !m_pMaterial)
+		return;
+
+	CTransform* pTransform = m_pOwner->Get_Component<CTransform>();
+	if (!pTransform)
+		return;
+	pDevice->SetTransform(D3DTS_WORLD, &pTransform->Get_WorldMatrix());
+
+	LPD3DXEFFECT shader = m_pMaterial->Get_Effect();
+	UINT passCount = 0;
+	m_pMaterial->Apply(pDevice);
+
+	if (shader) {
+		shader->Begin(&passCount, 0);
+		for (UINT i = 0; i < passCount; ++i) {
+			shader->BeginPass(i);
+			m_pMesh->Render(pDevice);
+			shader->EndPass();
+		}
+		shader->End();
+	}
+	else {
+		m_pMesh->Render(pDevice);
+	}
 }
 
 CComponent* CModel::Clone() const
@@ -51,28 +79,43 @@ CComponent* CModel::Clone() const
 
 RENDER_PASS CModel::Get_RenderPass()
 {
-	return RENDER_PASS();
+	return RENDER_PASS::RP_OPAQUE;
 }
+
 HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 {
 
-	if (!meshType.empty())
+	if (!meshType.empty()) {
 		Safe_Change(m_pMesh, CResourceMgr::GetInstance()->GetMesh(meshType));
+		m_iMeshIndex = CResourceMgr::GetInstance()->Get_MeshID(meshType);
+	}
 
-	if (!matType.empty())
+	if (!matType.empty()) {
 		Safe_Change(m_pMaterial, CResourceMgr::GetInstance()->GetMaterial(matType));
+		m_iMaterialIndex = CResourceMgr::GetInstance()->Get_MaterialID(matType);
+	}
 
 	return S_OK;
 }
 
 CMesh* CModel::Get_Mesh()
 {
-	return  m_pMesh; 
+	return  m_pMesh;
 }
 
 CMaterial* CModel::Get_Material()
 {
 	return m_pMaterial;
+}
+
+AABB CModel::Get_AABB()
+{
+	return m_pMesh->Get_AABBBOX();
+}
+
+string CModel::Get_ComponentName() const
+{
+	return "CModel";
 }
 
 void CModel::Free()
@@ -83,34 +126,87 @@ void CModel::Free()
 
 void CModel::Render_Panel(ImVec2 size)
 {
-	if (ImGui::CollapsingHeader("Model", ImGuiTreeNodeFlags_DefaultOpen)) // 제목
+	ImGui::PushID(this); // 유일한 ID 부여
+
+	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+	ImGui::Checkbox("##ActiveModel", &m_bActive); ImGui::SameLine();
+	if (ImGui::CollapsingHeader("Model"))
 	{
-		ImGui::BeginChild("## ModelChild", size, true); // 사각형 박스
-		ImGui::Checkbox("Active##Model", &m_bActive);
+		if (CTexture* diffuse = m_pMaterial->Get_Diffuse()) {
+			LPDIRECT3DTEXTURE9 pTex = diffuse->Get_Handle();
+			if (pTex) {
+				ImGui::Text("Texture Preview:");
+				ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
+			}
+		}
 
+		ImGui::Separator();
 
-		ImGui::EndChild();
+		// 머티리얼 선택
+		const auto& materialList = CResourceMgr::GetInstance()->Get_MaterialName();
+		if (!materialList.empty()) {
+			if (m_iMaterialIndex >= materialList.size())
+				m_iMaterialIndex = 0;
+
+			if (ImGui::BeginCombo("Material", materialList[m_iMaterialIndex].c_str())) {
+				for (int i = 0; i < materialList.size(); ++i) {
+					bool isSelected = (m_iMaterialIndex == i);
+					if (ImGui::Selectable(materialList[i].c_str(), isSelected)) {
+						m_iMaterialIndex = i;
+						Set_Model("", materialList[i]);
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::Separator();
+
+		// 메쉬 선택
+		const auto& meshList = CResourceMgr::GetInstance()->Get_MeshName();
+		if (!meshList.empty()) {
+			if (m_iMeshIndex >= meshList.size())
+				m_iMeshIndex = 0;
+
+			if (ImGui::BeginCombo("Mesh", meshList[m_iMeshIndex].c_str())) {
+				for (int i = 0; i < meshList.size(); ++i) {
+					bool isSelected = (m_iMeshIndex == i);
+					if (ImGui::Selectable(meshList[i].c_str(), isSelected)) {
+						m_iMeshIndex = i;
+						Set_Model(meshList[i], "");
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+		}
 	}
+
+	ImGui::PopID(); // PushID에 대한 대응
 }
+
 
 void CModel::Serialize(json& outJson) const
 {
 	if (m_pMesh)
-		outJson["meshKey"] = m_pMesh->Get_Key();
+		outJson["mesh"] = m_pMesh->Get_Key();
 
 	if (m_pMaterial)
-		outJson["materialKey"] = m_pMaterial->Get_Key();
+		outJson["matKey"] = m_pMaterial->Get_MaterialKey();
 }
 
 void CModel::Deserialize(const json& inJson)
 {
 	string meshKey, matKey;
 
-	if (inJson.contains("meshKey"))
-		meshKey = inJson["meshKey"];
+	if (inJson.contains("mesh"))
+		meshKey = inJson["mesh"];
 
-	if (inJson.contains("materialKey"))
-		matKey = inJson["materialKey"];
+	if (inJson.contains("matKey"))
+		matKey = inJson["matKey"];
 
 	Set_Model(meshKey, matKey);
 }

@@ -52,13 +52,16 @@ public:
         D3DXVec3Cross(&Right, &m_vUp, &m_vLookDir); 
         return Right;
     };
-
+    string Get_ComponentName() const override;
 private:
     void UpdateDirFromAngles();
 private:
     _float m_fFOV;
     _float m_fAspect;
     _float m_fNear;
+
+
+
     _float m_fFar;
 
     _float m_fPitch;

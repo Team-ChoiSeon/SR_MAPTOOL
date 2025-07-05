@@ -8,5 +8,7 @@
 #include "imgui_impl_dx9.h"
 // nfd.h Æ÷ÇÔ Àü
 #include "nfd.h"
+//---Gizmo---//
+#include "ImGuizmo.h"
 
 #pragma pop_macro("new")

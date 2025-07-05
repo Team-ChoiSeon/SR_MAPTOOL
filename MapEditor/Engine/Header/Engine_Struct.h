@@ -78,5 +78,9 @@ namespace Engine {
 		_vec3 vMax;
 	}AABB;
 
-
+	class CGameObject;
+	typedef struct tagRayHit {
+		CGameObject* target;
+		float fDistance;
+	}RAYHIT;
 }

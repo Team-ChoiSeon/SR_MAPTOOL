@@ -55,7 +55,7 @@ void CTransform::Update_Component(_float& dt)
 	//이동
 	D3DXMatrixTranslation(&matTrans, m_vPos.x, m_vPos.y, m_vPos.z);
 
-	m_WorldMat = matScale * matAxisRot* matRotateZ * matRotateY * matRotateX * matTrans;
+	m_WorldMat = matScale * matAxisRot* matRotateX * matRotateY * matRotateZ * matTrans;
 	m_WorldPosMat = matScale * matTrans;
 	//-----------------------------------------------------------//
 	//공전 
@@ -157,12 +157,18 @@ void CTransform::Free()
 	
 }
 
+string CTransform::Get_ComponentName() const
+{
+	return "CTransform";
+}
+
 void CTransform::Render_Panel(ImVec2 size)
 {
-	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) // 제목
+	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+
+	if (ImGui::CollapsingHeader("Transform")) // 제목
 	{
 		ImGui::BeginChild("##TransformChild", size, true); // 사각형 박스
-		ImGui::Checkbox("Active##Transform", &m_bActive);
 
 		ImGui::Text("Scale");
 		ImGui::Text("X"); ImGui::SameLine();

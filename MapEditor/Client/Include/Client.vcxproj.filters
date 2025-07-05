@@ -14,17 +14,8 @@
     <Filter Include="02. MainApp">
       <UniqueIdentifier>{9c5040e7-00aa-46e9-975c-7a1b9dace7a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Scenes">
-      <UniqueIdentifier>{fe9bd7f2-d8c3-41cc-a502-d5000c4e6b9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. fucntion">
       <UniqueIdentifier>{f4d5a26e-2126-4ce5-a860-b14c4a5a91ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scenes\Test">
-      <UniqueIdentifier>{a053797d-037e-4dec-aaae-dbca777eb034}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Scenes\Enviroment">
-      <UniqueIdentifier>{41735504-47db-4312-ad74-f89dd1909d26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,12 +37,6 @@
     <ClInclude Include="..\Header\CMainApp.h">
       <Filter>02. MainApp</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\CTestScene.h">
-      <Filter>04. Scenes\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\CEnviromentScene.h">
-      <Filter>04. Scenes\Enviroment</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -62,12 +47,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\CMainApp.cpp">
       <Filter>02. MainApp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CTestScene.cpp">
-      <Filter>04. Scenes\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\CEnviromentScene.cpp">
-      <Filter>04. Scenes\Enviroment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
