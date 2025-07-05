@@ -23,6 +23,7 @@ public:
 public:
     bool Get_ComponentActive() { return m_bActive; }
     void Set_ComponentActive(bool active) { m_bActive = active; }
+    virtual string Get_ComponentName() const PURE;
 protected:
     bool m_bActive = true;
 public:

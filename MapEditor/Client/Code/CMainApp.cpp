@@ -13,12 +13,8 @@
 #include "CSceneMgr.h"
 #include "CResourceMgr.h"
 #include "CPickingMgr.h"
-#include "CFactoryMgr.h"
-
-#include "CTestScene.h"
-#include "CEnviromentScene.h"
-#include "CTestCube.h"
-
+#include "CPrefabMgr.h"
+#include "CEditorSystem.h"
 CMainApp::CMainApp()
 	:m_pDeviceClass(nullptr)
 	, m_pGraphicDev(nullptr)
@@ -33,39 +29,42 @@ HRESULT CMainApp::Ready_MainApp()
 {
 	if (FAILED(CGraphicDev::GetInstance()->Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass)))
 		return E_FAIL;
+	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
+		return E_FAIL;
+	if (FAILED(CPrefabMgr::GetInstance()->Ready_Prefabs()))
+		return E_FAIL;	
+
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
+
 	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
 		return E_FAIL;
 	if (FAILED(GUISystem::GetInstance()->Ready_GUI(g_hWnd)))
 		return E_FAIL;	
 	if (FAILED(CSceneMgr::GetInstance()->Ready_SceneMgr()))
 		return E_FAIL;	
-	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
-		return E_FAIL;	
 	if (FAILED(CCameraMgr::GetInstance()->Ready_CameraMgr()))
-		return E_FAIL;	
+		return E_FAIL;		
 	if (FAILED(CPickingMgr::GetInstance()->Ready_Picking(g_hWnd)))
+		return E_FAIL;	
+	if (FAILED(CEditorSystem::GetInstance()->Ready_EditorSystem()))
 		return E_FAIL;
 
 	m_pDeviceClass->AddRef();
 	m_pGraphicDev = m_pDeviceClass->Get_GraphicDev();
 	m_pGraphicDev->AddRef();
 
-	CSceneMgr::GetInstance()->Add_Scene("Test", CTestScene::Create());
-	CSceneMgr::GetInstance()->Change_Scene("Test");
-
-	CSceneMgr::GetInstance()->Add_Scene("Enviroment", CEnviromentScene::Create());
 	return S_OK;
 }
 
 int CMainApp::Update_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->Update_InputDev();
-	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
-	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CCameraMgr::GetInstance()->Update_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->Update_Scene(fTimeDelta);
+	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
+	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
+	CEditorSystem::GetInstance()->Update_Editor(fTimeDelta);
 
 	return 0;
 }
@@ -73,18 +72,32 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->LateUpdate_InputDev();
+
 	CCameraMgr::GetInstance()->LateUpdate_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->LateUpdate_Scene(fTimeDelta);
 	GUISystem::GetInstance()->LateUpdate_GUI(fTimeDelta);
 	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
+	CEditorSystem::GetInstance()->LateUpdate_Editor(fTimeDelta);
 
 }
 
 void CMainApp::Render_MainApp()
 {
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
+
 	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
+
+	GUISystem::GetInstance()->Render_Begin();
+
+	CSceneMgr::GetInstance()->Render_Scene();
 	GUISystem::GetInstance()->Render_GUI();
+	CEditorSystem::GetInstance()->Render_Gizmo();
+	GUISystem::GetInstance()->Render_End();
+	/*
+	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);*/
+
 	m_pDeviceClass->Render_End();
 }
 
@@ -115,5 +128,7 @@ void CMainApp::Free()
 	CResourceMgr::GetInstance()->DestroyInstance();
 	CCameraMgr::GetInstance()->DestroyInstance();
 	CPickingMgr::GetInstance()->DestroyInstance();
+	CPrefabMgr::GetInstance()->DestroyInstance();
+	CEditorSystem::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

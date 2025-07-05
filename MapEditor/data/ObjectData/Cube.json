@@ -1,0 +1,27 @@
+{
+  "class": "Crate",
+  "name": "WoodenCrate",
+  "mesh": "crate.obj",
+  "material": "wood.mtl",
+  "defaultScale": [1.0, 1.0, 1.0],
+  "components": {
+    "CTransform": {
+      "scale": [1.0, 1.0, 1.0]
+    },
+    "CModel": {
+      "mesh": "SandyTile.obj",
+      "matKey": "SandyTile.mtl",
+      "material": {
+        "diffuse": "Ground054_4K_Color.png",
+        "normal": "player_normal.png",
+        "roughness": "",
+        "specular": "",
+        "emissive": ""
+      },
+      "AABB": {
+        "min": [-1.0, -1.0, -1.0],
+        "max": [1.0, 1.0, 1.0]
+      }
+    }
+  }
+}

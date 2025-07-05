@@ -1,8 +1,12 @@
 #include "Engine_Define.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CLayer.h"
 #include "GUISystem.h"
 #include "CFunction.h"
+#include "CPrefabMgr.h"
+#include "CGameObject.h"
+#include "CPickingMgr.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
@@ -18,20 +22,15 @@ CSceneMgr::~CSceneMgr()
 
 HRESULT CSceneMgr::Ready_SceneMgr()
 {
+	Load_SceneData("../../data/SceneData");
 	return S_OK;
 }
 
 void CSceneMgr::Update_Scene(_float& dt)
 {
-	if (m_CurScene) {
+	if (m_CurScene) 
 		m_CurScene->Update_Scene(dt);
-<<<<<<< Updated upstream
 
-		GUISystem::GetInstance()->RegisterPanel("SceneTag", [this]() {Render_SceneSelector();});
-		GUISystem::GetInstance()->RegisterPanel("SceneLoad", [this]() {Save_LoadPanel();});
-=======
->>>>>>> Stashed changes
-	}
 }
 
 void CSceneMgr::LateUpdate_Scene(_float& dt)
@@ -44,6 +43,11 @@ void CSceneMgr::Render_Scene()
 {
 	if (m_CurScene)
 		m_CurScene->Render_Panel();
+
+	Create_Object();
+
+	Render_SceneSelector();
+	Save_LoadPanel();
 }
 
 void CSceneMgr::Add_Scene(string sceneTag, CScene* scene)
@@ -70,6 +74,47 @@ void CSceneMgr::Free()
 		Safe_Release(Pair.second);
 	}
 	m_SceneContainer.clear();
+	m_SceneList.clear();
+}
+
+void CSceneMgr::Load_SceneData(const string& scenePath)
+{
+	namespace fs = std::filesystem;
+
+	m_SceneContainer.clear();
+	m_SceneList.clear();
+	string err;
+
+	try {
+		for (const auto& entry : fs::directory_iterator(scenePath))
+		{
+			if (!entry.is_regular_file()) continue;
+
+			const fs::path& filePath = entry.path();
+			if (filePath.extension() != ".json") continue;
+
+			ifstream inFile(filePath);
+			if (!inFile.is_open()) continue;
+
+			json jScene;
+			inFile >> jScene;
+
+			if (!jScene.contains("scene_name")) continue;
+
+			string sceneName = filePath.stem().string();
+			err = sceneName;
+
+			CScene* newScene = CScene::Create();
+			newScene->Deserialize(jScene);
+			m_SceneContainer[sceneName] = newScene;
+			m_SceneList.push_back(sceneName);
+			if (m_CurScene == nullptr) m_CurScene = newScene; //초기 로딩 시, 씬 넣기
+		}
+	}
+	catch (const std::exception& e) {
+		err += "loading err";
+		MessageBox(0, err.c_str(), "Scene", MB_OK);
+	}
 }
 
 void CSceneMgr::Render_SceneSelector()
@@ -82,7 +127,6 @@ void CSceneMgr::Render_SceneSelector()
 	const float comboHeight = 25.0f;     // 콤보 박스 닫힌 상태 높이
 	const float itemHeight = 20.0f;      // 항목 하나의 높이
 
-	// 콤보 박스 높이 키우기 (FramePadding을 이용)
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(8.0f, (comboHeight - ImGui::GetFontSize()) * 0.5f));
 
 	if (ImGui::BeginCombo("##SceneCombo", currentSceneName.c_str()))
@@ -224,4 +268,24 @@ void CSceneMgr::DeSerializeScene(const wstring& path)
 	}
 }
 
+void CSceneMgr::Create_Object()
+{
+	// 화면 아무 곳에서든 우클릭 시 팝업 열기
+	if (ImGui::IsMouseClicked(ImGuiMouseButton_Right) && !ImGui::IsAnyItemHovered())
+	{
+		ImGui::OpenPopup("GlobalContextMenu");
+	}
 
+	// 팝업 본체
+	if (ImGui::BeginPopup("GlobalContextMenu"))
+	{
+		for (string name : CPrefabMgr::GetInstance()->Get_PrefabNames()) {
+			if (ImGui::MenuItem(name.c_str())) {
+				CGameObject* instance = CPrefabMgr::GetInstance()->Instantiate(name);
+				CLayer* layer = m_CurScene->Get_Layer(instance->Get_LayerName());
+				layer->Add_Object(instance);
+			}
+		}
+		ImGui::EndPopup();
+	}
+}

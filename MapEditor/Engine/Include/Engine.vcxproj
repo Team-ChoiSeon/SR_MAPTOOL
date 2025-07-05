@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE_EXPORTS;IMGUI_API=__declspec(dllexport);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;../Header; ../../Base;../../imgui;../../imgui/backends;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../Header;../../Base;../../ThirdParty;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE_EXPORTS;IMGUI_API=__declspec(dllexport);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;../Header; ../../Base;../../imgui;../../imgui/backends;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;../Header;../../Base;../../ThirdParty;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -153,31 +153,43 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_dx9.h" />
-    <ClInclude Include="..\..\imgui\common.h" />
-    <ClInclude Include="..\..\imgui\imgui.h" />
-    <ClInclude Include="..\..\imgui\json.hpp" />
-    <ClInclude Include="..\..\imgui\json_fwd.hpp" />
-    <ClInclude Include="..\..\imgui\nfd.h" />
-    <ClInclude Include="..\..\imgui\nfd_common.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\GraphEditor.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\ImCurveEdit.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\ImGradient.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\ImGuizmo.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\ImSequencer.h" />
+    <ClInclude Include="..\..\ThirdParty\GUIZMO\ImZoomSlider.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\backends\imgui_impl_dx9.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui.h" />
+    <ClInclude Include="..\..\ThirdParty\JSON\json.hpp" />
+    <ClInclude Include="..\..\ThirdParty\JSON\json_fwd.hpp" />
+    <ClInclude Include="..\..\ThirdParty\NFD\common.h" />
+    <ClInclude Include="..\..\ThirdParty\NFD\nfd.h" />
+    <ClInclude Include="..\..\ThirdParty\NFD\nfd_common.h" />
     <ClInclude Include="..\Header\CCamera.h" />
     <ClInclude Include="..\Header\CCameraMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
+    <ClInclude Include="..\Header\CEditorSystem.h" />
     <ClInclude Include="..\Header\CFrame.h" />
     <ClInclude Include="..\Header\CFrameMgr.h" />
     <ClInclude Include="..\Header\CFunction.h" />
     <ClInclude Include="..\Header\CGameObject.h" />
     <ClInclude Include="..\Header\CGraphicDev.h" />
     <ClInclude Include="..\Header\CInputMgr.h" />
+    <ClInclude Include="..\Header\CInputSystem.h" />
     <ClInclude Include="..\Header\CLayer.h" />
     <ClInclude Include="..\Header\CMaterial.h" />
     <ClInclude Include="..\Header\CMesh.h" />
     <ClInclude Include="..\Header\CModel.h" />
+    <ClInclude Include="..\Header\CPickable.h" />
     <ClInclude Include="..\Header\CPickingMgr.h" />
+    <ClInclude Include="..\Header\CPrefabMgr.h" />
     <ClInclude Include="..\Header\CRenderMgr.h" />
     <ClInclude Include="..\Header\CResourceMgr.h" />
     <ClInclude Include="..\Header\CScene.h" />
     <ClInclude Include="..\Header\CSceneMgr.h" />
+    <ClInclude Include="..\Header\CShaderMgr.h" />
     <ClInclude Include="..\Header\CTexture.h" />
     <ClInclude Include="..\Header\CTimeMgr.h" />
     <ClInclude Include="..\Header\CTimer.h" />
@@ -192,32 +204,42 @@
     <ClInclude Include="..\Header\GUISystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_dx9.cpp" />
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="..\..\imgui\nfd_common.c" />
-    <ClCompile Include="..\..\imgui\nfd_win.cpp" />
+    <ClCompile Include="..\..\ThirdParty\GUIZMO\GraphEditor.cpp" />
+    <ClCompile Include="..\..\ThirdParty\GUIZMO\ImCurveEdit.cpp" />
+    <ClCompile Include="..\..\ThirdParty\GUIZMO\ImGradient.cpp" />
+    <ClCompile Include="..\..\ThirdParty\GUIZMO\ImGuizmo.cpp" />
+    <ClCompile Include="..\..\ThirdParty\GUIZMO\ImSequencer.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\backends\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\ThirdParty\NFD\nfd_common.c" />
+    <ClCompile Include="..\..\ThirdParty\NFD\nfd_win.cpp" />
     <ClCompile Include="..\Code\CCamera.cpp" />
     <ClCompile Include="..\Code\CCameraMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
+    <ClCompile Include="..\Code\CEditorSystem.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />
     <ClCompile Include="..\Code\CGameObject.cpp" />
     <ClCompile Include="..\Code\CGraphicDev.cpp" />
     <ClCompile Include="..\Code\CInputMgr.cpp" />
+    <ClCompile Include="..\Code\CInputSystem.cpp" />
     <ClCompile Include="..\Code\CLayer.cpp" />
     <ClCompile Include="..\Code\CMaterial.cpp" />
     <ClCompile Include="..\Code\CMesh.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
+    <ClCompile Include="..\Code\CPickable.cpp" />
     <ClCompile Include="..\Code\CPickingMgr.cpp" />
+    <ClCompile Include="..\Code\CPrefabMgr.cpp" />
     <ClCompile Include="..\Code\CRenderMgr.cpp" />
     <ClCompile Include="..\Code\CResourceMgr.cpp" />
     <ClCompile Include="..\Code\CScene.cpp" />
     <ClCompile Include="..\Code\CSceneMgr.cpp" />
+    <ClCompile Include="..\Code\CShaderMgr.cpp" />
     <ClCompile Include="..\Code\CTexture.cpp" />
     <ClCompile Include="..\Code\CTimeMgr.cpp" />
     <ClCompile Include="..\Code\CTimer.cpp" />

@@ -130,18 +130,28 @@ void CCamera::Free()
 	Safe_Release(m_pTransform);
 }
 
+string CCamera::Get_ComponentName() const
+{
+	return "CCamera";
+}
+
 void CCamera::Render_Panel(ImVec2 size)
 {
-	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		ImGui::BeginChild("##CameraChild", size, true);
+	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
 
-		ImGui::Checkbox("Active##Camera", &m_bActive);
+	ImGui::Checkbox("##ActiveCamera", &m_bActive); ImGui::SameLine();
+
+	if (ImGui::CollapsingHeader("Camera"))
+	{
 
 		bool isMain = (CCameraMgr::GetInstance()->Get_MainCamera() == this);
-		if (ImGui::Selectable("Set as Main Camera##CameraToggle", isMain)) {
-			if (!isMain)
-				CCameraMgr::GetInstance()->Set_MainCamera(this);
+		bool clicked = ImGui::Selectable("Set Camera##CameraToggle", isMain, ImGuiSelectableFlags_DontClosePopups);
+
+		if (clicked) {
+			if (isMain)
+				CCameraMgr::GetInstance()->Set_MainCamera(nullptr); // 해제
+			else
+				CCameraMgr::GetInstance()->Set_MainCamera(this);     // 설정
 		}
 
 		ImGui::Separator();
@@ -157,7 +167,6 @@ void CCamera::Render_Panel(ImVec2 size)
 		ImGui::SliderFloat("Near", &m_fNear, 0.01f, 10.0f);
 		ImGui::SliderFloat("Far", &m_fFar, 10.0f, 1000.0f);
 
-		ImGui::EndChild();
 	}
 }
 

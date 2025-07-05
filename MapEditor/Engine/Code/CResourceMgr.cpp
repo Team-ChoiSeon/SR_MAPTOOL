@@ -10,6 +10,7 @@
 IMPLEMENT_SINGLETON(CResourceMgr)
 
 CResourceMgr::CResourceMgr()
+	:m_pDevice(nullptr)
 {
 }
 
@@ -22,19 +23,55 @@ HRESULT CResourceMgr::Ready_Resource()
 {
 	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
 	if (!m_pDevice) return E_FAIL;
-
-	LoadTexture("dirt_diff_4k.jpg");
-	LoadTexture("Ground054_4K_Color.jpg");
-
-	LoadMaterialFromMTL("DirtObj.mtl");
-	LoadMeshFromOBJ("DirtObj.obj");
-
-	LoadMaterialFromMTL("SandyTile.mtl");
-	LoadMeshFromOBJ("SandyTile.obj");
-
-	LoadMaterialFromMTL("BrickRoad.mtl");
-	LoadMeshFromOBJ("BrickRoad.obj");
+	AutoLoad_OBJMeshes();
+	AutoLoad_MaterialFromMTL();
 	return S_OK;
+}
+void CResourceMgr::AutoLoad_OBJMeshes()
+{
+	string folderPath = "../../Resource/Obj/";
+	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
+		if (entry.path().extension() == ".obj") {
+			string filename = entry.path().filename().string();
+			LoadMeshFromOBJ(filename);
+		}
+	}
+}
+void CResourceMgr::AutoLoad_MaterialFromMTL()
+{
+	string folderPath = "../../Resource/Material/";
+	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
+		if (entry.path().extension() == ".mtl") {
+			string filename = entry.path().filename().string();
+			LoadMaterialFromMTL(filename);
+		}
+	}
+}
+
+int CResourceMgr::Get_MeshID(const string& name)
+{
+	auto it = find_if(m_meshName.begin(), m_meshName.end(),
+		[&name](const string& meshName) {
+			return meshName == name;
+		});
+
+	if (it != m_meshName.end())
+		return static_cast<int>(distance(m_meshName.begin(), it));
+
+	return -1; // 못 찾았을 경우
+}
+
+int CResourceMgr::Get_MaterialID(const string& name)
+{
+	auto it = find_if(m_materialName.begin(), m_materialName.end(),
+		[&name](const string& matName) {
+			return matName == name;
+		});
+
+	if (it != m_materialName.end())
+		return static_cast<int>(distance(m_materialName.begin(), it));
+
+	return -1; // 못 찾았을 경우
 }
 
 CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
@@ -44,7 +81,7 @@ CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 		return iter->second;
 	}
 
-	string BasePath = "../Bin/Resource/Obj/";
+	string BasePath = "../../Resource/Obj/";
 	string filePath = BasePath + objPath;
 
 	CMesh* mesh = CMesh::Create();
@@ -54,6 +91,7 @@ CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 	}
 	mesh->Set_Key(objPath);
 	m_meshMap[objPath] = mesh;
+	m_meshName.push_back(objPath);
 	return mesh;
 }
 
@@ -63,8 +101,7 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	if (it != m_textureMap.end()) 
 		return it->second;
 
-
-	string BasePath = "../Bin/Resource/Texture/";
+	string BasePath = "../../Resource/Texture/";
 	string filePath = BasePath + texturePath;
 
 	CTexture* tex = CTexture::Create();
@@ -75,6 +112,8 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	}
 	tex->SetKey(texturePath);
 	m_textureMap[texturePath] = tex;
+	m_textureName.push_back(texturePath);
+
 	return tex;
 }
 
@@ -85,8 +124,8 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	if (iter != m_materialMap.end())
 		return iter->second;
 
-	// 텍스처 기준 루트 경로 설정 ( 텍스처 파일 경로 조합용)
-	string BasePath = "../Bin/Resource/Material/";
+	//  기준 루트 경로 설정
+	string BasePath = "../../Resource/Material/";
 	string filePath = BasePath + mtlPath;
 
 	// .mtl 파일 열기
@@ -133,10 +172,11 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 
 	// 머티리얼 객체 생성 및 텍스처 설정
 	CMaterial* mat = CMaterial::Create();
-	mat->Set_Key(mtlPath);
+	mat->Set_MatrialKey(mtlPath);
 	mat->Set_Diffuse(tex);
 	// 머티리얼 맵에 등록 (이름으로 저장)
 	m_materialMap[mtlPath] = mat;
+	m_materialName.push_back(mtlPath);
 
 	return mat;
 }
@@ -147,7 +187,9 @@ CMesh* CResourceMgr::GetMesh(const std::string& key)
 	if (iter != m_meshMap.end()) {
 		return iter->second;
 	}
-	return nullptr;
+	else {
+		return LoadMeshFromOBJ(key);
+	}
 }
 
 CTexture* CResourceMgr::GetTexture(const std::string& key)
@@ -156,7 +198,9 @@ CTexture* CResourceMgr::GetTexture(const std::string& key)
 	if (iter != m_textureMap.end()) {
 		return iter->second;
 	}
-	return nullptr;
+	else {
+		return LoadTexture(key);
+	}
 }
 
 CMaterial* CResourceMgr::GetMaterial(const std::string& key)
@@ -165,7 +209,9 @@ CMaterial* CResourceMgr::GetMaterial(const std::string& key)
 	if (iter != m_materialMap.end()) {
 		return iter->second;
 	}
-	return nullptr;
+	else {
+		return LoadMaterialFromMTL(key);
+	}
 }
 
 void CResourceMgr::Free()
@@ -186,3 +232,4 @@ void CResourceMgr::Free()
 	}
 	m_meshMap.clear();
 }
+

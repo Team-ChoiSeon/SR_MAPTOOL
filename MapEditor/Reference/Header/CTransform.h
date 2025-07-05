@@ -39,6 +39,7 @@ public:
     _vec3 Get_Orbit() { return m_vOrbit; }
     _vec3 Get_Look() { return m_vLook; }
 
+    string Get_ComponentName() const override;
     CGameObject* Get_Parent() { if (m_pParent) return m_pParent->m_pOwner;  return nullptr; }
 
     const _matrix& Get_WorldMatrix() const { return m_WorldMat; }
@@ -67,7 +68,6 @@ private:
     _matrix m_WorldMat;
     _matrix m_WorldPosMat;
     CTransform* m_pParent;
-
 
 };
 

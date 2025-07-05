@@ -27,7 +27,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	//파일 열기
 	ifstream in(path);
 	if (!in.is_open()) {
-		MSG_BOX(L"오브젝트 로딩 파일 오류가 생겼습니다");
+		MSG_BOX(L"OBJ 로딩 파일 오류가 생겼습니다");
 		return E_FAIL;
 	}
 
@@ -144,7 +144,6 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	memcpy(pIBData, indices.data(), indices.size() * sizeof(DWORD));
 	m_pIB->Unlock();
 
-	//m_strKey = path;
 	return S_OK;
 }
 
@@ -154,7 +153,6 @@ void CMesh::Render(LPDIRECT3DDEVICE9 pDevice)
 {
 
 	pDevice->SetFVF(m_dwFVF);
-	
 	pDevice->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
 	pDevice->SetIndices(m_pIB);
 	// 렌더링

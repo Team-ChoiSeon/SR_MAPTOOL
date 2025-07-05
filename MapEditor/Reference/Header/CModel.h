@@ -30,10 +30,14 @@ public:
 
     CMesh* Get_Mesh();
     CMaterial* Get_Material();
+    AABB Get_AABB();
+    string Get_ComponentName() const override;
 
 private:
     CMesh* m_pMesh;
     CMaterial* m_pMaterial;
+    int m_iMeshIndex;
+    int m_iMaterialIndex;
 
 private:
     void Free() override;

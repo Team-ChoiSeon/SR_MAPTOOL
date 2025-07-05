@@ -3,6 +3,7 @@
 #include "CComponent.h"
 
 BEGIN(Engine)
+static vector<string>ComponentList = { "Transform","Camera","Model","InputSystem"};
 
 class ENGINE_DLL CGameObject :
 	public CBase
@@ -17,6 +18,7 @@ public:
 
 public:
 	static CGameObject* Create(json jObj);
+	static CGameObject* CreateDeafult();
 	HRESULT Ready_GameObject(json jObj);
 	void Update_GameObject(_float& dt);
 	void LateUpdate_GameObject(_float& dt);
@@ -26,9 +28,13 @@ public:
 	void Deserialize(const json& inJson);
 
 	const string& Get_Name() { return ClassName; }
-	void Set_Name(const string& name) { InstanceName = name; }
+	void Set_InstanceName(const string& name) { InstanceName = name; }
 	string Get_InstanceName();
+	string Get_LayerName() { return LayerName; };
+	void Set_LayerName(const string& layer) { LayerName = layer; };
 
+	void Add_Component_ByName(const string& name);
+	type_index typeid_from_string(const string& name);
 public:
 	template<typename T, typename ...Args>
 	T* Add_Component(Args&& ...args);
@@ -43,11 +49,10 @@ public:
 	void Remove_Component();
 
 protected:
-	int ObjCount;
 	string ClassName;
 	string InstanceName;
 	string LayerName;
-	ImVec2 size{ 300, 400 };
+	ImVec2 size{ 300, 0 };
 	unordered_map<type_index, CComponent*> m_ComponentMap;
 
 private:
@@ -101,5 +106,6 @@ inline void CGameObject::Remove_Component()
 	m_ComponentMap.erase(iter);
 	Safe_Release(target);
 }
+
 
 END
