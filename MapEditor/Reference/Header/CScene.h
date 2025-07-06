@@ -27,9 +27,11 @@ public:
     const string& Get_Name() { return m_Name; }
     void Set_Name(const string& name) { m_Name = name; };
     CLayer* Get_Layer(string id);
+    const unordered_map<string, CLayer*>& Get_Layers() { return m_mapLayer; }
     const vector<string>& Get_LayerNames() const { return m_LayerNames; }
     void Serialize(json& jScene) const;
     void Deserialize(const json& jScene);
+    void SwapLayer(CGameObject* target, const string& from, const string& destination);
 
 protected:
     void Init_Layer();
@@ -42,7 +44,7 @@ protected:
     string m_Name;
     unordered_map<string, CLayer*> m_mapLayer;
     vector<string> m_LayerNames;
-
+    _bool m_bAddingLayer;
 private:
     virtual void Free();
 

@@ -36,43 +36,61 @@ void CLayer::LateUpdate_Layer(_float& dt)
 		obj->LateUpdate_GameObject(dt);
 	}
 }
+
 void CLayer::Render_Panel()
 {
 	if (m_ObjectList.empty())
 		return;
 
-	// 오브젝트 리스트 출력 (트리 형식)
-	if (ImGui::TreeNode(("Objects (" + std::to_string(m_ObjectList.size()) + ")").c_str()))
+	for (auto it = m_ObjectList.begin(); it != m_ObjectList.end(); )
 	{
-		for (auto* obj : m_ObjectList)
-		{
-			if (!obj) continue;
-
-			string objID = "##" + obj->Get_InstanceName();
-			ImGui::PushID(objID.c_str());
-
-			bool isSelected = (CSceneMgr::GetInstance()->Get_SelectedObject() == obj);
-			if (ImGui::Selectable(obj->Get_InstanceName().c_str(), isSelected))
-			{
-				CSceneMgr::GetInstance()->Set_SelectedObject(obj);
-			}
-
-			ImGui::PopID();
+		CGameObject* obj = *it;
+		if (!obj) {
+			it = m_ObjectList.erase(it);
+			continue;
 		}
-		ImGui::TreePop();
+
+		string objID = "##" + obj->Get_InstanceName();
+		ImGui::PushID(objID.c_str());
+
+		bool isSelected = (CSceneMgr::GetInstance()->Get_SelectedObject() == obj);
+		if (ImGui::Selectable(obj->Get_InstanceName().c_str(), isSelected))
+		{
+			CSceneMgr::GetInstance()->Set_SelectedObject(obj);
+		}
+
+		// 우클릭 팝업 메뉴
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Delete"))
+			{
+				// 선택 중이었다면 해제
+				if (isSelected)
+					CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
+
+				//Remove_Object(obj->Get_InstanceName());
+				Remove_ByIterator(it);
+				ImGui::EndPopup();
+				ImGui::PopID();
+				continue; // 다음 반복
+			}
+			ImGui::EndPopup();
+		}
+
+		ImGui::PopID();
+		++it;
 	}
 
 	ImGui::Separator();
 
-	 //선택된 오브젝트의 에디터 패널 출력
+	// 선택된 오브젝트의 패널 출력
 	if (CGameObject* selected = CSceneMgr::GetInstance()->Get_SelectedObject())
 	{
-			ImGui::PushID(selected);
-			selected->Render_Panel();
-			ImGui::PopID();
+		ImGui::PushID(selected);
+		selected->Render_Panel();
+		ImGui::PopID();
 	}
 }
-
 
 HRESULT CLayer::Add_Object(CGameObject* object)
 {
@@ -98,7 +116,7 @@ void CLayer::Remove_Object(const string& tag)
 	//순회용 벡터 검색
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
 		[&tag](CGameObject* data)->bool {
-			return data->Get_Name() == tag;
+			return data->Get_InstanceName() == tag;
 		});
 
 	if (iter != m_ObjectList.end()) {
@@ -106,6 +124,17 @@ void CLayer::Remove_Object(const string& tag)
 		m_ObjectList.erase(iter);
 	}
 
+	Safe_Release(target);
+}
+
+void CLayer::Remove_ByIterator(vector<CGameObject*>::iterator& iter)
+{
+	CGameObject* target = nullptr;
+
+	if (iter != m_ObjectList.end()) {
+		target = (*iter);
+		iter = m_ObjectList.erase(iter);
+	}
 	Safe_Release(target);
 }
 
@@ -142,7 +171,24 @@ void CLayer::Deserialize(const json& jLayer)
 }
 
 
-void CLayer::Pop_Object(const string& tag)
+CGameObject* CLayer::Find_Object(const string& tag)
+{
+	CGameObject* target = nullptr;
+
+	//순회용 벡터 검색
+	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
+		[&tag](CGameObject* data)->bool {
+			return data->Get_InstanceName() == tag;
+		});
+
+	if (iter != m_ObjectList.end()) {
+		target = (*iter);
+	}
+
+	return target;
+}
+
+CGameObject* CLayer::Pop_Object(const string& tag)
 {
 	CGameObject* target = nullptr;
 
@@ -156,6 +202,8 @@ void CLayer::Pop_Object(const string& tag)
 		target = (*iter);
 		m_ObjectList.erase(iter);
 	}
+
+	return target;
 }
 
 HRESULT CLayer::Ready_Layer()

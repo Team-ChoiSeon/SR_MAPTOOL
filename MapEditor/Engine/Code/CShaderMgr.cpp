@@ -1,11 +1,13 @@
 #include "Engine_Define.h"
 #include "CShaderMgr.h"
 #include "CFunction.h"
+#include "CGraphicDev.h"
 namespace fs = std::filesystem;
 
 IMPLEMENT_SINGLETON(CShaderMgr)
 
 CShaderMgr::CShaderMgr()
+	:m_pDevice(nullptr)
 {
 }
 
@@ -16,7 +18,14 @@ CShaderMgr::~CShaderMgr()
 
 HRESULT CShaderMgr::Ready_Shader(LPDIRECT3DDEVICE9 pDevice)
 {
-	m_pDevice = pDevice;
+	//m_pDevice = pDevice;
+	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
+	if (!m_pDevice)
+	{
+		MessageBoxA(nullptr, "디바이스 초기화 실패", "에러", MB_OK);
+		return E_FAIL;
+	}
+
 	Load_AllShaders("../../Shader/");
 	return S_OK;
 }

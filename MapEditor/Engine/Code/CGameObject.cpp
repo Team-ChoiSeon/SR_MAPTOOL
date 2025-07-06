@@ -7,6 +7,7 @@
 #include "CCamera.h"
 #include "CPickable.h"
 #include "CInputSystem.h"
+#include "CLight.h"
 
 #include "Cscene.h"
 
@@ -86,10 +87,13 @@ void CGameObject::Render_Panel()
 		if (ImGui::BeginCombo("##Layer", currentPreview)) {
 			for (int i = 0; i < layerList.size(); ++i) {
 				bool isSelected = (i == currentLayerIndex);
+
 				if (ImGui::Selectable(layerList[i].c_str(), isSelected)) {
 					currentLayerIndex = i;
+					CSceneMgr::GetInstance()->Get_NowScene()->SwapLayer(this, LayerName, layerList[i]);
 					LayerName = layerList[i]; // 반영
 				}
+
 				if (isSelected)
 					ImGui::SetItemDefaultFocus();
 			}
@@ -108,7 +112,6 @@ void CGameObject::Render_Panel()
 			InstanceName = nameBuf;
 		}
 	}
-
 	for (auto& pair : m_ComponentMap) {
 		pair.second->Render_Panel(size);
 	}
@@ -169,10 +172,7 @@ void CGameObject::Serialize(json& outJson) const
 		const CComponent* comp = pair.second;
 		if (!comp)
 			continue;
-
 		// 컴포넌트 이름 추출
-	
-
 		json jComp;
 		comp->Serialize(jComp);
 		string compName = comp->Get_ComponentName();
@@ -186,6 +186,8 @@ void CGameObject::Deserialize(const json& inJson)
 {
 	ClassName = inJson["class"];
 	InstanceName = inJson["name"];
+	LayerName= inJson["Layer"] ;
+
 	if (inJson.contains("components") && inJson["components"].is_object())
 	{
 		const json& jComps = inJson["components"];
@@ -193,6 +195,7 @@ void CGameObject::Deserialize(const json& inJson)
 		TryLoadComponent<CTransform>(this, jComps, "CTransform");
 		TryLoadComponent<CCamera>(this, jComps, "CCamera");
 		TryLoadComponent<CModel>(this, jComps, "CModel");
+		TryLoadComponent<CLight>(this, jComps, "CLight");
 		//===맵툴용 필수 컴포넌트====/
 		Add_Component<CPickable>();
 	}
@@ -203,6 +206,8 @@ void CGameObject::Add_Component_ByName(const string& name) {
 	else if (name == "Model") Add_Component<CModel>();
 	else if (name == "Camera") Add_Component<CCamera>();
 	else if (name == "InputSystem") Add_Component<CInputSystem>();
+	else if (name == "Light") Add_Component<CLight>();
+
 }
 
 type_index CGameObject::typeid_from_string(const string& name)
@@ -211,6 +216,7 @@ type_index CGameObject::typeid_from_string(const string& name)
 	if (name == "Model") return typeid(CModel);
 	if (name == "Camera") return typeid(CCamera);
 	if (name == "InputSystem") return typeid(CInputSystem);
+	if (name == "Light") return typeid(CLight);
 
 	return typeid(void); // fallback
 }

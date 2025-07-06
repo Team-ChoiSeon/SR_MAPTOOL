@@ -1,6 +1,7 @@
 #include "Engine_Define.h"
 #include "CPrefabMgr.h"
 #include "CGameObject.h"
+#include "CSceneMgr.h"
 
 IMPLEMENT_SINGLETON(CPrefabMgr)
 
@@ -70,8 +71,12 @@ CGameObject* CPrefabMgr::Instantiate(const string& prefabName)
     if (m_instanceCounter.find(prefabName) == m_instanceCounter.end()) {
         m_instanceCounter[prefabName] = 0;
     }
-    m_instanceCounter[prefabName] += 1;
-    string instanceName = prefabName + "_" + std::to_string(m_instanceCounter[prefabName]);
+    string instanceName;
+    do {
+        m_instanceCounter[prefabName] += 1;
+        instanceName = prefabName + "_" + std::to_string(m_instanceCounter[prefabName]);
+    } while (CSceneMgr::GetInstance()->Is_ObjectNameExist(instanceName));
+
     pObj->Set_InstanceName(instanceName);
 
     return pObj;

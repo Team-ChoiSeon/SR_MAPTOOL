@@ -1,9 +1,7 @@
 {
+  "Layer": "Default",
   "class": "Crate",
   "name": "WoodenCrate",
-  "mesh": "crate.obj",
-  "material": "wood.mtl",
-  "defaultScale": [1.0, 1.0, 1.0],
   "components": {
     "CTransform": {
       "scale": [1.0, 1.0, 1.0]

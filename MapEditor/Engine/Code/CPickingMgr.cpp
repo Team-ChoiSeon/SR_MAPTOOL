@@ -63,6 +63,8 @@ void CPickingMgr::Update_Picking(_float& dt)
 
 void CPickingMgr::LateUpdate_Picking(_float& dt)
 {
+	if (CInputMgr::GetInstance()->Mouse_Hold(DIM_LB)) return;
+
 	if (m_PickTarget.empty()) m_pTarget = nullptr;
 
 	auto it = min_element(m_PickTarget.begin(), m_PickTarget.end(),
