@@ -36,6 +36,7 @@ public:
     void SerializeScene(const wstring& path);
     void DeSerializeScene(const wstring& path);
     void Create_Object();
+    bool Is_ObjectNameExist(const string& name) const;
     CGameObject* Get_SelectedObject() { return selectObj; };
     void Set_SelectedObject(CGameObject* obj) { selectObj = obj; };
 private:

@@ -19,8 +19,12 @@ public:
 
 public:
     HRESULT Add_Object(CGameObject* object);
-    void Pop_Object(const string& tag);
+
+    CGameObject* Find_Object(const string& tag);
+    CGameObject* Pop_Object(const string& tag);
     void Remove_Object(const string& tag);
+    void Remove_ByIterator(vector<CGameObject*>::iterator& iter);
+
     _bool Has_Object(const string& tag);
     vector<CGameObject*>&  Get_Object() { return m_ObjectList; };
     void Set_Name(const string& name) { m_LayerName = name; }

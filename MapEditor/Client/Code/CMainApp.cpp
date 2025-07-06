@@ -39,8 +39,10 @@ HRESULT CMainApp::Ready_MainApp()
 
 	if (FAILED(CResourceMgr::GetInstance()->Ready_Resource()))
 		return E_FAIL;
+	if (FAILED(CShaderMgr::GetInstance()->Ready_Shader(m_pGraphicDev)))
+		return E_FAIL;
 	if (FAILED(CPrefabMgr::GetInstance()->Ready_Prefabs()))
-		return E_FAIL;	
+		return E_FAIL;
 	if (FAILED(CInputMgr::GetInstance()->Ready_InputDev(g_HInst, g_hWnd)))
 		return E_FAIL;
 	if (FAILED(CRenderMgr::GetInstance()->Ready_RenderMgr(m_pGraphicDev)))
@@ -55,8 +57,7 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;	
 	if (FAILED(CEditorSystem::GetInstance()->Ready_EditorSystem()))
 		return E_FAIL;
-	if (FAILED(CShaderMgr::GetInstance()->Ready_Shader(m_pGraphicDev)))
-		return E_FAIL;
+
 
 	return S_OK;
 }

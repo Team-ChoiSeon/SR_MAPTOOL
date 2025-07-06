@@ -57,8 +57,30 @@ void CScene::Render_Panel()
 	ImGui::SetNextWindowSize(panelSize, ImGuiCond_Always);
 
 	ImGui::Begin("Scene Panel", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-
 	ImGui::Text("Scene: %s", m_Name.c_str());
+
+	ImGui::Separator();
+	static char buffer[128] = "";
+
+	if (ImGui::Button("Add Layer")) {
+		m_bAddingLayer = true; // 버튼 누르면 입력창 열림
+	}
+
+	if (m_bAddingLayer) {
+		ImGui::InputText("##Add Layer", buffer, IM_ARRAYSIZE(buffer));
+
+		if (ImGui::Button("Add")) {
+			Add_Layer(buffer);
+			m_bAddingLayer = false;      // 입력 완료 후 창 닫기
+			buffer[0] = '\0';          // 입력 버퍼 초기화 (선택)
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			m_bAddingLayer = false;
+			buffer[0] = '\0';
+		}
+	}
 
 	ImGui::Separator();
 
@@ -75,7 +97,6 @@ void CScene::Render_Panel()
 		{
 			if (!pLayer->Get_Object().empty())
 				pLayer->Render_Panel();
-
 			ImGui::TreePop();
 		}
 	}
@@ -97,6 +118,20 @@ void CScene::Add_Layer(const string& layerName)
 		m_mapLayer[layerName] = layer;
 		m_LayerNames.push_back(layerName);
 	}
+	else {
+		MessageBoxA(0, "Layer Already Exist", "AddLayer", MB_OK);
+	}
+}
+
+void CScene::SwapLayer(CGameObject* target, const string& from, const string& destination)
+{
+	CGameObject* obj = m_mapLayer[from]->Find_Object(target->Get_InstanceName());
+	
+	if (FAILED(m_mapLayer[destination]->Add_Object(obj))) {
+		MessageBoxA(0, "Same Name Object Already Exist", "AddLayer", MB_OK);
+		return;
+	}
+	m_mapLayer[from]->Pop_Object(target->Get_InstanceName());
 }
 
 void CScene::Free_Layer(string layer)
@@ -173,9 +208,9 @@ void CScene::Deserialize(const json& jScene)
 			pLayer->Set_Name(layerName);
 			pLayer->Deserialize(jLayer); // 레이어 역직렬화
 			m_mapLayer[layerName] = pLayer;
-			
+
 			auto iter = find_if(m_LayerNames.begin(), m_LayerNames.end(), [&layerName](auto names)->bool {return names == layerName;});
-			if(iter == m_LayerNames.end())
+			if (iter == m_LayerNames.end())
 				m_LayerNames.push_back(layerName);
 		}
 	}

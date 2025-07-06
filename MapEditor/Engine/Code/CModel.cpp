@@ -198,25 +198,40 @@ void CModel::Render_Panel(ImVec2 size)
 			}
 		}
 
-		// 셰이더 선택
 		const auto& shaderList = CShaderMgr::GetInstance()->Get_ShaderName();
 		if (!shaderList.empty()) {
 			if (m_iShaderIndex >= shaderList.size())
 				m_iShaderIndex = 0;
 
-			if (ImGui::BeginCombo("Shader", shaderList[m_iShaderIndex].c_str())) {
+			const string& selectedShader = shaderList[m_iShaderIndex];
+			const string& currentShader = m_pMaterial->Get_ShaderKey(); // <- 현재 적용된 셰이더 이름
+
+			bool notApplied = (selectedShader != currentShader);
+
+			if (ImGui::BeginCombo("Shader", selectedShader.c_str())) {
 				for (int i = 0; i < shaderList.size(); ++i) {
 					bool isSelected = (m_iShaderIndex == i);
 					if (ImGui::Selectable(shaderList[i].c_str(), isSelected)) {
 						m_iShaderIndex = i;
-						m_pMaterial->Set_Shader(shaderList[i]);
+						// 셰이더 실제 적용은 아래 버튼에서 할 수 있게 하거나 자동화
 					}
 					if (isSelected)
 						ImGui::SetItemDefaultFocus();
 				}
 				ImGui::EndCombo();
 			}
+
+			if (notApplied) {
+				ImGui::TextColored(ImVec4(1, 0.5f, 0, 1), "Not Applide"); // 주황 경고
+				if (ImGui::Button("Apply")) {
+					m_pMaterial->Set_Shader(selectedShader);
+				}
+			}
+			else {
+				ImGui::TextColored(ImVec4(0, 1, 0, 1), "Applied"); // 녹색 체크
+			}
 		}
+
 	}
 
 	ImGui::PopID(); // PushID에 대한 대응

@@ -3,7 +3,7 @@
         "Default": {
             "objects": [
                 {
-                    "Layer": "",
+                    "Layer": "Default",
                     "class": "CPlayer",
                     "components": {
                         "CCamera": {
@@ -56,7 +56,7 @@
                     "name": "Player"
                 },
                 {
-                    "Layer": "",
+                    "Layer": "Default",
                     "class": "Crate",
                     "components": {
                         "CCamera": {

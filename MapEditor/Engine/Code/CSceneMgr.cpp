@@ -165,12 +165,11 @@ void CSceneMgr::Save_LoadPanel()
 {
 	ImVec2 pos = ImVec2(WINCX - 600, 10.0f);
 	ImVec2 size = ImVec2(300.0f, 80.0f);
-	ImGui::SetNextWindowPos(pos, ImGuiCond_Always);
+	ImGui::SetNextWindowPos(pos, ImGuiCond_Once);
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::Begin("Scene_Saver", nullptr,
 		ImGuiWindowFlags_NoResize | 
-		ImGuiWindowFlags_NoCollapse | 
-		ImGuiWindowFlags_NoMove);
+		ImGuiWindowFlags_NoCollapse );
 
 	ImGui::Spacing();
 
@@ -289,3 +288,13 @@ void CSceneMgr::Create_Object()
 		ImGui::EndPopup();
 	}
 }
+
+bool CSceneMgr::Is_ObjectNameExist(const string& name) const {
+	for (auto& pair : m_CurScene->Get_Layers()) {
+		if (pair.second->Find_Object(name) != nullptr) {
+			return true;
+		}
+	}
+	return false;
+}
+
