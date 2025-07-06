@@ -16,6 +16,7 @@
 #include "CPrefabMgr.h"
 #include "CEditorSystem.h"
 #include "CShaderMgr.h"
+#include "CLightMgr.h"
 CMainApp::CMainApp()
 	:m_pDeviceClass(nullptr)
 	, m_pGraphicDev(nullptr)
@@ -53,6 +54,8 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;	
 	if (FAILED(CCameraMgr::GetInstance()->Ready_CameraMgr()))
 		return E_FAIL;		
+	if (FAILED(CLightMgr::GetInstance()->Ready_Light(m_pGraphicDev)))
+		return E_FAIL;
 	if (FAILED(CPickingMgr::GetInstance()->Ready_Picking(g_hWnd)))
 		return E_FAIL;	
 	if (FAILED(CEditorSystem::GetInstance()->Ready_EditorSystem()))
@@ -70,6 +73,7 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
 	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->Update_Editor(fTimeDelta);
+	CLightMgr::GetInstance()->Update_Light(fTimeDelta);
 
 	return 0;
 }
@@ -83,6 +87,7 @@ void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 	GUISystem::GetInstance()->LateUpdate_GUI(fTimeDelta);
 	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->LateUpdate_Editor(fTimeDelta);
+	CLightMgr::GetInstance()->LateUpdate_Light(fTimeDelta);
 
 }
 
@@ -98,10 +103,6 @@ void CMainApp::Render_MainApp()
 	GUISystem::GetInstance()->Render_GUI();
 	CEditorSystem::GetInstance()->Render_Gizmo();
 	GUISystem::GetInstance()->Render_End();
-	/*
-	m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);*/
 
 	m_pDeviceClass->Render_End();
 }
@@ -136,5 +137,6 @@ void CMainApp::Free()
 	CPrefabMgr::GetInstance()->DestroyInstance();
 	CEditorSystem::GetInstance()->DestroyInstance();
 	CShaderMgr::GetInstance()->DestroyInstance();
+	CLightMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

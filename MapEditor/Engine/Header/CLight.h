@@ -20,8 +20,15 @@ public:
     string Get_ComponentName() const override { return "CLight"; };
     void Serialize(json& outJson) const override;
     void Deserialize(const json& inJson) override;
+    _vec3 Get_Pos() { return m_tLight.Position; }
+    D3DLIGHT9* Get_Light() { return &m_tLight; }
 private:
-    
+    void Render_Directional();
+    void Render_Point();
+    void Render_Spot();
+private:
+    D3DLIGHT9 m_tLight;
+    int m_iOption;
 private:
     void Free() override;
 };
