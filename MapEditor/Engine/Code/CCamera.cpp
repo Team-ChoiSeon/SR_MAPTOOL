@@ -143,6 +143,7 @@ void CCamera::Render_Panel(ImVec2 size)
 
 	if (ImGui::CollapsingHeader("Camera"))
 	{
+		Delete_ComponentPane();
 
 		bool isMain = (CCameraMgr::GetInstance()->Get_MainCamera() == this);
 		bool clicked = ImGui::Selectable("Set Camera##CameraToggle", isMain, ImGuiSelectableFlags_DontClosePopups);

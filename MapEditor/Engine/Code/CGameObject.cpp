@@ -54,6 +54,19 @@ void CGameObject::Update_GameObject(_float& dt)
 		if (pair.second->Get_ComponentActive())
 			pair.second->Update_Component(dt);
 	}
+
+	for (auto it = m_ComponentMap.begin(); it != m_ComponentMap.end(); )
+	{
+		if (it->second && it->second->Get_ComponentDelete()) {
+			CComponent* comp = it->second;
+			it = m_ComponentMap.erase(it); 
+			Safe_Release(comp);
+		}
+		else {
+			++it;
+		}
+	}
+
 }
 
 void CGameObject::LateUpdate_GameObject(_float& dt)
@@ -112,6 +125,8 @@ void CGameObject::Render_Panel()
 			InstanceName = nameBuf;
 		}
 	}
+
+
 	for (auto& pair : m_ComponentMap) {
 		pair.second->Render_Panel(size);
 	}
@@ -207,7 +222,6 @@ void CGameObject::Add_Component_ByName(const string& name) {
 	else if (name == "Camera") Add_Component<CCamera>();
 	else if (name == "InputSystem") Add_Component<CInputSystem>();
 	else if (name == "Light") Add_Component<CLight>();
-
 }
 
 type_index CGameObject::typeid_from_string(const string& name)

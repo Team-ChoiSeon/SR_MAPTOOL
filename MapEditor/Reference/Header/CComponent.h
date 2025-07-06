@@ -20,12 +20,17 @@ public:
     virtual CComponent* Clone() const PURE;
     virtual void Serialize(json& outJson) const PURE;
     virtual void Deserialize(const json& inJson) PURE;
+
 public:
     bool Get_ComponentActive() { return m_bActive; }
+    bool Get_ComponentDelete() { return m_bDelete; }
     void Set_ComponentActive(bool active) { m_bActive = active; }
     virtual string Get_ComponentName() const PURE;
 protected:
+    void Delete_ComponentPane();
+protected:
     bool m_bActive = true;
+    bool m_bDelete = false;
 public:
     CGameObject* m_pOwner = nullptr;
 };

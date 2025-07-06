@@ -82,8 +82,8 @@ void CInputSystem::LateUpdate_Component(_float& dt)
 void CInputSystem::Render_Panel(ImVec2 size)
 {
 	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-
 	ImGui::Checkbox("##ActivInput", &m_bActive); ImGui::SameLine();
+	Delete_ComponentPane();
 	ImGui::Text("Valid Input");
 
 	ImGui::SliderFloat("Move Speed", &m_fMoveSpeed, 0.0f, 50.0f, "%.1f");

@@ -2,6 +2,25 @@
 #include "CLight.h"
 
 
+CLight::CLight()
+{
+}
+
+CLight::~CLight()
+{
+}
+
+CLight* CLight::Create()
+{
+	CLight* instance = new CLight;
+
+	if (FAILED(instance->Ready_Component())) {
+		Safe_Release(instance);
+		instance = nullptr;
+	}
+	return nullptr;
+}
+
 HRESULT CLight::Ready_Component()
 {
 	return E_NOTIMPL;
