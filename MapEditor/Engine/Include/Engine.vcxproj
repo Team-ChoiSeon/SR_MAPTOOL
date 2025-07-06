@@ -179,6 +179,7 @@
     <ClInclude Include="..\Header\CInputMgr.h" />
     <ClInclude Include="..\Header\CInputSystem.h" />
     <ClInclude Include="..\Header\CLayer.h" />
+    <ClInclude Include="..\Header\CLight.h" />
     <ClInclude Include="..\Header\CMaterial.h" />
     <ClInclude Include="..\Header\CMesh.h" />
     <ClInclude Include="..\Header\CModel.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="..\Code\CInputMgr.cpp" />
     <ClCompile Include="..\Code\CInputSystem.cpp" />
     <ClCompile Include="..\Code\CLayer.cpp" />
+    <ClCompile Include="..\Code\CLight.cpp" />
     <ClCompile Include="..\Code\CMaterial.cpp" />
     <ClCompile Include="..\Code\CMesh.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />

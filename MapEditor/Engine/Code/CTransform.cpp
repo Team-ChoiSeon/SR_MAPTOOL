@@ -165,7 +165,6 @@ string CTransform::Get_ComponentName() const
 void CTransform::Render_Panel(ImVec2 size)
 {
 	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
-
 	if (ImGui::CollapsingHeader("Transform")) // 제목
 	{
 		ImGui::BeginChild("##TransformChild", size, true); // 사각형 박스

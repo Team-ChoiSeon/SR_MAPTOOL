@@ -62,6 +62,10 @@ void CPickable::LateUpdate_Component(_float& dt)
 
 void CPickable::Render_Panel(ImVec2 size)
 {
+	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+
+	ImGui::Checkbox("##ActivePickable", &m_bActive); ImGui::SameLine();
+	ImGui::Text("Valid Pick");
 }
 
 CComponent* CPickable::Clone() const
