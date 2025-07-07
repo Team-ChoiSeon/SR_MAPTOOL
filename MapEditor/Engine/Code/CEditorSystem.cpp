@@ -7,6 +7,7 @@
 #include "CGraphicDev.h"
 #include "CInputMgr.h"
 #include "CInputSystem.h"
+#include "GUISystem.h"
 
 IMPLEMENT_SINGLETON(CEditorSystem)
 CEditorSystem::CEditorSystem()
@@ -71,6 +72,7 @@ void CEditorSystem::Render_Gizmo()
 		ImGuizmo::LOCAL,
 		(float*)&m_gizmoWorld
 	);
+	if (GUISystem::GetInstance()->UsingUI()) return;
 
 	//// µð¹ö±ë
 	//ImGui::Text("IsOver: %s", ImGuizmo::IsOver() ? "true" : "false");

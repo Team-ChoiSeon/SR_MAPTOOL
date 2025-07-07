@@ -9,10 +9,12 @@
 #include "CGameObject.h"
 #include "CShaderMgr.h"
 #include "CCameraMgr.h"
+#include "CInputMgr.h"
 #include "CCamera.h"
 
 CModel::CModel()
 	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
+	, uvPos{0,0,0,0}, m_fspeed(0.f)
 {
 }
 
@@ -39,6 +41,8 @@ HRESULT CModel::Ready_Component()
 
 void CModel::Update_Component(_float& dt)
 {
+	uvPos.x += dt* m_fspeed;
+	uvPos.y += dt * m_fspeed;
 }
 
 void CModel::LateUpdate_Component(_float& dt)
@@ -72,6 +76,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		if (e_uvMode == sync) {
 			D3DXVECTOR4 transScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
 			shader->SetVector("g_UVScale", &transScale);
+			shader->SetVector("g_UVPosition", &uvPos);
 		}
 		else {
 			shader->SetVector("g_UVScale", &uvScale);
@@ -159,6 +164,7 @@ void CModel::Render_Panel(ImVec2 size)
 				ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
 			}
 		}
+		ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
 
 		ImGui::Separator();
 		ImGui::Text("UV Scale:");
