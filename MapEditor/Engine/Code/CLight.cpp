@@ -72,7 +72,6 @@ void CLight::Render_Panel(ImVec2 size)
 	{
 		Delete_ComponentPane();
 
-		m_iOption = 0; // 현재 선택된 인덱스 (0, 1, 2 등)
 		ImGui::RadioButton("POINT", &m_iOption, 0);
 		ImGui::RadioButton("DIRECTIONAL", &m_iOption, 1);
 		ImGui::RadioButton("SPOT", &m_iOption, 2);
@@ -107,10 +106,48 @@ CComponent* CLight::Clone() const
 
 void CLight::Serialize(json& outJson) const
 {
+		const auto& l = m_tLight;
+
+		outJson["type"] = l.Type;
+		outJson["diffuse"] = { l.Diffuse.r, l.Diffuse.g, l.Diffuse.b, l.Diffuse.a };
+		outJson["ambient"] = { l.Ambient.r, l.Ambient.g, l.Ambient.b, l.Ambient.a };
+		outJson["specular"] = { l.Specular.r, l.Specular.g, l.Specular.b, l.Specular.a };
+		outJson["position"] = { l.Position.x, l.Position.y, l.Position.z };
+		outJson["direction"] = { l.Direction.x, l.Direction.y, l.Direction.z };
+		outJson["range"] = l.Range;
+		outJson["attenuation"] = { l.Attenuation0, l.Attenuation1, l.Attenuation2 };
+		outJson["theta"] = l.Theta;
+		outJson["phi"] = l.Phi;
 }
 
 void CLight::Deserialize(const json& inJson)
 {
+	auto& l = m_tLight;
+
+	l.Type = inJson.value("type", D3DLIGHT_DIRECTIONAL); // 기본값
+	auto diff = inJson["diffuse"];
+	l.Diffuse = { diff[0], diff[1], diff[2], diff[3] };
+
+	auto amb = inJson["ambient"];
+	l.Ambient = { amb[0], amb[1], amb[2], amb[3] };
+
+	auto spec = inJson["specular"];
+	l.Specular = { spec[0], spec[1], spec[2], spec[3] };
+
+	auto pos = inJson["position"];
+	l.Position = { pos[0], pos[1], pos[2] };
+
+	auto dir = inJson["direction"];
+	l.Direction = { dir[0], dir[1], dir[2] };
+
+	l.Range = inJson["range"];
+	auto att = inJson["attenuation"];
+	l.Attenuation0 = att[0];
+	l.Attenuation1 = att[1];
+	l.Attenuation2 = att[2];
+
+	l.Theta = inJson.value("theta", 0.0f);
+	l.Phi = inJson.value("phi", 0.0f);
 }
 
 void CLight::Render_Directional()

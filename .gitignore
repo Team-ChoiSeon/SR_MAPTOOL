@@ -14,7 +14,11 @@
 *.userprefs
 !Reference/**
 !Resource/**
+# Reference 폴더 무시
+Reference/
 
+# Resource 폴더 무시
+Resource/
 # Mono auto generated files
 mono_crash.*
 

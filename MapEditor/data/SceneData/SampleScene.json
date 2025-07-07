@@ -10,7 +10,7 @@
                             "eye": [
                                 -0.6138990521430969,
                                 1.4496281147003174,
-                                0.0
+                                5.960464477539063e-08
                             ],
                             "far": 200.0,
                             "fov": 45.0,
@@ -29,9 +29,48 @@
                             ],
                             "yaw": 90.0
                         },
+                        "CLight": {
+                            "ambient": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "attenuation": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "diffuse": [
+                                0.0,
+                                0.3607843220233917,
+                                0.0,
+                                0.0
+                            ],
+                            "direction": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "phi": 0.0,
+                            "position": [
+                                -0.6138990521430969,
+                                1.4496281147003174,
+                                5.960464477539063e-08
+                            ],
+                            "range": 0.0,
+                            "specular": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "theta": 0.0,
+                            "type": 3
+                        },
                         "CModel": {
-                            "matKey": "SandyTile.mtl",
-                            "mesh": "SandyTile.obj",
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": null,
@@ -39,7 +78,7 @@
                             "position": [
                                 -0.6138990521430969,
                                 1.4496281147003174,
-                                0.0
+                                5.960464477539063e-08
                             ],
                             "rotation": [
                                 0.0,
@@ -83,8 +122,8 @@
                             "yaw": 90.0
                         },
                         "CModel": {
-                            "matKey": "SandyTile.mtl",
-                            "mesh": "SandyTile.obj",
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": null,

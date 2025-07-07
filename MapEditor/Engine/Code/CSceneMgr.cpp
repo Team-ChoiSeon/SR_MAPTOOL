@@ -209,7 +209,7 @@ void CSceneMgr::SerializeScene(const wstring& path)
 	// 1. 씬 직렬화
 	json jScene;
 	m_CurScene->Serialize(jScene);
-
+	//jScene = SortJsonKeys(jScene);
 	// 2. JSON 문자열로 변환 (들여쓰기 4칸)
 	string jsonText = jScene.dump(4); // UTF-8 문자열
 
@@ -298,3 +298,22 @@ bool CSceneMgr::Is_ObjectNameExist(const string& name) const {
 	return false;
 }
 
+json CSceneMgr::SortJsonKeys(const json& j)
+{
+	if (j.is_object()) {
+		map<string, json> ordered(j.begin(), j.end());
+		json result;
+		for (const auto& [key, value] : ordered)
+			result[key] = SortJsonKeys(value);
+		return result;
+	}
+	else if (j.is_array()) {
+		json result = json::array();
+		for (const auto& item : j)
+			result.push_back(SortJsonKeys(item));
+		return result;
+	}
+	else {
+		return j;
+	}
+}

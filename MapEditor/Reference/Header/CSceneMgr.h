@@ -39,6 +39,7 @@ public:
     bool Is_ObjectNameExist(const string& name) const;
     CGameObject* Get_SelectedObject() { return selectObj; };
     void Set_SelectedObject(CGameObject* obj) { selectObj = obj; };
+    json SortJsonKeys(const json& j);
 private:
     unordered_map<string, CScene*> m_SceneContainer;
     vector<string> m_SceneList;                      

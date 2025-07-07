@@ -7,11 +7,11 @@
       "scale": [1.0, 1.0, 1.0]
     },
     "CModel": {
-      "mesh": "SandyTile.obj",
-      "matKey": "SandyTile.mtl",
+      "mesh": "Brick_Wall_009.obj",
+      "matKey": "Brick_Wall_009.mtl",
       "material": {
-        "diffuse": "Ground054_4K_Color.png",
-        "normal": "player_normal.png",
+        "diffuse": "Brick_Wall_009_d.jpg",
+        "normal": "Brick_Wall_009_n.jpg",
         "roughness": "",
         "specular": "",
         "emissive": ""
