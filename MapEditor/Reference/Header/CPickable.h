@@ -29,7 +29,7 @@ private:
     CTransform* m_pTransform;
     CModel* m_pModel;
     RAYHIT myINFO;
-
+    _bool m_bVaildInGame;
 private:
     void Free() override;
 

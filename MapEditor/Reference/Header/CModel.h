@@ -9,6 +9,8 @@ class ENGINE_DLL CModel :
     public CComponent
 {
 private:
+    enum uvMode { sync, custom };
+
     explicit CModel();
     virtual ~CModel();
 public:
@@ -39,7 +41,8 @@ private:
     int m_iMeshIndex;
     int m_iMaterialIndex;
     int m_iShaderIndex;
-
+    uvMode e_uvMode;
+    _vec4 uvScale;
 private:
     void Free() override;
 
