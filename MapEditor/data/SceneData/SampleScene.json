@@ -4,73 +4,12 @@
             "objects": [
                 {
                     "Layer": "Default",
-                    "class": "",
+                    "class": "Crate",
                     "components": {
-                        "CCamera": {
-                            "eye": [
-                                -3.2493433952331543,
-                                3.2769885063171387,
-                                -4.08296537399292
-                            ],
-                            "far": 200.0,
-                            "fov": 45.0,
-                            "look": [
-                                -4.371138828673793e-08,
-                                0.0,
-                                1.0
-                            ],
-                            "near": 0.10000000149011612,
-                            "pitch": 0.0,
-                            "roll": 0.0,
-                            "up": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "yaw": 90.0
-                        },
-                        "CLight": {
-                            "ambient": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "attenuation": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "diffuse": [
-                                0.5945945978164673,
-                                0.16299699246883392,
-                                0.16299699246883392,
-                                0.0
-                            ],
-                            "direction": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "phi": 0.0,
-                            "position": [
-                                -3.2493433952331543,
-                                3.2769885063171387,
-                                -4.08296537399292
-                            ],
-                            "range": 0.0,
-                            "specular": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "theta": 0.0,
-                            "type": 1
-                        },
+                        "CInputSystem": null,
                         "CModel": {
-                            "matKey": "Brick_Wall_009.mtl",
-                            "mesh": "Brick_Wall_009.obj",
+                            "matKey": "Sand_007.mtl",
+                            "mesh": "Sand_007.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": {
@@ -78,83 +17,19 @@
                         },
                         "CTransform": {
                             "position": [
-                                -3.2493433952331543,
-                                3.2769885063171387,
-                                -4.08296537399292
+                                -1.8426777124404907,
+                                0.0,
+                                19.670665740966797
                             ],
                             "rotation": [
-                                0.0,
+                                85.0,
                                 0.0,
                                 0.0
                             ],
                             "scale": [
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        }
-                    },
-                    "name": "1asd"
-                },
-                {
-                    "Layer": "Default",
-                    "class": "",
-                    "components": {
-                        "CModel": {
-                            "matKey": "Brick_Wall_009.mtl",
-                            "mesh": "Brick_Wall_009.obj",
-                            "shader": "g_UVScale.fx"
-                        },
-                        "CPickable": {
-                            "validInGame": true
-                        },
-                        "CTransform": {
-                            "position": [
-                                -4.445985317230225,
-                                5.191624641418457,
-                                0.0
-                            ],
-                            "rotation": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "scale": [
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        }
-                    },
-                    "name": "3zxs"
-                },
-                {
-                    "Layer": "Default",
-                    "class": "",
-                    "components": {
-                        "CModel": {
-                            "matKey": "Brick_Wall_009.mtl",
-                            "mesh": "Brick_Wall_009.obj",
-                            "shader": "g_UVScale.fx"
-                        },
-                        "CPickable": {
-                            "validInGame": true
-                        },
-                        "CTransform": {
-                            "position": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "rotation": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "scale": [
-                                1.0,
-                                1.0,
-                                1.0
+                                30.0,
+                                30.00000762939453,
+                                5.0
                             ]
                         }
                     },
@@ -163,134 +38,7 @@
             ]
         },
         "UI": {
-            "objects": [
-                {
-                    "Layer": "UI",
-                    "class": "",
-                    "components": {
-                        "CCamera": {
-                            "eye": [
-                                1.024579644203186,
-                                2.6554982662200928,
-                                5.960464477539063e-08
-                            ],
-                            "far": 200.0,
-                            "fov": 45.0,
-                            "look": [
-                                -4.371138828673793e-08,
-                                0.0,
-                                1.0
-                            ],
-                            "near": 0.10000000149011612,
-                            "pitch": 0.0,
-                            "roll": 0.0,
-                            "up": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "yaw": 90.0
-                        },
-                        "CLight": {
-                            "ambient": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "attenuation": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "diffuse": [
-                                0.0,
-                                0.3607843220233917,
-                                0.0,
-                                0.0
-                            ],
-                            "direction": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "phi": 0.0,
-                            "position": [
-                                1.024579644203186,
-                                2.6554982662200928,
-                                5.960464477539063e-08
-                            ],
-                            "range": 0.0,
-                            "specular": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "theta": 0.0,
-                            "type": 1
-                        },
-                        "CModel": {
-                            "matKey": "Brick_Wall_009.mtl",
-                            "mesh": "Brick_Wall_009.obj",
-                            "shader": "g_UVScale.fx"
-                        },
-                        "CPickable": {
-                            "validInGame": true
-                        },
-                        "CTransform": {
-                            "position": [
-                                1.024579644203186,
-                                2.6554982662200928,
-                                5.960464477539063e-08
-                            ],
-                            "rotation": [
-                                0.0,
-                                0.0,
-                                0.6642869114875793
-                            ],
-                            "scale": [
-                                0.9998945593833923,
-                                0.9998945593833923,
-                                1.0
-                            ]
-                        }
-                    },
-                    "name": "Boodk"
-                },
-                {
-                    "Layer": "UI",
-                    "class": "Crate",
-                    "components": {
-                        "CModel": {
-                            "matKey": "Brick_Wall_009.mtl",
-                            "mesh": "Brick_Wall_009.obj",
-                            "shader": "g_UVScale.fx"
-                        },
-                        "CPickable": {
-                            "validInGame": true
-                        },
-                        "CTransform": {
-                            "position": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "rotation": [
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "scale": [
-                                1.0,
-                                1.0,
-                                1.0
-                            ]
-                        }
-                    },
-                    "name": "Cube_2"
-                }
-            ]
+            "objects": []
         }
     },
     "scene_name": "SampleScene"

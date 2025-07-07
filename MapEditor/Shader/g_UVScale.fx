@@ -2,6 +2,7 @@
 float4x4 g_matWorldViewProj;
 texture g_DiffuseTex;
 float4 g_UVScale = float4(1.0f, 1.0f, 0.0f, 0.0f); // xy만 사용
+float4 g_UVPosition = float4(1.0f, 1.0f, 0.0f, 0.0f); // xy만 사용
 
 // ===== 구조체 정의 =====
 struct VS_IN {
@@ -20,6 +21,7 @@ VS_OUT VS_Main(VS_IN input)
     VS_OUT output;
     output.pos = mul(input.pos, g_matWorldViewProj);
     output.uv = input.uv * g_UVScale.xy;
+    output.uv = input.uv + g_UVPosition.xy;
     return output;
 }
 
