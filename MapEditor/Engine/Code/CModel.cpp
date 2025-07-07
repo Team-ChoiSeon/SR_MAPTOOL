@@ -12,7 +12,7 @@
 #include "CCamera.h"
 
 CModel::CModel()
-	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0)
+	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
 {
 }
 
@@ -63,13 +63,19 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 	if (shader)
 	{
 		const D3DXVECTOR3& scale = pTransform->Get_Scale();
-		D3DXVECTOR4 uvScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
+
 		D3DXMATRIX world = pTransform->Get_WorldMatrix();
 		D3DXMATRIX view = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ViewMatrix();
 		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
 		D3DXMATRIX wvp = world * view * proj;
 		shader->SetMatrix("g_matWorldViewProj", &wvp);
-		shader->SetVector("g_UVScale", &uvScale);
+		if (e_uvMode == sync) {
+			D3DXVECTOR4 transScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
+			shader->SetVector("g_UVScale", &transScale);
+		}
+		else {
+			shader->SetVector("g_UVScale", &uvScale);
+		}
 	}
 
 	if (shader) {
@@ -152,6 +158,19 @@ void CModel::Render_Panel(ImVec2 size)
 				ImGui::Text("Texture Preview:");
 				ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
 			}
+		}
+
+		ImGui::Separator();
+		ImGui::Text("UV Scale:");
+		int selectedMode = static_cast<int>(e_uvMode);
+		ImGui::RadioButton("SyncScale", &selectedMode, (int)sync);ImGui::SameLine();
+		ImGui::RadioButton("Custom", &selectedMode, (int)custom);
+
+		e_uvMode = static_cast<uvMode>(selectedMode);
+
+		if (e_uvMode == 1) {
+			ImGui::SliderFloat("X : ", &uvScale.x, 1.0f, 10.f, "%.3f");
+			ImGui::SliderFloat("Y : ", &uvScale.y, 1.0f, 10.f, "%.3f");
 		}
 
 		ImGui::Separator();

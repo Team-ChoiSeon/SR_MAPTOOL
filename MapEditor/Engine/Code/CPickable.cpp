@@ -66,6 +66,8 @@ void CPickable::Render_Panel(ImVec2 size)
 
 	ImGui::Checkbox("##ActivePickable", &m_bActive); ImGui::SameLine();
 	ImGui::Text("Valid Pick");
+	ImGui::Checkbox("##ActivePickable", &m_bVaildInGame); ImGui::SameLine();
+	ImGui::Text("Valid In Game");
 }
 
 CComponent* CPickable::Clone() const
@@ -75,6 +77,7 @@ CComponent* CPickable::Clone() const
 
 void CPickable::Serialize(json& outJson) const
 {
+		outJson["validInGame"] = m_bVaildInGame;
 }
 
 void CPickable::Deserialize(const json& inJson)

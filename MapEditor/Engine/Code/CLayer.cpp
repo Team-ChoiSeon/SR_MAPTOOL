@@ -53,7 +53,8 @@ void CLayer::Render_Panel()
 		string objID = "##" + obj->Get_InstanceName();
 		ImGui::PushID(objID.c_str());
 
-		bool isSelected = (CSceneMgr::GetInstance()->Get_SelectedObject() == obj);
+		bool isSelected = (CSceneMgr::GetInstance()->Get_SelectedObject() == obj
+			&& obj->Get_LayerName() == this->m_LayerName);
 		if (ImGui::Selectable(obj->Get_InstanceName().c_str(), isSelected))
 		{
 			CSceneMgr::GetInstance()->Set_SelectedObject(obj);
@@ -68,7 +69,6 @@ void CLayer::Render_Panel()
 				if (isSelected)
 					CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
 
-				//Remove_Object(obj->Get_InstanceName());
 				Remove_ByIterator(it);
 				ImGui::EndPopup();
 				ImGui::PopID();
@@ -86,9 +86,11 @@ void CLayer::Render_Panel()
 	// 선택된 오브젝트의 패널 출력
 	if (CGameObject* selected = CSceneMgr::GetInstance()->Get_SelectedObject())
 	{
-		ImGui::PushID(selected);
-		selected->Render_Panel();
-		ImGui::PopID();
+		if (selected->Get_LayerName() == this->m_LayerName) {
+			ImGui::PushID(selected);
+			selected->Render_Panel();
+			ImGui::PopID();
+		}
 	}
 }
 

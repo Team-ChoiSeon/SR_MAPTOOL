@@ -200,8 +200,19 @@ void CGameObject::Serialize(json& outJson) const
 void CGameObject::Deserialize(const json& inJson)
 {
 	ClassName = inJson["class"];
-	InstanceName = inJson["name"];
-	LayerName= inJson["Layer"] ;
+
+	if (inJson.contains("name"))
+		InstanceName = inJson["name"];
+
+	if (inJson.contains("Layer")) {
+		string layer = inJson["Layer"];
+		if (layer.empty()) { LayerName = "Default"; }
+		else{
+			LayerName = layer;
+		}
+	}
+	else
+		LayerName = "Default";
 
 	if (inJson.contains("components") && inJson["components"].is_object())
 	{

@@ -107,7 +107,7 @@ void CScene::Render_Panel()
 
 void CScene::Init_Layer()
 {
-	Add_Layer("Default");
+	//Add_Layer("Default");
 }
 
 void CScene::Add_Layer(const string& layerName)
@@ -125,14 +125,30 @@ void CScene::Add_Layer(const string& layerName)
 
 void CScene::SwapLayer(CGameObject* target, const string& from, const string& destination)
 {
-	CGameObject* obj = m_mapLayer[from]->Find_Object(target->Get_InstanceName());
-	
-	if (FAILED(m_mapLayer[destination]->Add_Object(obj))) {
-		MessageBoxA(0, "Same Name Object Already Exist", "AddLayer", MB_OK);
+	if (from == destination || !target)
+		return;
+
+	auto fromLayer = m_mapLayer.find(from);
+	auto toLayer = m_mapLayer.find(destination);
+
+	if (fromLayer == m_mapLayer.end() || toLayer == m_mapLayer.end())
+		return;
+
+	CGameObject* obj = fromLayer->second->Find_Object(target->Get_InstanceName());
+	if (!obj)
+		return;
+
+	if (FAILED(toLayer->second->Add_Object(obj))) {
+		MessageBoxA(0, "Same Name Object Already Exist", "SwapLayer", MB_OK);
 		return;
 	}
-	m_mapLayer[from]->Pop_Object(target->Get_InstanceName());
+
+	fromLayer->second->Pop_Object(target->Get_InstanceName());
+	target->Set_LayerName(destination);
+	// 선택된 오브젝트 무효화
+	CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
 }
+
 
 void CScene::Free_Layer(string layer)
 {
@@ -180,9 +196,13 @@ void CScene::Serialize(json& jScene) const
 	json jLayers;
 	for (auto& [layerName, pLayer] : m_mapLayer)
 	{
+		string layerID;
+		layerID = layerName;
+		if (layerID.empty())
+			layerID = "Default";
 		json jLayer;
 		pLayer->Serialize(jLayer);
-		jLayers[layerName] = jLayer;
+		jLayers[layerID] = jLayer;
 	}
 	jScene["layers"] = jLayers;
 }
@@ -190,31 +210,59 @@ void CScene::Serialize(json& jScene) const
 void CScene::Deserialize(const json& jScene)
 {
 	// 씬 이름 불러오기
-	if (jScene.contains("scene_name"))
+	if (jScene.contains("scene_name") && !jScene["scene_name"].get<string>().empty())
 		m_Name = jScene["scene_name"].get<string>();
+	else
+		m_Name = "DefaultScene"; // 기본값
 
 	// 기존 레이어 초기화
 	Free_AllLayer();
 	m_mapLayer.clear();
+	m_LayerNames.clear();
+
+	// 기본 Default 레이어는 항상 하나 생성
+	CLayer* pDefaultLayer = CLayer::Create();
+	if (pDefaultLayer)
+	{
+		pDefaultLayer->Set_Name("Default");
+		m_mapLayer["Default"] = pDefaultLayer;
+		m_LayerNames.push_back("Default");
+	}
 
 	// layers 순회
 	if (jScene.contains("layers"))
 	{
 		for (auto& [layerName, jLayer] : jScene["layers"].items())
 		{
-			CLayer* pLayer = CLayer::Create();
-			if (!pLayer) continue;
+			std::string safeLayerName = layerName.empty() ? "Default" : layerName;
 
-			pLayer->Set_Name(layerName);
-			pLayer->Deserialize(jLayer); // 레이어 역직렬화
-			m_mapLayer[layerName] = pLayer;
+			CLayer* pLayer = nullptr;
 
-			auto iter = find_if(m_LayerNames.begin(), m_LayerNames.end(), [&layerName](auto names)->bool {return names == layerName;});
-			if (iter == m_LayerNames.end())
-				m_LayerNames.push_back(layerName);
+			if (safeLayerName == "Default")
+			{
+				pLayer = m_mapLayer["Default"]; // 이미 생성되어 있음
+			}
+			else
+			{
+				pLayer = CLayer::Create();
+				if (!pLayer) continue;
+				pLayer->Set_Name(safeLayerName);
+				m_mapLayer[safeLayerName] = pLayer;
+
+				auto iter = find_if(m_LayerNames.begin(), m_LayerNames.end(),
+					[&safeLayerName](const std::string& name) { return name == safeLayerName; });
+
+				if (iter == m_LayerNames.end())
+					m_LayerNames.push_back(safeLayerName);
+			}
+
+			// Deserialize 내용은 regardless
+			if (pLayer)
+				pLayer->Deserialize(jLayer);
 		}
 	}
 }
+
 
 
 void CScene::Free()

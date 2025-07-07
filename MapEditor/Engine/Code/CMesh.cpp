@@ -87,9 +87,8 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 
 					// UV 스케일을 비례해서 설정
 					//D3DXVECTOR2 uvScale = { scale.x, scale.y };
-					D3DXVECTOR2 uvScale = { 1.f, 1.f };
-					vertex.vTexUV.x = texcoords[vti].x * uvScale.x;
-					vertex.vTexUV.y = texcoords[vti].y * uvScale.y;
+					vertex.vTexUV.x = texcoords[vti].x;
+					vertex.vTexUV.y = texcoords[vti].y;
 
 					vertex.vPosition = positions[vi];
 					vertex.vNormal = normals[vni];
