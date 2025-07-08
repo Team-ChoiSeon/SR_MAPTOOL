@@ -1,0 +1,83 @@
+{
+    "class": "CMainPlayer",
+    "components": {
+        "CCollider": {
+            "ColTag": 0,
+            "ColType": 1
+        },
+        "CModel": {
+            "matKey": "DirtObj.mtl",
+            "material": {
+                "diffuse": "dirt_diff_4k.jpg",
+                "shader": "g_UVScale.fx"
+            },
+            "mesh": "DirtObj.obj"
+        },
+        "CRigidBody": {
+            "Accelator": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "AngleAccel": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "AngleVelocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Bounciness": 0.0,
+            "ExternalForce": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Friction": 10.0,
+            "Gravity": [
+                1.0
+            ],
+            "GravityForce": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Inertia": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Mass": 6.0,
+            "Torque": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "m_bGravity": true
+        },
+        "CTransform": {
+            "position": [
+                0.0,
+                0.0,
+                -20.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    }
+}

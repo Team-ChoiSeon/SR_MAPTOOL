@@ -287,9 +287,13 @@ void CModel::Deserialize(const json& inJson)
 
 	if (inJson.contains("mesh"))
 		meshKey = inJson["mesh"];
+	else
+		matKey = "DirtObj.obj";
 
 	if (inJson.contains("matKey"))
 		matKey = inJson["matKey"];
+	else
+		matKey = "DirtObj.mtl";
 
 	if (inJson.contains("shader"))
 		shaderPath = inJson["shader"];

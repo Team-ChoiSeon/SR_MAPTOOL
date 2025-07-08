@@ -21,7 +21,7 @@ VS_OUT VS_Main(VS_IN input)
     VS_OUT output;
     output.pos = mul(input.pos, g_matWorldViewProj);
     output.uv = input.uv * g_UVScale.xy;
-    output.uv = input.uv + g_UVPosition.xy;
+    //output.uv = input.uv + g_UVPosition.xy;
     return output;
 }
 

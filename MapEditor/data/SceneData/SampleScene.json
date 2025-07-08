@@ -7,12 +7,11 @@
             "objects": [
                 {
                     "Layer": "DEFAULT",
-                    "class": "DummyCube",
+                    "class": "CMainPlayer",
                     "components": {
-                        "CCollider": null,
                         "CModel": {
-                            "matKey": "bright_desert.mtl",
-                            "mesh": "bright_desert.obj",
+                            "matKey": "SandyTile.mtl",
+                            "mesh": "SandyTile.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": {
@@ -20,23 +19,55 @@
                         },
                         "CTransform": {
                             "position": [
-                                -12.031574249267578,
-                                6.239455699920654,
-                                10.660367012023926
+                                -4.0869927406311035,
+                                1.0861812829971313,
+                                10.0
                             ],
                             "rotation": [
                                 0.0,
-                                3.1415927410125732,
+                                0.0,
                                 0.0
                             ],
                             "scale": [
-                                0.9999801516532898,
-                                1.0,
-                                0.9999801516532898
+                                3.1599998474121094,
+                                3.1599998474121094,
+                                3.1599998474121094
                             ]
                         }
                     },
-                    "name": "DummyCube_1"
+                    "name": "CMainPlayer_1"
+                },
+                {
+                    "Layer": "DEFAULT",
+                    "class": "CMainPlayer",
+                    "components": {
+                        "CModel": {
+                            "matKey": "DirtObj.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx"
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                30.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "CMainPlayer_2"
                 }
             ]
         },
