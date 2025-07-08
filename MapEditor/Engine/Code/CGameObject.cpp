@@ -8,6 +8,8 @@
 #include "CPickable.h"
 #include "CInputSystem.h"
 #include "CLight.h"
+#include "CRigidBody.h"
+#include "CCollider.h"
 
 #include "Cscene.h"
 
@@ -233,6 +235,8 @@ void CGameObject::Add_Component_ByName(const string& name) {
 	else if (name == "Camera") Add_Component<CCamera>();
 	else if (name == "InputSystem") Add_Component<CInputSystem>();
 	else if (name == "Light") Add_Component<CLight>();
+	else if (name == "RigidBody") Add_Component<CRigidBody>();
+	else if (name == "Collider") Add_Component<CCollider>();
 }
 
 type_index CGameObject::typeid_from_string(const string& name)
@@ -242,6 +246,8 @@ type_index CGameObject::typeid_from_string(const string& name)
 	if (name == "Camera") return typeid(CCamera);
 	if (name == "InputSystem") return typeid(CInputSystem);
 	if (name == "Light") return typeid(CLight);
+	if (name == "RigidBody") return typeid(CRigidBody);
+	if (name == "Collider") return typeid(CCollider);
 
 	return typeid(void); // fallback
 }
@@ -252,3 +258,4 @@ void CGameObject::Free()
 		Safe_Release(pair.second);
 }
 
+                                         

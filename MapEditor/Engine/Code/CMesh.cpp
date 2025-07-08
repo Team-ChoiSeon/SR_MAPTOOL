@@ -99,20 +99,6 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 			}
 		}
 	}
-	m_tAABB.vMin = { FLT_MAX, FLT_MAX, FLT_MAX };
-	m_tAABB.vMax = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
-
-	for (const auto& pos : positions) //로컬 좌표를 순회
-	{
-		if (pos.x < m_tAABB.vMin.x) m_tAABB.vMin.x = pos.x;
-		if (pos.y < m_tAABB.vMin.y) m_tAABB.vMin.y = pos.y;
-		if (pos.z < m_tAABB.vMin.z) m_tAABB.vMin.z = pos.z;
-
-		if (pos.x > m_tAABB.vMax.x) m_tAABB.vMax.x = pos.x;
-		if (pos.y > m_tAABB.vMax.y) m_tAABB.vMax.y = pos.y;
-		if (pos.z > m_tAABB.vMax.z) m_tAABB.vMax.z = pos.z;
-	}
-
 	// 정점 버퍼 생성
 	
 	m_dwFVF = FVF_TILE;

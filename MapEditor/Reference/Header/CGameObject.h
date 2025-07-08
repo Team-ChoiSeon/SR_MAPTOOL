@@ -3,7 +3,7 @@
 #include "CComponent.h"
 
 BEGIN(Engine)
-static vector<string>ComponentList = { "Transform","Camera","Model","InputSystem","Light"};
+static vector<string>ComponentList = { "Transform","Camera","Model","InputSystem","Light","RigidBody","Collider"};
 
 class ENGINE_DLL CGameObject :
 	public CBase

@@ -1,15 +1,18 @@
 {
     "layers": {
-        "Default": {
+        "CAMERA": {
+            "objects": []
+        },
+        "DEFAULT": {
             "objects": [
                 {
-                    "Layer": "Default",
-                    "class": "Crate",
+                    "Layer": "DEFAULT",
+                    "class": "DummyCube",
                     "components": {
-                        "CInputSystem": null,
+                        "CCollider": null,
                         "CModel": {
-                            "matKey": "Sand_007.mtl",
-                            "mesh": "Sand_007.obj",
+                            "matKey": "bright_desert.mtl",
+                            "mesh": "bright_desert.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": {
@@ -17,25 +20,37 @@
                         },
                         "CTransform": {
                             "position": [
-                                -1.8426777124404907,
-                                0.0,
-                                19.670665740966797
+                                -12.031574249267578,
+                                6.239455699920654,
+                                10.660367012023926
                             ],
                             "rotation": [
-                                85.0,
                                 0.0,
+                                3.1415927410125732,
                                 0.0
                             ],
                             "scale": [
-                                30.0,
-                                30.00000762939453,
-                                5.0
+                                0.9999801516532898,
+                                1.0,
+                                0.9999801516532898
                             ]
                         }
                     },
-                    "name": "Cube_1"
+                    "name": "DummyCube_1"
                 }
             ]
+        },
+        "LIGHT": {
+            "objects": []
+        },
+        "OBJECT": {
+            "objects": []
+        },
+        "PLAYER": {
+            "objects": []
+        },
+        "TILE": {
+            "objects": []
         },
         "UI": {
             "objects": []

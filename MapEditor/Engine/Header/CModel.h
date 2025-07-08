@@ -32,7 +32,6 @@ public:
 
     CMesh* Get_Mesh();
     CMaterial* Get_Material();
-    AABB Get_AABB();
     string Get_ComponentName() const override;
 
 private:

@@ -15,7 +15,6 @@ public:
     HRESULT LoadOBJ(LPDIRECT3DDEVICE9 pDevice,const std::string& filePath);
     void Render(LPDIRECT3DDEVICE9 pDevice);
 
-    AABB Get_AABBBOX() { return m_tAABB; };
     string& Get_Key() { return m_strKey; }
     void Set_Key(const string& key) {  m_strKey = key; }
 private:
@@ -30,8 +29,7 @@ private:
     _uint m_iVtxCount = 0;
     _uint m_iVertexStride = 0;
 
-    AABB m_tAABB;
-    std::string m_strKey;
+   string m_strKey;
 
 private:
     void Free() override;

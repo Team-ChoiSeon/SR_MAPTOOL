@@ -133,11 +133,6 @@ CMaterial* CModel::Get_Material()
 	return m_pMaterial;
 }
 
-AABB CModel::Get_AABB()
-{
-	return m_pMesh->Get_AABBBOX();
-}
-
 string CModel::Get_ComponentName() const
 {
 	return "CModel";
@@ -157,13 +152,19 @@ void CModel::Render_Panel(ImVec2 size)
 	ImGui::Checkbox("##ActiveModel", &m_bActive); ImGui::SameLine();
 	if (ImGui::CollapsingHeader("Model"))
 	{
-		if (CTexture* diffuse = m_pMaterial->Get_Diffuse()) {
-			LPDIRECT3DTEXTURE9 pTex = diffuse->Get_Handle();
-			if (pTex) {
-				ImGui::Text("Texture Preview:");
-				ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
+		if (m_pMaterial) {
+			if (CTexture* diffuse = m_pMaterial->Get_Diffuse()) {
+				LPDIRECT3DTEXTURE9 pTex = diffuse->Get_Handle();
+				if (pTex) {
+					ImGui::Text("Texture Preview:");
+					ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
+				}
 			}
 		}
+		else {
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Matrial Handle is null");
+		}
+
 		ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
 
 		ImGui::Separator();
