@@ -125,10 +125,22 @@
       <Filter>01. Manager\11. ShaderMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CLight.cpp">
-      <Filter>03. Component\05.CLight</Filter>
+      <Filter>03. Component\05. CLight</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CLightMgr.cpp">
       <Filter>01. Manager\12. CLightMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CRigidBody.cpp">
+      <Filter>03. Component\06. CRigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCollider.cpp">
+      <Filter>03. Component\07. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CCollisionMgr.cpp">
+      <Filter>01. Manager\13. CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CPhysicsMgr.cpp">
+      <Filter>01. Manager\14. PhysicMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,10 +292,22 @@
       <Filter>01. Manager\11. ShaderMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CLight.h">
-      <Filter>03. Component\05.CLight</Filter>
+      <Filter>03. Component\05. CLight</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CLightMgr.h">
       <Filter>01. Manager\12. CLightMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CRigidBody.h">
+      <Filter>03. Component\06. CRigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CCollider.h">
+      <Filter>03. Component\07. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CCollisionMgr.h">
+      <Filter>01. Manager\13. CollisionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\CPhysicsMgr.h">
+      <Filter>01. Manager\14. PhysicMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,11 +419,23 @@
     <Filter Include="01. Manager\11. ShaderMgr">
       <UniqueIdentifier>{f3dd5f08-f62e-4f61-88e1-17b48a69dcb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Component\05.CLight">
-      <UniqueIdentifier>{33744fc5-b8cb-4ac3-9e93-e0df19d7dcb2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Manager\12. CLightMgr">
       <UniqueIdentifier>{f107d4a4-8cff-4822-a644-99b10b91c8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\06. CRigidBody">
+      <UniqueIdentifier>{99bce162-42f5-478f-8c8d-baa29da8b863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\07. Collider">
+      <UniqueIdentifier>{aca91615-0ebb-4a3b-9ae9-d76f0b52946c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\05. CLight">
+      <UniqueIdentifier>{33744fc5-b8cb-4ac3-9e93-e0df19d7dcb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\13. CollisionMgr">
+      <UniqueIdentifier>{124de895-e21d-44b9-9fab-1d36554ab2d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager\14. PhysicMgr">
+      <UniqueIdentifier>{50a7a19b-09ec-4a51-97b7-ad84f0140b1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -169,6 +169,8 @@
     <ClInclude Include="..\..\ThirdParty\NFD\nfd_common.h" />
     <ClInclude Include="..\Header\CCamera.h" />
     <ClInclude Include="..\Header\CCameraMgr.h" />
+    <ClInclude Include="..\Header\CCollider.h" />
+    <ClInclude Include="..\Header\CCollisionMgr.h" />
     <ClInclude Include="..\Header\CComponent.h" />
     <ClInclude Include="..\Header\CEditorSystem.h" />
     <ClInclude Include="..\Header\CFrame.h" />
@@ -184,11 +186,13 @@
     <ClInclude Include="..\Header\CMaterial.h" />
     <ClInclude Include="..\Header\CMesh.h" />
     <ClInclude Include="..\Header\CModel.h" />
+    <ClInclude Include="..\Header\CPhysicsMgr.h" />
     <ClInclude Include="..\Header\CPickable.h" />
     <ClInclude Include="..\Header\CPickingMgr.h" />
     <ClInclude Include="..\Header\CPrefabMgr.h" />
     <ClInclude Include="..\Header\CRenderMgr.h" />
     <ClInclude Include="..\Header\CResourceMgr.h" />
+    <ClInclude Include="..\Header\CRigidBody.h" />
     <ClInclude Include="..\Header\CScene.h" />
     <ClInclude Include="..\Header\CSceneMgr.h" />
     <ClInclude Include="..\Header\CShaderMgr.h" />
@@ -221,6 +225,8 @@
     <ClCompile Include="..\..\ThirdParty\NFD\nfd_win.cpp" />
     <ClCompile Include="..\Code\CCamera.cpp" />
     <ClCompile Include="..\Code\CCameraMgr.cpp" />
+    <ClCompile Include="..\Code\CCollider.cpp" />
+    <ClCompile Include="..\Code\CCollisionMgr.cpp" />
     <ClCompile Include="..\Code\CComponent.cpp" />
     <ClCompile Include="..\Code\CEditorSystem.cpp" />
     <ClCompile Include="..\Code\CFrame.cpp" />
@@ -236,11 +242,13 @@
     <ClCompile Include="..\Code\CMaterial.cpp" />
     <ClCompile Include="..\Code\CMesh.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
+    <ClCompile Include="..\Code\CPhysicsMgr.cpp" />
     <ClCompile Include="..\Code\CPickable.cpp" />
     <ClCompile Include="..\Code\CPickingMgr.cpp" />
     <ClCompile Include="..\Code\CPrefabMgr.cpp" />
     <ClCompile Include="..\Code\CRenderMgr.cpp" />
     <ClCompile Include="..\Code\CResourceMgr.cpp" />
+    <ClCompile Include="..\Code\CRigidBody.cpp" />
     <ClCompile Include="..\Code\CScene.cpp" />
     <ClCompile Include="..\Code\CSceneMgr.cpp" />
     <ClCompile Include="..\Code\CShaderMgr.cpp" />

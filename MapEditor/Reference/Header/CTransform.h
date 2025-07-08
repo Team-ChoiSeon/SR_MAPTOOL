@@ -64,6 +64,8 @@ private:
     _vec3 m_vOrbit;
 
     _vec3 m_vLook;
+    _vec3 m_vRight;
+    _vec3 m_vUp;
 
     _matrix m_WorldMat;
     _matrix m_WorldPosMat;

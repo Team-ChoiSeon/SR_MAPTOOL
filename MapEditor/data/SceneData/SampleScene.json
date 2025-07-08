@@ -1,15 +1,17 @@
 {
     "layers": {
-        "Default": {
+        "CAMERA": {
+            "objects": []
+        },
+        "DEFAULT": {
             "objects": [
                 {
-                    "Layer": "Default",
-                    "class": "Crate",
+                    "Layer": "DEFAULT",
+                    "class": "CMainPlayer",
                     "components": {
-                        "CInputSystem": null,
                         "CModel": {
-                            "matKey": "Sand_007.mtl",
-                            "mesh": "Sand_007.obj",
+                            "matKey": "SandyTile.mtl",
+                            "mesh": "SandyTile.obj",
                             "shader": "g_UVScale.fx"
                         },
                         "CPickable": {
@@ -17,25 +19,69 @@
                         },
                         "CTransform": {
                             "position": [
-                                -1.8426777124404907,
-                                0.0,
-                                19.670665740966797
+                                -4.0869927406311035,
+                                1.0861812829971313,
+                                10.0
                             ],
                             "rotation": [
-                                85.0,
+                                0.0,
                                 0.0,
                                 0.0
                             ],
                             "scale": [
-                                30.0,
-                                30.00000762939453,
-                                5.0
+                                3.1599998474121094,
+                                3.1599998474121094,
+                                3.1599998474121094
                             ]
                         }
                     },
-                    "name": "Cube_1"
+                    "name": "CMainPlayer_1"
+                },
+                {
+                    "Layer": "DEFAULT",
+                    "class": "CMainPlayer",
+                    "components": {
+                        "CModel": {
+                            "matKey": "DirtObj.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx"
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                30.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "CMainPlayer_2"
                 }
             ]
+        },
+        "LIGHT": {
+            "objects": []
+        },
+        "OBJECT": {
+            "objects": []
+        },
+        "PLAYER": {
+            "objects": []
+        },
+        "TILE": {
+            "objects": []
         },
         "UI": {
             "objects": []

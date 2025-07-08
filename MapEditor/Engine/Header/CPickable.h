@@ -25,6 +25,7 @@ public:
 private:
     RAY RayToLocal(RAY ray);
     _bool ComputeRay(RAY ray, float* distance);
+    _bool ComputeRay_WorldSpace(RAY worldRay, CTransform* pTransform, float* distance);
 private:
     CTransform* m_pTransform;
     CModel* m_pModel;

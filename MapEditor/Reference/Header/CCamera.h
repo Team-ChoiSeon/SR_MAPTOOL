@@ -54,7 +54,7 @@ public:
     };
     string Get_ComponentName() const override;
 private:
-    void UpdateDirFromAngles();
+    //void UpdateDirFromAngles();
 private:
     _float m_fFOV;
     _float m_fAspect;

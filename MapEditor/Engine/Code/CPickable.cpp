@@ -42,22 +42,22 @@ void CPickable::Update_Component(_float& dt)
 		}
 	}
 
-	// 현재 마우스 레이 가져오기
-	const RAY& nowRay = CPickingMgr::GetInstance()->Get_Ray();
-
-	//로컬 좌표로 변환
-	RAY localRay = RayToLocal(nowRay);
-	float distance = 0.f;
-
-	if (ComputeRay(localRay, &distance)) {
-		RAYHIT info = { m_pOwner, distance };
-		CPickingMgr::GetInstance()->Register_Info(info);
-	}
 }
 
 
 void CPickable::LateUpdate_Component(_float& dt)
 {
+	// 현재 마우스 레이 가져오기
+	const RAY& nowRay = CPickingMgr::GetInstance()->Get_Ray();
+
+	//로컬 좌표로 변환
+	//RAY localRay = RayToLocal(nowRay);
+	float distance = 0.f;
+
+	if (ComputeRay_WorldSpace(nowRay, m_pTransform,&distance)) {
+		RAYHIT info = { m_pOwner, distance };
+		CPickingMgr::GetInstance()->Register_Info(info);
+	}
 }
 
 void CPickable::Render_Panel(ImVec2 size)
@@ -66,7 +66,7 @@ void CPickable::Render_Panel(ImVec2 size)
 
 	ImGui::Checkbox("##ActivePickable", &m_bActive); ImGui::SameLine();
 	ImGui::Text("Valid Pick");
-	ImGui::Checkbox("##ActivePickable", &m_bVaildInGame); ImGui::SameLine();
+	ImGui::Checkbox("##ActivePickableInGame", &m_bVaildInGame); ImGui::SameLine();
 	ImGui::Text("Valid In Game");
 }
 
@@ -87,6 +87,7 @@ void CPickable::Deserialize(const json& inJson)
 RAY CPickable::RayToLocal(RAY ray)
 {
 	RAY localRay;
+
 	if (m_pTransform)
 	{
 		const D3DXMATRIX& worldMat = m_pTransform->Get_WorldMatrix(); //트랜스폼의 월드 매트릭스
@@ -105,10 +106,11 @@ RAY CPickable::RayToLocal(RAY ray)
 _bool CPickable::ComputeRay(RAY localRay, float* distance)
 {
 	// 오브젝트의 AABB 
-	const AABB& aabb = m_pModel->Get_AABB();
+	const AABB aabb = { {-1,-1,-1},{1,1,1} };
 
-	const D3DXVECTOR3& rayOriginLocal = localRay.vRayPos;
+	const D3DXVECTOR3 rayOriginLocal = localRay.vRayPos;
 	const D3DXVECTOR3& rayDirLocal = localRay.vRayDir;
+	//ray.vRayDir = Normalize(ray.vRayDir); // ray 만드는 시점에서 꼭 단위벡터로
 
 	const D3DXVECTOR3& localMin = aabb.vMin;
 	const D3DXVECTOR3& localMax = aabb.vMax;
@@ -151,7 +153,90 @@ _bool CPickable::ComputeRay(RAY localRay, float* distance)
 	if (tmax < 0)
 		return false;
 
-	*distance = tmin;
+	D3DXVECTOR3 hitPoint = rayOriginLocal + rayDirLocal * tmin;
+	D3DXVECTOR3 length = hitPoint + rayOriginLocal;
+	*distance = D3DXVec3Length(&(length));
+	return true;
+}
+
+_bool CPickable::ComputeRay_WorldSpace(RAY worldRay, CTransform* pTransform, float* distance)
+{
+	if (!pTransform || !distance)
+		return false;
+
+	// 1. 로컬 AABB 기준 정점들
+	const D3DXVECTOR3 localVerts[8] = {
+		{ -1, -1, -1 }, { 1, -1, -1 }, { -1, 1, -1 }, { 1, 1, -1 },
+		{ -1, -1,  1 }, { 1, -1,  1 }, { -1, 1,  1 }, { 1, 1,  1 }
+	};
+
+	// 2. 월드 행렬
+	const D3DXMATRIX& worldMatrix = pTransform->Get_WorldMatrix();
+
+	// 3. 정점들을 월드로 변환
+	D3DXVECTOR3 worldVerts[8];
+	for (int i = 0; i < 8; ++i)
+		D3DXVec3TransformCoord(&worldVerts[i], &localVerts[i], &worldMatrix);
+
+	// 4. AABB min/max 구하기
+	D3DXVECTOR3 minPt = worldVerts[0];
+	D3DXVECTOR3 maxPt = worldVerts[0];
+
+	for (int i = 1; i < 8; ++i)
+	{
+		minPt.x = min(minPt.x, worldVerts[i].x);
+		minPt.y = min(minPt.y, worldVerts[i].y);
+		minPt.z = min(minPt.z, worldVerts[i].z);
+
+		maxPt.x = max(maxPt.x, worldVerts[i].x);
+		maxPt.y = max(maxPt.y, worldVerts[i].y);
+		maxPt.z = max(maxPt.z, worldVerts[i].z);
+	}
+
+	// 5. ray origin, dir (정규화 필수!)
+	D3DXVECTOR3 rayOrigin = worldRay.vRayPos;
+	D3DXVECTOR3 rayDir = worldRay.vRayDir;
+	D3DXVec3Normalize(&rayDir, &rayDir);
+
+	// 6. ray vs AABB 충돌 판정
+	float tmin = -FLT_MAX;
+	float tmax = FLT_MAX;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		_float origin = ((_float*)&rayOrigin)[i];
+		_float dir = ((_float*)&rayDir)[i];
+		_float minB = ((_float*)&minPt)[i];
+		_float maxB = ((_float*)&maxPt)[i];
+
+		if (fabs(dir) < 1e-6f)
+		{
+			if (origin < minB || origin > maxB)
+				return false;
+		}
+		else
+		{
+			float t1 = (minB - origin) / dir;
+			float t2 = (maxB - origin) / dir;
+
+			if (t1 > t2) std::swap(t1, t2);
+
+			tmin = max(tmin, t1);
+			tmax = min(tmax, t2);
+
+			if (tmin > tmax)
+				return false;
+		}
+	}
+
+	if (tmax < 0)
+		return false;
+
+	// 7. hit 위치 계산 및 거리 저장
+	D3DXVECTOR3 hitPoint = rayOrigin + rayDir * tmin;
+	D3DXVECTOR3 rayVector = hitPoint - rayOrigin;
+	*distance = D3DXVec3Length(&rayVector);
+
 	return true;
 }
 

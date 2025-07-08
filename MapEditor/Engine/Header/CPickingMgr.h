@@ -22,13 +22,14 @@ public:
 	void LateUpdate_Picking(_float& dt);
 
 public:
-	CGameObject* Get_PickedObj() { return m_pTarget; }
-	void Set_PickedObj(CGameObject* target) { m_pTarget = target; }
+	CGameObject* Get_PickedObj() { return m_Picked.target; }
+	void Set_PickedObj(CGameObject* target) { m_Picked.target = target; }
 	RAY Get_Ray() { return m_tRay; }
 	void Register_Info(RAYHIT info);
 
 private:
 	void ComputeRay(); //월드 광선 계산
+	void SortRayHit(); //월드 광선 계산
 
 private:
 	HWND m_hwnd;
@@ -36,9 +37,18 @@ private:
 	LPDIRECT3DDEVICE9 m_pDevice;
 	RAY m_tRay;
 	vector<RAYHIT> m_PickTarget;
-	CGameObject* m_pTarget;
+	_vec3 m_vLastPt;
+	_vec3 m_vPlanePt;
+	_vec3 m_vPlaneNorm;
+	_vec3 m_vDragDistance;
 
+	RAYHIT			m_RayHitted;
+	RAYHIT			m_Picked;
+
+	_bool m_bDragging;
 private:
+	_vec3 CalcRayPlaneIntersection(const RAY& ray, const _vec3& planePoint, const _vec3& planeNormal);
+	void Check_Input();
 	void Free();
 };
 

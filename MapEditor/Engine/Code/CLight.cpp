@@ -6,7 +6,7 @@
 
 
 CLight::CLight()
-	:m_iOption(0)
+	:m_iOption(1)
 {
 }
 
@@ -72,9 +72,9 @@ void CLight::Render_Panel(ImVec2 size)
 	{
 		Delete_ComponentPane();
 
-		ImGui::RadioButton("POINT", &m_iOption, 0);
-		ImGui::RadioButton("DIRECTIONAL", &m_iOption, 1);
-		ImGui::RadioButton("SPOT", &m_iOption, 2);
+		ImGui::RadioButton("POINT", &m_iOption, 1);
+		ImGui::RadioButton("DIRECTIONAL", &m_iOption, 2);
+		ImGui::RadioButton("SPOT", &m_iOption, 3);
 		ImGui::Separator();
 		ImGui::ColorEdit3("Diffuse Color", (float*)&m_tLight.Diffuse); // RGB 슬라이더
 		ImGui::ColorEdit3("Specular Color", (float*)&m_tLight.Specular); // RGB 슬라이더

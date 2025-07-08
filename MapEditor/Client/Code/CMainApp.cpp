@@ -17,6 +17,9 @@
 #include "CEditorSystem.h"
 #include "CShaderMgr.h"
 #include "CLightMgr.h"
+#include "CCollisionMgr.h"
+#include "CPhysicsMgr.h"
+
 CMainApp::CMainApp()
 	:m_pDeviceClass(nullptr)
 	, m_pGraphicDev(nullptr)
@@ -60,7 +63,10 @@ HRESULT CMainApp::Ready_MainApp()
 		return E_FAIL;	
 	if (FAILED(CEditorSystem::GetInstance()->Ready_EditorSystem()))
 		return E_FAIL;
-
+	if(FAILED(CCollisionMgr::GetInstance()->Ready_Collision()))
+		return E_FAIL;
+	if (FAILED(CPhysicsMgr::GetInstance()->Ready_Physics()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -74,7 +80,8 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->Update_Editor(fTimeDelta);
 	CLightMgr::GetInstance()->Update_Light(fTimeDelta);
-
+	CCollisionMgr::GetInstance()->Update_Collision(fTimeDelta);
+	CPhysicsMgr::GetInstance()->Update_Physics(fTimeDelta);
 	return 0;
 }
 
@@ -88,7 +95,8 @@ void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->LateUpdate_Editor(fTimeDelta);
 	CLightMgr::GetInstance()->LateUpdate_Light(fTimeDelta);
-
+	CCollisionMgr::GetInstance()->LateUpdate_Collision(fTimeDelta);
+	CPhysicsMgr::GetInstance()->LateUpdate_Physics(fTimeDelta);
 }
 
 void CMainApp::Render_MainApp()
@@ -100,8 +108,10 @@ void CMainApp::Render_MainApp()
 	GUISystem::GetInstance()->Render_Begin();
 
 	CSceneMgr::GetInstance()->Render_Scene();
+	CCollisionMgr::GetInstance()->Render_Collider(m_pGraphicDev);
 	GUISystem::GetInstance()->Render_GUI();
 	CEditorSystem::GetInstance()->Render_Gizmo();
+	CPhysicsMgr::GetInstance()->Render_Physics();
 	GUISystem::GetInstance()->Render_End();
 
 	m_pDeviceClass->Render_End();
@@ -138,5 +148,7 @@ void CMainApp::Free()
 	CEditorSystem::GetInstance()->DestroyInstance();
 	CShaderMgr::GetInstance()->DestroyInstance();
 	CLightMgr::GetInstance()->DestroyInstance();
+	CCollisionMgr::GetInstance()->DestroyInstance();
+	CPhysicsMgr::GetInstance()->DestroyInstance();
 	CGraphicDev::GetInstance()->DestroyInstance();
 }

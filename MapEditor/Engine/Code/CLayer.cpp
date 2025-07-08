@@ -68,7 +68,6 @@ void CLayer::Render_Panel()
 				// 선택 중이었다면 해제
 				if (isSelected)
 					CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
-
 				Remove_ByIterator(it);
 				ImGui::EndPopup();
 				ImGui::PopID();
@@ -114,7 +113,6 @@ HRESULT CLayer::Add_Object(CGameObject* object)
 void CLayer::Remove_Object(const string& tag)
 {
 	CGameObject* target = nullptr;
-
 	//순회용 벡터 검색
 	auto iter = find_if(m_ObjectList.begin(), m_ObjectList.end(),
 		[&tag](CGameObject* data)->bool {
@@ -125,7 +123,9 @@ void CLayer::Remove_Object(const string& tag)
 		target = (*iter);
 		m_ObjectList.erase(iter);
 	}
-
+	if (target == CSceneMgr::GetInstance()->Get_SelectedObject()) {
+		CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
+	}
 	Safe_Release(target);
 }
 
@@ -136,6 +136,9 @@ void CLayer::Remove_ByIterator(vector<CGameObject*>::iterator& iter)
 	if (iter != m_ObjectList.end()) {
 		target = (*iter);
 		iter = m_ObjectList.erase(iter);
+	}
+	if (target == CSceneMgr::GetInstance()->Get_SelectedObject()) {
+		CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
 	}
 	Safe_Release(target);
 }

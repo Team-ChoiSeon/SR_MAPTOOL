@@ -281,8 +281,9 @@ void CSceneMgr::Create_Object()
 		for (string name : CPrefabMgr::GetInstance()->Get_PrefabNames()) {
 			if (ImGui::MenuItem(name.c_str())) {
 				CGameObject* instance = CPrefabMgr::GetInstance()->Instantiate(name);
-				CLayer* layer = m_CurScene->Get_Layer(instance->Get_LayerName());
+				CLayer* layer = m_CurScene->Get_Layer("DEFAULT");
 				layer->Add_Object(instance);
+				instance->Set_LayerName("DEFAULT");
 			}
 		}
 		ImGui::EndPopup();

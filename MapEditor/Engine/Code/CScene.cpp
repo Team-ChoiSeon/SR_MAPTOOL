@@ -224,9 +224,9 @@ void CScene::Deserialize(const json& jScene)
 	CLayer* pDefaultLayer = CLayer::Create();
 	if (pDefaultLayer)
 	{
-		pDefaultLayer->Set_Name("Default");
-		m_mapLayer["Default"] = pDefaultLayer;
-		m_LayerNames.push_back("Default");
+		pDefaultLayer->Set_Name("DEFAULT");
+		m_mapLayer["DEFAULT"] = pDefaultLayer;
+		m_LayerNames.push_back("DEFAULT");
 	}
 
 	// layers 순회
@@ -234,13 +234,13 @@ void CScene::Deserialize(const json& jScene)
 	{
 		for (auto& [layerName, jLayer] : jScene["layers"].items())
 		{
-			std::string safeLayerName = layerName.empty() ? "Default" : layerName;
+			std::string safeLayerName = layerName.empty() ? "DEFAULT" : layerName;
 
 			CLayer* pLayer = nullptr;
 
-			if (safeLayerName == "Default")
+			if (safeLayerName == "DEFAULT")
 			{
-				pLayer = m_mapLayer["Default"]; // 이미 생성되어 있음
+				pLayer = m_mapLayer["DEFAULT"]; // 이미 생성되어 있음
 			}
 			else
 			{

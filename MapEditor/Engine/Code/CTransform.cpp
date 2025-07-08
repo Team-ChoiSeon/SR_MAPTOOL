@@ -73,6 +73,9 @@ void CTransform::Update_Component(_float& dt)
 		m_WorldMat *= m_pParent->Get_WorldMatrix();
 	}
 
+	m_vRight = _vec3(m_WorldMat._11, m_WorldMat._12, m_WorldMat._13);
+	m_vUp = _vec3(m_WorldMat._21, m_WorldMat._22, m_WorldMat._23);
+	m_vLook = _vec3(m_WorldMat._31, m_WorldMat._32, m_WorldMat._33);
 }
 
 void CTransform::LateUpdate_Component(_float& dt)
@@ -167,8 +170,11 @@ void CTransform::Render_Panel(ImVec2 size)
 	ImGui::SetNextItemOpen(false, ImGuiCond_Once);
 	if (ImGui::CollapsingHeader("Transform")) // 제목
 	{
-		ImGui::BeginChild("##TransformChild", size, true); // 사각형 박스
-
+		float childWidth = ImGui::GetContentRegionAvail().x;
+		ImGui::BeginChild("##TransformChild", ImVec2{ childWidth, 180 }, true);
+		ImGui::Separator();
+		ImGui::Text("Direction Vectors");
+		ImGui::InputFloat3("Look", (_float*)&m_vLook, "%.2f", ImGuiInputTextFlags_ReadOnly);
 		ImGui::Text("Scale");
 		ImGui::Text("X"); ImGui::SameLine();
 		ImGui::InputFloat("##Xscale", &m_vScale.x, 0.1f, 1.0f, "%.2f");
