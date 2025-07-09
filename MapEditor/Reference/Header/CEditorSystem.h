@@ -3,6 +3,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CTransform;
+class CInputSystem;
 
 class ENGINE_DLL CEditorSystem :
     public CBase
@@ -20,9 +21,7 @@ public:
 public:
     void Set_Select(CGameObject* obj);
 private:
-    void DecomposeMatrixToComponents(const _matrix& mat, _vec3* outPos, _vec3* outRot, _vec3* outScale);
     void Key_Check();
-    void ExtractEulerFromMatrix_XYZ(const _matrix& mat, _vec3& outRot);
 
 private:
     CGameObject* m_selected = nullptr;
@@ -32,7 +31,7 @@ private:
     ImGuizmo::OPERATION gizmoOperation;
     D3DVIEWPORT9 vp;
     CTransform* m_pTransform;
-
+    CInputSystem* m_pInputSystem = nullptr; // ก็
 private:
     void Free();
 };

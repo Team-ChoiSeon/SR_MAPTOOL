@@ -26,6 +26,9 @@ public:
 	void Set_PickedObj(CGameObject* target) { m_Picked.target = target; }
 	RAY Get_Ray() { return m_tRay; }
 	void Register_Info(RAYHIT info);
+	void Remove_Info(CGameObject* obj);
+	CGameObject* Get_HittedObject() const;
+	void Clear_AllPickData();
 
 private:
 	void ComputeRay(); //월드 광선 계산
@@ -47,7 +50,6 @@ private:
 
 	_bool m_bDragging;
 private:
-	_vec3 CalcRayPlaneIntersection(const RAY& ray, const _vec3& planePoint, const _vec3& planeNormal);
 	void Check_Input();
 	void Free();
 };

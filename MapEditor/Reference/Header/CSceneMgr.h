@@ -37,8 +37,9 @@ public:
     void DeSerializeScene(const wstring& path);
     void Create_Object();
     bool Is_ObjectNameExist(const string& name) const;
+    bool Is_ValidObject(CGameObject* obj);
     CGameObject* Get_SelectedObject() { return selectObj; };
-    void Set_SelectedObject(CGameObject* obj) { selectObj = obj; };
+    void Set_SelectedObject(CGameObject* obj);
     json SortJsonKeys(const json& j);
 private:
     unordered_map<string, CScene*> m_SceneContainer;
@@ -48,6 +49,7 @@ private:
     CGameObject* selectObj = nullptr;
 private:
     void Free();
+
 
 };
 END

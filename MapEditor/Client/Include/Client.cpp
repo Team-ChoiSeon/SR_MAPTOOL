@@ -118,6 +118,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     return RegisterClassExW(&wcex);
 }
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     g_HInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
@@ -169,8 +170,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_KEYDOWN:
         if (wParam == VK_ESCAPE)
-            DestroyWindow(g_hWnd);
+        {
+            int result = MessageBoxW(
+                g_hWnd,
+                L"정말 종료하시겠습니까?",
+                L"종료 확인",
+                MB_YESNO | MB_ICONQUESTION
+            );
+
+            if (result == IDYES)
+                DestroyWindow(g_hWnd);
+        }
         break;
+
     case WM_PAINT:
     {
         PAINTSTRUCT ps;

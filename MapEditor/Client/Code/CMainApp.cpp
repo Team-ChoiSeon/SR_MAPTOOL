@@ -32,11 +32,9 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Ready_MainApp()
 {
-
-
-
 	if (FAILED(CGraphicDev::GetInstance()->Ready_GraphicDev(g_hWnd, MODE_WIN, WINCX, WINCY, &m_pDeviceClass)))
 		return E_FAIL;
+
 	m_pDeviceClass->AddRef();
 	m_pGraphicDev = m_pDeviceClass->Get_GraphicDev();
 	m_pGraphicDev->AddRef();
@@ -74,10 +72,10 @@ HRESULT CMainApp::Ready_MainApp()
 int CMainApp::Update_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->Update_InputDev();
+	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CCameraMgr::GetInstance()->Update_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->Update_Scene(fTimeDelta);
 	GUISystem::GetInstance()->Update_GUI(fTimeDelta);
-	CPickingMgr::GetInstance()->Update_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->Update_Editor(fTimeDelta);
 	CLightMgr::GetInstance()->Update_Light(fTimeDelta);
 	CCollisionMgr::GetInstance()->Update_Collision(fTimeDelta);
@@ -88,11 +86,10 @@ int CMainApp::Update_MainApp(_float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp(_float& fTimeDelta)
 {
 	CInputMgr::GetInstance()->LateUpdate_InputDev();
-
+	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
 	CCameraMgr::GetInstance()->LateUpdate_Camera(fTimeDelta);
 	CSceneMgr::GetInstance()->LateUpdate_Scene(fTimeDelta);
 	GUISystem::GetInstance()->LateUpdate_GUI(fTimeDelta);
-	CPickingMgr::GetInstance()->LateUpdate_Picking(fTimeDelta);
 	CEditorSystem::GetInstance()->LateUpdate_Editor(fTimeDelta);
 	CLightMgr::GetInstance()->LateUpdate_Light(fTimeDelta);
 	CCollisionMgr::GetInstance()->LateUpdate_Collision(fTimeDelta);
@@ -104,9 +101,7 @@ void CMainApp::Render_MainApp()
 	m_pDeviceClass->Render_Begin(D3DXCOLOR(0.f, 0.f, 1.f, 1.f));
 
 	CRenderMgr::GetInstance()->Render(m_pGraphicDev);
-
 	GUISystem::GetInstance()->Render_Begin();
-
 	CSceneMgr::GetInstance()->Render_Scene();
 	CCollisionMgr::GetInstance()->Render_Collider(m_pGraphicDev);
 	GUISystem::GetInstance()->Render_GUI();
