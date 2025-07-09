@@ -36,22 +36,23 @@ void CInputSystem::Update_Component(_float& dt)
 {
 	if (CSceneMgr::GetInstance()->Get_SelectedObject() != m_pOwner) return;
 	m_bMove = false; // <- 초기화 먼저
-	if (CInputMgr::GetInstance()->Key_Down(DIK_UP)) {
+
+	if (CInputMgr::GetInstance()->Key_Down(DIK_W)) {
 		_vec3 dir = { 0,0,1 };
 		m_pOwner->Get_Component<CTransform>()->Add_Pos(dir *dt*m_fMoveSpeed);
 		m_bMove = true;
 	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_DOWN)) {
+	if (CInputMgr::GetInstance()->Key_Down(DIK_S)) {
 		_vec3 dir = { 0,0,-1 };
 		m_pOwner->Get_Component<CTransform>()->Add_Pos(dir * dt * m_fMoveSpeed);
 		m_bMove = true;
 	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_RIGHT)) {
+	if (CInputMgr::GetInstance()->Key_Down(DIK_D)) {
 		_vec3 dir = { 1,0,0 };
 		m_pOwner->Get_Component<CTransform>()->Add_Pos(dir * dt * m_fMoveSpeed);
 		m_bMove = true;
 	}	
-	if (CInputMgr::GetInstance()->Key_Down(DIK_LEFT)) {
+	if (CInputMgr::GetInstance()->Key_Down(DIK_A)) {
 		_vec3 dir = { -1,0,0 };
 		m_pOwner->Get_Component<CTransform>()->Add_Pos(dir * dt * m_fMoveSpeed);
 		m_bMove = true;

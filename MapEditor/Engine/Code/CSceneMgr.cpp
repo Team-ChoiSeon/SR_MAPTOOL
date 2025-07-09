@@ -7,6 +7,7 @@
 #include "CPrefabMgr.h"
 #include "CGameObject.h"
 #include "CPickingMgr.h"
+#include "CEditorSystem.h"
 
 IMPLEMENT_SINGLETON(CSceneMgr)
 
@@ -76,6 +77,22 @@ void CSceneMgr::Free()
 	m_SceneContainer.clear();
 	m_SceneList.clear();
 }
+
+bool CSceneMgr::Is_ValidObject(CGameObject* obj)
+{
+	if (!obj || !m_CurScene)
+		return false;
+
+	const string& layerName = obj->Get_LayerName();
+
+	CLayer* layer = m_CurScene->Get_Layer(layerName);
+	if (!layer)
+		return false;
+
+	const auto& objs = layer->Get_Object();
+	return find(objs.begin(), objs.end(), obj) != objs.end();
+}
+
 
 void CSceneMgr::Load_SceneData(const string& scenePath)
 {
@@ -164,23 +181,44 @@ void CSceneMgr::Render_SceneSelector()
 void CSceneMgr::Save_LoadPanel()
 {
 	ImVec2 pos = ImVec2(WINCX - 600, 10.0f);
-	ImVec2 size = ImVec2(300.0f, 80.0f);
+	ImVec2 size = ImVec2(350.0f, 100.0f); 
 	ImGui::SetNextWindowPos(pos, ImGuiCond_Once);
 	ImGui::SetNextWindowSize(size, ImGuiCond_Always);
 	ImGui::Begin("Scene_Saver", nullptr,
-		ImGuiWindowFlags_NoResize | 
-		ImGuiWindowFlags_NoCollapse );
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse);
 
 	ImGui::Spacing();
 
-	// 저장 버튼
+	// === 씬 이름 입력 ===
+	static char sceneNameBuf[128] = {};
+
+	// 현재 씬 이름을 버퍼에 복사 (한 번만)
+	if (sceneNameBuf[0] == '\0' && m_CurScene)
+	{
+		string curName = m_CurScene->Get_Name();
+		strcpy_s(sceneNameBuf, curName.c_str());
+	}
+
+	ImGui::InputText("##Scene Name", sceneNameBuf, IM_ARRAYSIZE(sceneNameBuf));
+	ImGui::SameLine();
+	if (ImGui::Button("Rename ##Scene") && m_CurScene)
+	{
+		string newName = sceneNameBuf;
+		m_CurScene->Set_Name(newName);
+		MessageBoxW(nullptr, L"씬 이름이 변경되었습니다.", L"알림", MB_OK);
+	}
+
+	ImGui::Spacing();
+
+	// === 저장 버튼 ===
 	if (ImGui::Button("Save"))
 	{
 		const wstring folder = GUISystem::GetInstance()->Open_FolderDialogue();
 		if (!folder.empty()) {
 			const string sceneName = m_CurScene->Get_Name();
 			if (!sceneName.empty()) {
-				std::wstring savePath = folder + L"/" + CFunction::toWString(sceneName) + L".json";
+				wstring savePath = folder + L"/" + CFunction::toWString(sceneName) + L".json";
 				SerializeScene(savePath);
 			}
 			else {
@@ -197,6 +235,7 @@ void CSceneMgr::Save_LoadPanel()
 
 	ImGui::End();
 }
+
 
 void CSceneMgr::SerializeScene(const wstring& path)
 {
@@ -297,6 +336,13 @@ bool CSceneMgr::Is_ObjectNameExist(const string& name) const {
 		}
 	}
 	return false;
+}
+
+void CSceneMgr::Set_SelectedObject(CGameObject* obj)
+{
+	selectObj = obj;
+	CPickingMgr::GetInstance()->Set_PickedObj(obj);
+	CEditorSystem::GetInstance()->Set_Select(obj);
 }
 
 json CSceneMgr::SortJsonKeys(const json& j)

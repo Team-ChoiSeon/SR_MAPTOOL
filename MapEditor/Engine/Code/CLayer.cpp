@@ -2,6 +2,7 @@
 #include "CLayer.h"
 #include "CGameObject.h"
 #include "CSceneMgr.h"
+#include "CPickingMgr.h"
 
 CLayer::CLayer()
 {
@@ -60,24 +61,25 @@ void CLayer::Render_Panel()
 			CSceneMgr::GetInstance()->Set_SelectedObject(obj);
 		}
 
+		bool isDeleted = false;
 		// 우클릭 팝업 메뉴
 		if (ImGui::BeginPopupContextItem())
 		{
 			if (ImGui::MenuItem("Delete"))
 			{
-				// 선택 중이었다면 해제
-				if (isSelected)
+				if (isSelected) {
 					CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
+				}
 				Remove_ByIterator(it);
-				ImGui::EndPopup();
-				ImGui::PopID();
-				continue; // 다음 반복
-			}
-			ImGui::EndPopup();
-		}
+				isDeleted = true;
 
+			}
+			ImGui::EndPopup();   // 팝업은 바로 닫고
+		}
 		ImGui::PopID();
-		++it;
+
+		if (!isDeleted)
+			++it; // 삭제된 경우는 이미 it이 갱신됐으므로 증가하지 않음
 	}
 
 	ImGui::Separator();
@@ -123,6 +125,7 @@ void CLayer::Remove_Object(const string& tag)
 		target = (*iter);
 		m_ObjectList.erase(iter);
 	}
+
 	if (target == CSceneMgr::GetInstance()->Get_SelectedObject()) {
 		CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
 	}
@@ -131,17 +134,24 @@ void CLayer::Remove_Object(const string& tag)
 
 void CLayer::Remove_ByIterator(vector<CGameObject*>::iterator& iter)
 {
-	CGameObject* target = nullptr;
+	if (iter == m_ObjectList.end())
+		return;
 
-	if (iter != m_ObjectList.end()) {
-		target = (*iter);
-		iter = m_ObjectList.erase(iter);
-	}
+	CGameObject* target = *iter;
+
+	// 먼저 선택 해제 (삭제되기 전 상태 유지)
 	if (target == CSceneMgr::GetInstance()->Get_SelectedObject()) {
 		CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
 	}
-	Safe_Release(target);
+
+	if (CPickingMgr::GetInstance()->Get_HittedObject() == target)
+		CPickingMgr::GetInstance()->Clear_AllPickData();
+	iter = m_ObjectList.erase(iter); // 벡터에서 제거
+
+	if (target)
+		Safe_Release(target); // 삭제
 }
+
 
 _bool CLayer::Has_Object(const string& tag)
 {

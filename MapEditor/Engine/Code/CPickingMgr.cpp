@@ -47,9 +47,9 @@ void CPickingMgr::Update_Picking(_float& dt)
 	ScreenToClient(m_hwnd, &pt);
 	m_CursorPos = pt;
 
-
+	//m_RayHitted = { nullptr, 0.f };
+	//m_Picked = { nullptr, 0.f };
 	ComputeRay();
-	//m_PickTarget.clear();  
 }
 
 void CPickingMgr::LateUpdate_Picking(_float& dt)
@@ -59,7 +59,20 @@ void CPickingMgr::LateUpdate_Picking(_float& dt)
 
 void CPickingMgr::Register_Info(RAYHIT info)
 {
+	if (!info.target || !CSceneMgr::GetInstance()->Is_ValidObject(info.target))
+		return; // 무효 대상은 피킹 등록하지 않음
+
 	m_PickTarget.push_back(info);
+}
+
+void CPickingMgr::Remove_Info(CGameObject* obj)
+{
+	auto iter = find_if(m_PickTarget.begin(), m_PickTarget.end(), [&obj](RAYHIT data) ->bool{
+		return obj == data.target;
+		});
+
+	if (iter != m_PickTarget.end())
+		m_PickTarget.erase(iter);
 }
 
 void CPickingMgr::ComputeRay()
@@ -94,7 +107,6 @@ void CPickingMgr::ComputeRay()
 
 void CPickingMgr::SortRayHit()
 {
-
 	if (m_PickTarget.empty()) {
 		m_RayHitted = { nullptr,0 };
 		return;
@@ -102,7 +114,9 @@ void CPickingMgr::SortRayHit()
 
 	//2. Check Nearest Object
 	auto iter = min_element(m_PickTarget.begin(), m_PickTarget.end(),
-		[](const RAYHIT& a, const RAYHIT& b) {return a.fDistance < b.fDistance;
+		[](const RAYHIT& a, const RAYHIT& b) {
+			
+			return a.fDistance < b.fDistance;
 		});
 
 	m_RayHitted = *iter;
@@ -114,18 +128,41 @@ void CPickingMgr::Free()
 	Safe_Release(m_pDevice);
 }
 
-
 void CPickingMgr::Check_Input()
 {
 	if (GUISystem::GetInstance()->UsingUI()) return;
-
 	if (CInputMgr::GetInstance()->Mouse_Tap(DIM_LB))
 	{
-		SortRayHit();
+		if (m_PickTarget.empty()) {
+			m_Picked = { nullptr, 0.f };
+			m_RayHitted = { nullptr, 0.f };
+			CSceneMgr::GetInstance()->Set_SelectedObject(nullptr); // ← 명시적으로 해제
+			return;
+		}
 
-		m_Picked = m_RayHitted;
-		CEditorSystem::GetInstance()->Set_Select(m_Picked.target);
-		CSceneMgr::GetInstance()->Set_SelectedObject(m_Picked.target);
+		SortRayHit();
+		if (m_RayHitted.target && CSceneMgr::GetInstance()->Is_ValidObject(m_RayHitted.target))
+		{
+			m_Picked = m_RayHitted;
+			CSceneMgr::GetInstance()->Set_SelectedObject(m_Picked.target);
+		}
+		else
+		{
+			m_Picked = { nullptr, 0.f };
+			CSceneMgr::GetInstance()->Set_SelectedObject(nullptr);
+		}
+
 	}
 }
 
+CGameObject* CPickingMgr::Get_HittedObject() const
+{
+	return m_RayHitted.target;
+}
+
+void CPickingMgr::Clear_AllPickData()
+{
+	m_RayHitted = { nullptr, 0.f };
+	m_Picked = { nullptr, 0.f };
+	m_PickTarget.clear();
+}

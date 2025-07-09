@@ -1,9 +1,9 @@
 {
-    "class": "CMainPlayer",
+    "class": "CTestTile",
     "components": {
         "CCollider": {
-            "ColTag": 0,
-            "ColType": 1
+            "ColTag": 1,
+            "ColType": 0
         },
         "CModel": {
             "matKey": "DirtObj.mtl",
@@ -35,9 +35,9 @@
                 0.0,
                 0.0
             ],
-            "Friction": 10.0,
+            "Friction": 0.0,
             "Gravity": [
-                5.0
+                1.0
             ],
             "GravityForce": [
                 0.0,
@@ -49,7 +49,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 6.0,
+            "Mass": 1.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -64,9 +64,9 @@
         },
         "CTransform": {
             "position": [
-                0.0,
-                0.0,
-                -20.0
+                1.0,
+                -2.0,
+                0.0
             ],
             "rotation": [
                 0.0,

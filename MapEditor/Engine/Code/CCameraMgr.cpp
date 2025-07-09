@@ -52,17 +52,17 @@ void CCameraMgr::Update_Camera(_float& dt)
 	if (m_pMainCam) {
 		viewMat = m_pMainCam->Get_ViewMatrix();
 		projMat = m_pMainCam->Get_ProjMatrix();
-	
+		m_bDefault = false;
 	}
 	else {
 		m_pDefaultCam->Update_GameObject(dt);
 		CCamera* defCam = m_pDefaultCam->Get_Component<CCamera>();
 
-		if(!CSceneMgr::GetInstance()->Get_SelectedObject())
-			Move_DeafultCam(dt);
+		Move_DeafultCam(dt);
 
 		viewMat = defCam->Get_ViewMatrix();
 		 projMat = defCam->Get_ProjMatrix();
+		 m_bDefault = true;
 	}
 
 	m_pDevice->SetTransform(D3DTS_VIEW, &viewMat);
@@ -83,9 +83,22 @@ CCamera* CCameraMgr::Get_MainCamera()
 {
 	if(m_pMainCam)
 	 return m_pMainCam;
+
 	else
 		return m_pDefaultCam->Get_Component<CCamera>();
 }
+
+bool CCameraMgr::IsCameraInputActive() const
+{
+	return CInputMgr::GetInstance()->Key_Down(DIK_UP) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_DOWN) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_LEFT) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_RIGHT) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_LSHIFT) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_SPACE) ||
+		CInputMgr::GetInstance()->Key_Down(DIK_LCONTROL);
+}
+
 
 void CCameraMgr::Move_DeafultCam(_float& dt)
 {
@@ -93,39 +106,43 @@ void CCameraMgr::Move_DeafultCam(_float& dt)
 	_vec3 up = m_pDefaultCam->Get_Component<CCamera>()->Get_Up();
 	_vec3 right = m_pDefaultCam->Get_Component<CCamera>()->Get_Right();
 
-	if (CInputMgr::GetInstance()->Key_Down(DIK_UP)) {
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(dir * dt * 20);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_DOWN)) {
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(-dir * dt * 20);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_RIGHT)) {
-		_vec3 dir = { 1,0,0 };
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(right * dt * 20);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_LEFT)) {
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(-right * dt * 20);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_SPACE)) {
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(up * dt * 20);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_LSHIFT)) {
-		_vec3 dir = { 0,-1,0 };
-		m_pDefaultCam->Get_Component<CTransform>()->Add_Pos(-up * dt * 20);
-	}
+	CTransform* transform = m_pDefaultCam->Get_Component<CTransform>();
 
-
-	if (CInputMgr::GetInstance()->Key_Down(DIK_X)) {
-		m_pDefaultCam->Get_Component<CCamera>()->Add_Yaw( dt * 40);
+	if (!CInputMgr::GetInstance()->Key_Down(DIK_LCONTROL)) {
+		if (CInputMgr::GetInstance()->Key_Down(DIK_UP)) {
+			transform->Add_Pos(dir * dt * 20);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_DOWN)) {
+			transform->Add_Pos(-dir * dt * 20);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_RIGHT)) {
+			_vec3 dir = { 1,0,0 };
+			transform->Add_Pos(right * dt * 20);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_LEFT)) {
+			transform->Add_Pos(-right * dt * 20);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_SPACE)) {
+			transform->Add_Pos(up * dt * 20);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_LSHIFT)) {
+			_vec3 dir = { 0,-1,0 };
+			transform->Add_Pos(-up * dt * 20);
+		}
 	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_C)) {
-		m_pDefaultCam->Get_Component<CCamera>()->Add_Yaw( -dt * 40);
-	}	
-	if (CInputMgr::GetInstance()->Key_Down(DIK_S)) {
-		m_pDefaultCam->Get_Component<CCamera>()->Add_Pitch(dt * 40);
-	}
-	if (CInputMgr::GetInstance()->Key_Down(DIK_D )) {
-		m_pDefaultCam->Get_Component<CCamera>()->Add_Pitch(-dt * 40);
+	else {
+		if (CInputMgr::GetInstance()->Key_Down(DIK_UP)) {
+			transform->Add_Rotate(right *dt * 40);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_DOWN)) {
+			transform->Add_Rotate(-right * dt * 40);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_RIGHT)) {
+			transform->Add_Rotate(up * dt * 40);
+		}
+		if (CInputMgr::GetInstance()->Key_Down(DIK_LEFT)) {
+			transform->Add_Rotate(-up * dt * 40);
+		}
 	}
 }
 

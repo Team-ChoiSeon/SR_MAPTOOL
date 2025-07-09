@@ -1,5 +1,5 @@
 {
-    "class": "CMainPlayer",
+    "class": "DummyCube",
     "components": {
         "CCollider": {
             "ColTag": 0,
@@ -12,6 +12,9 @@
                 "shader": "g_UVScale.fx"
             },
             "mesh": "DirtObj.obj"
+        },
+        "CPickable": {
+            "validInGame": "true"
         },
         "CRigidBody": {
             "Accelator": [
@@ -35,9 +38,9 @@
                 0.0,
                 0.0
             ],
-            "Friction": 10.0,
+            "Friction": 0.0,
             "Gravity": [
-                5.0
+                1.0
             ],
             "GravityForce": [
                 0.0,
@@ -49,7 +52,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 6.0,
+            "Mass": 1.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -66,11 +69,11 @@
             "position": [
                 0.0,
                 0.0,
-                -20.0
+                10.0
             ],
             "rotation": [
                 0.0,
-                0.0,
+                3.1415927410125732,
                 0.0
             ],
             "scale": [

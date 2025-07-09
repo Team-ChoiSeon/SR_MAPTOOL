@@ -47,6 +47,7 @@ void CPickable::Update_Component(_float& dt)
 
 void CPickable::LateUpdate_Component(_float& dt)
 {
+	if (m_bDelete) return;
 	// 현재 마우스 레이 가져오기
 	const RAY& nowRay = CPickingMgr::GetInstance()->Get_Ray();
 
