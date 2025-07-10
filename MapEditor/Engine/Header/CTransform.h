@@ -51,6 +51,8 @@ public:
     void Add_Pivot(_vec3 pivot);
     void Add_Orbit(_vec3 orbit);
     void Add_Axis(_vec3 axis);
+    void Rotate_Axis(const _vec3& axis, float angle);
+
 
 private:
     void Free() override;

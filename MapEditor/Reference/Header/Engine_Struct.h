@@ -83,4 +83,5 @@ namespace Engine {
 		CGameObject* target;
 		float fDistance;
 	}RAYHIT;
+
 }

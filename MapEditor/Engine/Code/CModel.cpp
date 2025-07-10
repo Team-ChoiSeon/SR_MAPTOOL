@@ -13,7 +13,7 @@
 #include "CCamera.h"
 
 CModel::CModel()
-	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
+	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), m_uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
 	, uvPos{0,0,0,0}, m_fspeed(0.f)
 {
 }
@@ -73,13 +73,17 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
 		D3DXMATRIX wvp = world * view * proj;
 		shader->SetMatrix("g_matWorldViewProj", &wvp);
-		if (e_uvMode == sync) {
+		_vec4 tmp = { 1.f,1.f,0.f,0.f };
+		if (m_uvScale != tmp)
+			e_uvMode = custom;
+
+		if (e_uvMode == sync ) {
 			D3DXVECTOR4 transScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
 			shader->SetVector("g_UVScale", &transScale);
 			shader->SetVector("g_UVPosition", &uvPos);
 		}
 		else {
-			shader->SetVector("g_UVScale", &uvScale);
+			shader->SetVector("g_UVScale", &m_uvScale);
 		}
 	}
 
@@ -176,8 +180,8 @@ void CModel::Render_Panel(ImVec2 size)
 		e_uvMode = static_cast<uvMode>(selectedMode);
 
 		if (e_uvMode == 1) {
-			ImGui::SliderFloat("X : ", &uvScale.x, 1.0f, 10.f, "%.3f");
-			ImGui::SliderFloat("Y : ", &uvScale.y, 1.0f, 10.f, "%.3f");
+			ImGui::SliderFloat("X : ", &m_uvScale.x, 1.0f, 10.f, "%.3f");
+			ImGui::SliderFloat("Y : ", &m_uvScale.y, 1.0f, 10.f, "%.3f");
 		}
 
 		ImGui::Separator();
@@ -274,26 +278,24 @@ void CModel::Serialize(json& outJson) const
 		outJson["matKey"] = m_pMaterial->Get_MaterialKey();
 
 		const string& shaderPath = m_pMaterial->Get_ShaderKey(); 
-		if (!shaderPath.empty())
+		if (!shaderPath.empty()) {
 			outJson["shader"] = shaderPath;
+			outJson["uvScale"] = { m_uvScale.x, m_uvScale.y, m_uvScale.z, m_uvScale.w };
+		}
 	}
 }
 
-
 void CModel::Deserialize(const json& inJson)
 {
-	string meshKey, matKey;
+	string meshKey = "DirtObj.obj";
+	string matKey = "DirtObj.mtl";
 	string shaderPath;
 
 	if (inJson.contains("mesh"))
 		meshKey = inJson["mesh"];
-	else
-		matKey = "DirtObj.obj";
 
 	if (inJson.contains("matKey"))
 		matKey = inJson["matKey"];
-	else
-		matKey = "DirtObj.mtl";
 
 	if (inJson.contains("shader"))
 		shaderPath = inJson["shader"];
@@ -302,4 +304,12 @@ void CModel::Deserialize(const json& inJson)
 
 	if (!shaderPath.empty() && m_pMaterial)
 		m_pMaterial->Set_Shader(shaderPath);
+
+	// uvScale 역직렬화
+	if (inJson.contains("uvScale") && inJson["uvScale"].is_array() && inJson["uvScale"].size() >= 2) {
+		m_uvScale.x = inJson["uvScale"][0].get<float>();
+		m_uvScale.y = inJson["uvScale"][1].get<float>();
+		m_uvScale.z = inJson["uvScale"][2].get<float>();
+		m_uvScale.w = inJson["uvScale"][3].get<float>();
+	}
 }

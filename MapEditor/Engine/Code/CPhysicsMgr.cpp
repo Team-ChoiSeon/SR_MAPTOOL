@@ -7,6 +7,7 @@
 IMPLEMENT_SINGLETON(CPhysicsMgr)
 
 CPhysicsMgr::CPhysicsMgr()
+	:m_bSimulate(false)
 {
 }
 
@@ -21,24 +22,15 @@ HRESULT CPhysicsMgr::Ready_Physics()
 
 void CPhysicsMgr::Update_Physics(_float& dt)
 {
-	if (!m_bSimulate) return;
-
 	for (CRigidBody* rb : m_RigidContainer) {
-		if (!rb->Get_ComponentActive() || rb->Get_Type() == CRigidBody::RigidbodyType::Static)
-			continue;
-
-		CTransform* transform = rb->m_pOwner->Get_Component<CTransform>();
-		_vec3 deltaPos = (m_Gravity * rb->Get_Mass()) * (0.5f * dt * dt);
-		transform->Add_Pos(deltaPos );
+		rb->Set_Simulate(m_bSimulate);
 	}
-
-
 	m_RigidContainer.clear();
+
 }
 
 void CPhysicsMgr::LateUpdate_Physics(_float& dt)
 {
-	if (!m_bSimulate) return;
 }
 
 void CPhysicsMgr::Render_Physics()

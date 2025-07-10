@@ -41,7 +41,7 @@ private:
     int m_iMaterialIndex;
     int m_iShaderIndex;
     uvMode e_uvMode;
-    _vec4 uvScale;
+    _vec4 m_uvScale;
     _vec4 uvPos;
     float m_fspeed;
 private:

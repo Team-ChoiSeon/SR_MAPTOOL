@@ -46,14 +46,14 @@ void CCollisionMgr::Update_Collision(_float& dt)
                 if (m_PrevCollisionPairs.find(pair) != m_PrevCollisionPairs.end())
                 {
                     // 유지 충돌
-                    a->On_CollisionStay(b);
-                    b->On_CollisionStay(a);
+                    a->On_Collision_Stay(b);
+                    b->On_Collision_Stay(a);
                 }
                 else
                 {
                     // 새 충돌 시작
-                    a->On_CollisionEnter(b);
-                    b->On_CollisionEnter(a);
+                    a->On_Collision_Enter(b);
+                    b->On_Collision_Enter(a);
                 }
             }
         }
@@ -64,8 +64,8 @@ void CCollisionMgr::Update_Collision(_float& dt)
     {
         if (m_CurrCollisionPairs.find(pair) == m_CurrCollisionPairs.end())
         {
-            pair.first->On_CollisionExit(pair.second);
-            pair.second->On_CollisionExit(pair.first);
+            pair.first->On_Collision_Exit(pair.second);
+            pair.second->On_Collision_Exit(pair.first);
         }
     }
 

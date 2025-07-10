@@ -154,6 +154,22 @@ void CTransform::Add_Axis(_vec3 axis)
 	m_vAxisRotate += axis;
 }
 
+void CTransform::Rotate_Axis(const _vec3& axis, float angle)
+{
+	if (D3DXVec3LengthSq(&axis) < 0.0001f || angle == 0.f)
+		return;
+
+	_matrix matRot;
+	D3DXMatrixRotationAxis(&matRot, &axis, angle);
+
+	// 월드 행렬을 축 기준 회전 적용
+	m_WorldMat = matRot * m_WorldMat;
+
+	// 방향 벡터도 갱신
+	D3DXVec3TransformNormal(&m_vRight, &m_vRight, &matRot);
+	D3DXVec3TransformNormal(&m_vUp, &m_vUp, &matRot);
+	D3DXVec3TransformNormal(&m_vLook, &m_vLook, &matRot);
+}
 
 void CTransform::Free()
 {
