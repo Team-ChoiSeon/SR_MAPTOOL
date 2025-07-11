@@ -180,9 +180,17 @@ void CModel::Render_Panel(ImVec2 size)
 		e_uvMode = static_cast<uvMode>(selectedMode);
 
 		if (e_uvMode == 1) {
-			ImGui::SliderFloat("X : ", &m_uvScale.x, 1.0f, 10.f, "%.3f");
-			ImGui::SliderFloat("Y : ", &m_uvScale.y, 1.0f, 10.f, "%.3f");
+			ImGui::Text("UV Scale");
+
+			ImGui::Text("X"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(150);
+			ImGui::DragFloat("##UVX", &m_uvScale.x, 0.1f, 1.0f, 30.f, "%.3f");
+
+			ImGui::Text("Y"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(150);
+			ImGui::DragFloat("##UVY", &m_uvScale.y, 0.1f, 1.0f, 30.f, "%.3f");
 		}
+
 
 		ImGui::Separator();
 
@@ -306,10 +314,12 @@ void CModel::Deserialize(const json& inJson)
 		m_pMaterial->Set_Shader(shaderPath);
 
 	// uvScale 역직렬화
-	if (inJson.contains("uvScale") && inJson["uvScale"].is_array() && inJson["uvScale"].size() >= 2) {
-		m_uvScale.x = inJson["uvScale"][0].get<float>();
-		m_uvScale.y = inJson["uvScale"][1].get<float>();
-		m_uvScale.z = inJson["uvScale"][2].get<float>();
-		m_uvScale.w = inJson["uvScale"][3].get<float>();
+	if (inJson.contains("uvScale") && inJson["uvScale"].is_array()) {
+		const auto& uvArr = inJson["uvScale"];
+		if (uvArr.size() > 0) m_uvScale.x = uvArr[0].get<float>();
+		if (uvArr.size() > 1) m_uvScale.y = uvArr[1].get<float>();
+		if (uvArr.size() > 2) m_uvScale.z = uvArr[2].get<float>();
+		if (uvArr.size() > 3) m_uvScale.w = uvArr[3].get<float>();
 	}
+
 }

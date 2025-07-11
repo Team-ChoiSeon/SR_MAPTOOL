@@ -251,6 +251,11 @@
                     "Layer": "TILE",
                     "class": "CTestTile",
                     "components": {
+                        "CCollider": {
+                            "BoundType": 0,
+                            "ColTag": 1,
+                            "ColType": 1
+                        },
                         "CModel": {
                             "matKey": "bright_desert.mtl",
                             "mesh": "DirtObj.obj",
@@ -327,6 +332,11 @@
                     "Layer": "TILE",
                     "class": "CTestTile",
                     "components": {
+                        "CCollider": {
+                            "BoundType": 0,
+                            "ColTag": 0,
+                            "ColType": 1
+                        },
                         "CModel": {
                             "matKey": "DirtObj.mtl",
                             "mesh": "DirtObj.obj",
@@ -405,5 +415,5 @@
             "objects": []
         }
     },
-    "scene_name": "SampleScene321"
+    "scene_name": "Jahyeon"
 }

@@ -9,7 +9,13 @@ enum class ColliderType { PASSIVE, ACTIVE, TRIGGER };
 enum class ColliderTag { NONE, GROUND, WALL, PLATFORM };
 enum class BoundingType { AABB, OBB };
 enum class ColliderState { NONE, ENTER, STAY, EXIT };
-
+struct DebugBox
+{
+    LPDIRECT3DVERTEXBUFFER9 pVB = nullptr;
+    LPDIRECT3DINDEXBUFFER9  pIB = nullptr;
+    _uint                   iVertices = 0;
+    _uint                   iIndices = 0;
+};
 struct BoundInfo
 {
     BoundingType eType = BoundingType::AABB;
@@ -62,6 +68,7 @@ public:
     void LateUpdate_Component(_float& dt) override;
     
     void Render_Panel(ImVec2 size) override;
+    void Ready_DebugBox(LPDIRECT3DDEVICE9 pDevice);
     void Render_Debug(LPDIRECT3DDEVICE9 pDevice);
     CComponent* Clone() const override;
 
@@ -107,10 +114,7 @@ private:
     AABB m_tAABBWorld;
 
     BoundInfo m_tBound;
-
-    LPDIRECT3DVERTEXBUFFER9 m_pVB = nullptr;
-    LPDIRECT3DINDEXBUFFER9  m_pIB = nullptr;
-
+    DebugBox m_tDebug;
     ColliderType m_eType = ColliderType::ACTIVE;
     ColliderTag m_eTag = ColliderTag::NONE;
     ColliderState m_eState = ColliderState::NONE;

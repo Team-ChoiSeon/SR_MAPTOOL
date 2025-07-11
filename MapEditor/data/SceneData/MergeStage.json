@@ -1,0 +1,941 @@
+{
+    "layers": {
+        "CAMERA": {
+            "objects": []
+        },
+        "DEFAULT": {
+            "objects": []
+        },
+        "LIGHT": {
+            "objects": []
+        },
+        "OBJECT": {
+            "objects": [
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -26.0,
+                                2.0,
+                                40.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone1"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -22.0,
+                                6.0,
+                                40.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone2"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -18.0,
+                                10.0,
+                                40.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone3"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -13.999852180480957,
+                                14.0,
+                                40.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone4"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -9.999991416931152,
+                                18.0,
+                                40.00010299682617
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone5"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CFloatingCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Concrete_Cat.mtl",
+                            "mesh": "Concrete_Cat.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                1.0,
+                                20.0,
+                                27.977130889892578
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                2.0,
+                                1.0,
+                                2.0
+                            ]
+                        }
+                    },
+                    "name": "Moving_Stone1"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "DirtObj.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                16.28782844543457,
+                                21.13896942138672,
+                                -14.53061580657959
+                            ],
+                            "rotation": [
+                                61.45600509643555,
+                                0.09716855734586716,
+                                -1.5214667320251465
+                            ],
+                            "scale": [
+                                0.9999998807907104,
+                                0.9999997019767761,
+                                0.1999998688697815
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone6"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "DirtObj.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                20.17525291442871,
+                                20.790910720825195,
+                                -24.95640754699707
+                            ],
+                            "rotation": [
+                                -64.02742004394531,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0000001192092896,
+                                0.20000062882900238
+                            ]
+                        }
+                    },
+                    "name": "Step_Stone7"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CDirectionalCube",
+                    "components": {
+                        "CModel": {
+                            "matKey": "medieval_blocks_05.mtl",
+                            "mesh": "Sand_007.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                14.399999618530273,
+                                10.399999618530273,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                46.56175231933594,
+                                15.57905387878418,
+                                -19.142751693725586
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                11.717320442199707,
+                                5.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Grabing_Stone1"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CStairBlock",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                50.0,
+                                5.0,
+                                50.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.9999997019767761,
+                                0.9999996423721313
+                            ],
+                            "scale": [
+                                5.0,
+                                15.000001907348633,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Stair1"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CStairBlock",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                40.0,
+                                10.0,
+                                50.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                5.0,
+                                15.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Stair2"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CStairBlock",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                30.0,
+                                15.0,
+                                50.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                5.0,
+                                15.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Stair3"
+                },
+                {
+                    "Layer": "OBJECT",
+                    "class": "CStairBlock",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Brick_Wall_009.mtl",
+                            "mesh": "Brick_Wall_009.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                20.0,
+                                20.0,
+                                50.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                5.0,
+                                15.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Stair4"
+                }
+            ]
+        },
+        "PLAYER": {
+            "objects": [
+                {
+                    "Layer": "PLAYER",
+                    "class": "CMainPlayer",
+                    "components": {
+                        "CModel": {
+                            "matKey": "DirtObj.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                0.0,
+                                3.3065624237060547,
+                                -20.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "MainPlayer"
+                }
+            ]
+        },
+        "TILE": {
+            "objects": [
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "bright_desert.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                7.699999809265137,
+                                7.489999771118164,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                40.0,
+                                1.0,
+                                40.0
+                            ]
+                        }
+                    },
+                    "name": "Ground"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wall_Stone_Hieroglyphs.mtl",
+                            "mesh": "DirtObj.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                0.0,
+                                30.0,
+                                41.07838439941406
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                40.0,
+                                30.0,
+                                1.5
+                            ]
+                        }
+                    },
+                    "name": "WallFront"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                3.009000062942505,
+                                3.052999973297119,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                4.0,
+                                20.0,
+                                35.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                10.0,
+                                1.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "paltform1"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wall_Stone_Hieroglyphs.mtl",
+                            "mesh": "Wall_Stone_Hieroglyphs.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                21.084999084472656,
+                                30.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                -40.0,
+                                30.0,
+                                3.6491412174655125e-05
+                            ],
+                            "rotation": [
+                                -179.99989318847656,
+                                89.99994659423828,
+                                -179.99989318847656
+                            ],
+                            "scale": [
+                                40.0,
+                                30.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "WallRight"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wall_Stone_Hieroglyphs.mtl",
+                            "mesh": "Wall_Stone_Hieroglyphs.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                10.239999771118164,
+                                21.600000381469727,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                40.0,
+                                10.227571487426758,
+                                4.511593193218949e-13
+                            ],
+                            "rotation": [
+                                -179.99989318847656,
+                                -89.99994659423828,
+                                -179.99989318847656
+                            ],
+                            "scale": [
+                                40.0,
+                                10.0,
+                                1.0
+                            ]
+                        }
+                    },
+                    "name": "WallLeft"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                2.921999931335449,
+                                3.052999973297119,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                4.0,
+                                20.0,
+                                -20.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                10.0,
+                                1.0,
+                                5.0
+                            ]
+                        }
+                    },
+                    "name": "Platform2"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wall_Stone_Hieroglyphs.mtl",
+                            "mesh": "Wall_Stone_Hieroglyphs.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                5.815000057220459,
+                                6.264999866485596,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                40.0,
+                                45.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                15.0,
+                                40.0
+                            ]
+                        }
+                    },
+                    "name": "WallLeft2"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Concrete_Cat.mtl",
+                            "mesh": "Concrete_Cat.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                6.130000114440918,
+                                10.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                49.945068359375,
+                                45.48094177246094,
+                                4.2190022468566895
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                8.962642669677734,
+                                10.769021987915039,
+                                40.86930847167969
+                            ]
+                        }
+                    },
+                    "name": "CTestTile_3"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Concrete_Cat.mtl",
+                            "mesh": "Concrete_Cat.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                8.425000190734863,
+                                10.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                51.00761795043945,
+                                8.790698051452637,
+                                2.49664306640625
+                            ],
+                            "rotation": [
+                                0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                10.382122039794922,
+                                11.19033145904541,
+                                42.2152214050293
+                            ]
+                        }
+                    },
+                    "name": "CTestTile_4"
+                },
+                {
+                    "Layer": "TILE",
+                    "class": "CTestTile",
+                    "components": {
+                        "CModel": {
+                            "matKey": "Wood_Pathway.mtl",
+                            "mesh": "Wood_Pathway.obj",
+                            "shader": "g_UVScale.fx",
+                            "uvScale": [
+                                13.100000381469727,
+                                13.699999809265137,
+                                0.0,
+                                0.0
+                            ]
+                        },
+                        "CPickable": {
+                            "validInGame": true
+                        },
+                        "CTransform": {
+                            "position": [
+                                60.25175476074219,
+                                24.53163719177246,
+                                3.2005996704101563
+                            ],
+                            "rotation": [
+                                -179.99989318847656,
+                                -0.0,
+                                0.0
+                            ],
+                            "scale": [
+                                1.0,
+                                20.0,
+                                42.13572311401367
+                            ]
+                        }
+                    },
+                    "name": "CTestTile_1"
+                }
+            ]
+        },
+        "UI": {
+            "objects": []
+        }
+    },
+    "scene_name": "MergeStage"
+}

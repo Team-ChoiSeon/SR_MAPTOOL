@@ -142,6 +142,9 @@
     <ClCompile Include="..\Code\CPhysicsMgr.cpp">
       <Filter>01. Manager\14. PhysicMgr</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\CParticle.cpp">
+      <Filter>03. Component\08 ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\CCamera.h">
@@ -309,6 +312,9 @@
     <ClInclude Include="..\Header\CPhysicsMgr.h">
       <Filter>01. Manager\14. PhysicMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CParticle.h">
+      <Filter>03. Component\08 ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. GraphicDev">
@@ -436,6 +442,9 @@
     </Filter>
     <Filter Include="01. Manager\14. PhysicMgr">
       <UniqueIdentifier>{50a7a19b-09ec-4a51-97b7-ad84f0140b1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Component\08 ParticleSystem">
+      <UniqueIdentifier>{a1c0bedb-f91b-403e-ada0-f9de6e802fd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

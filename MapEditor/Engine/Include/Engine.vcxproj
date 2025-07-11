@@ -186,6 +186,7 @@
     <ClInclude Include="..\Header\CMaterial.h" />
     <ClInclude Include="..\Header\CMesh.h" />
     <ClInclude Include="..\Header\CModel.h" />
+    <ClInclude Include="..\Header\CParticle.h" />
     <ClInclude Include="..\Header\CPhysicsMgr.h" />
     <ClInclude Include="..\Header\CPickable.h" />
     <ClInclude Include="..\Header\CPickingMgr.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="..\Code\CMaterial.cpp" />
     <ClCompile Include="..\Code\CMesh.cpp" />
     <ClCompile Include="..\Code\CModel.cpp" />
+    <ClCompile Include="..\Code\CParticle.cpp" />
     <ClCompile Include="..\Code\CPhysicsMgr.cpp" />
     <ClCompile Include="..\Code\CPickable.cpp" />
     <ClCompile Include="..\Code\CPickingMgr.cpp" />
