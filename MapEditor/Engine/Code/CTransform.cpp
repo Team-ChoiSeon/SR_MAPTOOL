@@ -29,8 +29,10 @@ HRESULT CTransform::Ready_Component()
 	m_vScale = { 1.f,1.f,1.f };
 	m_vPivot = { 0.f,0.f,0.f };
 	m_vOrbit = { 0.f,0.f,0.f };
-	m_vLook = { 0.f,0.f,1.f };
-	//룩벡터 조금더 이해 필요함
+	m_vLook = { 0.f, 0.f, 1.f };
+	m_vUp = { 0.f, 1.f, 0.f };
+	m_vRight = { 1.f, 0.f, 0.f };
+
 	m_pParent = nullptr;
 
 	return S_OK;
@@ -55,7 +57,8 @@ void CTransform::Update_Component(_float& dt)
 	//이동
 	D3DXMatrixTranslation(&matTrans, m_vPos.x, m_vPos.y, m_vPos.z);
 
-	m_WorldMat = matScale * matAxisRot* matRotateX * matRotateY * matRotateZ * matTrans;
+	m_WorldMat = matScale * matRotateZ * matRotateX * matRotateY;
+	m_WorldMat *= matTrans;
 	m_WorldPosMat = matScale * matTrans;
 	//-----------------------------------------------------------//
 	//공전 
