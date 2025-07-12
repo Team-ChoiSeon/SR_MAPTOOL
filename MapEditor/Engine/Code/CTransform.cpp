@@ -203,11 +203,11 @@ void CTransform::Render_Panel(ImVec2 size)
 
 		ImGui::Text("Rotate");
 		ImGui::Text("X"); ImGui::SameLine();
-		ImGui::InputFloat("##XRotate", &m_vRotate.x, 0.1f, 1.0f, "%.2f");
+		ImGui::InputFloat("##XRotate", &m_vRotate.x, 0.1f, 10.0f, "%.2f");
 		ImGui::Text("Y"); ImGui::SameLine();
-		ImGui::InputFloat("##YRotate", &m_vRotate.y, 0.1f, 1.0f, "%.2f");
+		ImGui::InputFloat("##YRotate", &m_vRotate.y, 0.1f, 10.0f, "%.2f");
 		ImGui::Text("Z"); ImGui::SameLine();
-		ImGui::InputFloat("##ZRotate", &m_vRotate.z, 0.1f, 1.0f, "%.2f");
+		ImGui::InputFloat("##ZRotate", &m_vRotate.z, 0.1f, 10.0f, "%.2f");
 
 		ImGui::Separator();
 

@@ -25,6 +25,7 @@ HRESULT CResourceMgr::Ready_Resource()
 	if (!m_pDevice) return E_FAIL;
 	AutoLoad_OBJMeshes();
 	AutoLoad_MaterialFromMTL();
+	AutoLoad_Texture();
 	return S_OK;
 }
 void CResourceMgr::AutoLoad_OBJMeshes()
@@ -33,7 +34,7 @@ void CResourceMgr::AutoLoad_OBJMeshes()
 	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
 		if (entry.path().extension() == ".obj") {
 			string filename = entry.path().filename().string();
-			LoadMeshFromOBJ(filename);
+			m_meshName.push_back(filename);
 		}
 	}
 }
@@ -43,7 +44,18 @@ void CResourceMgr::AutoLoad_MaterialFromMTL()
 	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
 		if (entry.path().extension() == ".mtl") {
 			string filename = entry.path().filename().string();
-			LoadMaterialFromMTL(filename);
+			m_materialName.push_back(filename);
+		}
+	}
+}
+
+void CResourceMgr::AutoLoad_Texture()
+{
+	string folderPath = "../../Resource/Texture/";
+	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
+		if (entry.is_regular_file()) {
+			string filename = entry.path().filename().string();
+			m_textureName.push_back(filename);
 		}
 	}
 }
@@ -74,6 +86,19 @@ int CResourceMgr::Get_MaterialID(const string& name)
 	return -1; // 못 찾았을 경우
 }
 
+int CResourceMgr::Get_TextureID(const string& name)
+{
+	auto it = find_if(m_textureName.begin(), m_textureName.end(),
+		[&name](const string& texName) {
+			return texName == name;
+		});
+
+	if (it != m_textureName.end())
+		return static_cast<int>(distance(m_textureName.begin(), it));
+
+	return -1; // 못 찾았을 경우
+}
+
 CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 {
 	auto iter = m_meshMap.find(objPath);
@@ -91,7 +116,6 @@ CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 	}
 	mesh->Set_Key(objPath);
 	m_meshMap[objPath] = mesh;
-	m_meshName.push_back(objPath);
 	return mesh;
 }
 
@@ -112,7 +136,6 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	}
 	tex->SetKey(texturePath);
 	m_textureMap[texturePath] = tex;
-	m_textureName.push_back(texturePath);
 
 	return tex;
 }
@@ -176,7 +199,6 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	mat->Set_Diffuse(tex);
 	// 머티리얼 맵에 등록 (이름으로 저장)
 	m_materialMap[mtlPath] = mat;
-	m_materialName.push_back(mtlPath);
 
 	return mat;
 }

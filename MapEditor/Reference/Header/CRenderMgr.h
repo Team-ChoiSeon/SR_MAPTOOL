@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CModel;
+class CParticle;
 
 class ENGINE_DLL CRenderMgr :
 	public CBase
@@ -18,13 +19,16 @@ public:
 	void Render(LPDIRECT3DDEVICE9 pDevice);
 
 public:
-	void Add_Renderer(CModel* renderer);
+	void Add_ModelRenderer(CModel* renderer);
+	void Add_ParticleRenderer(CParticle* particle);
 	void Remove_Renderer(CModel* renderer);
+	void Set_WireFrame() { WireFram = (!WireFram); };
 	void Clear();
 
 private:
-	unordered_map<RENDER_PASS, list<CModel*>> m_Renderers;
-
+	unordered_map<RENDER_PASS, vector<CModel*>> m_Models;
+	vector<CParticle*> m_Particles;
+	_bool WireFram = false;
 private:
 	virtual void Free() override;
 };

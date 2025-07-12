@@ -10,6 +10,7 @@
 #include "CLight.h"
 #include "CRigidBody.h"
 #include "CCollider.h"
+#include "CParticle.h"
 
 #include "Cscene.h"
 
@@ -224,6 +225,9 @@ void CGameObject::Deserialize(const json& inJson)
 		TryLoadComponent<CCamera>(this, jComps, "CCamera");
 		TryLoadComponent<CModel>(this, jComps, "CModel");
 		TryLoadComponent<CLight>(this, jComps, "CLight");
+		TryLoadComponent<CRigidBody>(this, jComps, "CRigidBody");
+		TryLoadComponent<CCollider>(this, jComps, "CCollider");
+		TryLoadComponent<CParticle>(this, jComps, "CParticle");
 		//===¸ÊÅø¿ë ÇÊ¼ö ÄÄÆ÷³ÍÆ®====/
 		Add_Component<CPickable>();
 	}
@@ -237,6 +241,7 @@ void CGameObject::Add_Component_ByName(const string& name) {
 	else if (name == "Light") Add_Component<CLight>();
 	else if (name == "RigidBody") Add_Component<CRigidBody>();
 	else if (name == "Collider") Add_Component<CCollider>();
+	else if (name == "Particle") Add_Component<CParticle>();
 }
 
 type_index CGameObject::typeid_from_string(const string& name)
@@ -248,6 +253,7 @@ type_index CGameObject::typeid_from_string(const string& name)
 	if (name == "Light") return typeid(CLight);
 	if (name == "RigidBody") return typeid(CRigidBody);
 	if (name == "Collider") return typeid(CCollider);
+	if (name == "Particle") return typeid(CParticle);
 
 	return typeid(void); // fallback
 }

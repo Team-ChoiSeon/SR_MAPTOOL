@@ -47,7 +47,7 @@ void CModel::Update_Component(_float& dt)
 
 void CModel::LateUpdate_Component(_float& dt)
 {
-	CRenderMgr::GetInstance()->Add_Renderer(this);
+	CRenderMgr::GetInstance()->Add_ModelRenderer(this);
 }
 
 void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
