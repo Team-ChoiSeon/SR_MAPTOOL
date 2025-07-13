@@ -38,6 +38,8 @@ public:
     _vec3 Get_Pivot() { return m_vPivot; }
     _vec3 Get_Orbit() { return m_vOrbit; }
     _vec3 Get_Look() { return m_vLook; }
+    _vec3 Get_Right(){return m_vRight; }
+    _vec3 Get_Up() { return m_vUp; }
 
     string Get_ComponentName() const override;
     CGameObject* Get_Parent() { if (m_pParent) return m_pParent->m_pOwner;  return nullptr; }

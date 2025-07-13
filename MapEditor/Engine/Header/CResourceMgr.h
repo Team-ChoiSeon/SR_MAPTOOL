@@ -20,8 +20,11 @@ public:
     HRESULT Ready_Resource();
     void AutoLoad_OBJMeshes();
     void AutoLoad_MaterialFromMTL();
+    void AutoLoad_Texture();
+
     int Get_MeshID(const string& name);
     int Get_MaterialID(const string& name);
+    int Get_TextureID(const string& name);
 
     // ¸ðµ¨ / ¸Þ½¬
     CMesh* LoadMeshFromOBJ(const string& objPath);

@@ -9,7 +9,7 @@
 #include "CInputSystem.h"
 #include "CSceneMgr.h"
 #include "GUISystem.h"
-
+#include "CRenderMgr.h"
 IMPLEMENT_SINGLETON(CEditorSystem)
 CEditorSystem::CEditorSystem()
 	: m_selected(nullptr), m_bEditing(false),m_pTransform(nullptr)
@@ -29,6 +29,12 @@ HRESULT CEditorSystem::Ready_EditorSystem()
 }
 void CEditorSystem::Update_Editor(_float& dt)
 {
+	if (CInputMgr::GetInstance()->Key_Tap(DIK_F4))
+		CRenderMgr::GetInstance()->Set_WireFrame();
+
+	if (CInputMgr::GetInstance()->Key_Tap(DIK_F5))
+		CRenderMgr::GetInstance()->Set_CullMode();
+
 	if (!m_selected || !m_pTransform) return;
 	Key_Check();
 }
@@ -120,6 +126,7 @@ void CEditorSystem::Key_Check()
 		gizmoOperation = ImGuizmo::ROTATE;
 	if (CInputMgr::GetInstance()->Key_Tap(DIK_F3))
 		gizmoOperation = ImGuizmo::SCALE;
+
 }
 
 void CEditorSystem::Free()

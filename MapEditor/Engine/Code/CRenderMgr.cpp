@@ -2,6 +2,7 @@
 #include "CRenderMgr.h"
 #include "CResourceMgr.h"
 #include "CModel.h"
+#include "CParticle.h"
 
 IMPLEMENT_SINGLETON(CRenderMgr)
 
@@ -20,30 +21,41 @@ HRESULT CRenderMgr::Ready_RenderMgr(LPDIRECT3DDEVICE9 pDevice)
 	return S_OK;
 }
 
-void CRenderMgr::Add_Renderer(CModel* renderer)
+void CRenderMgr::Add_ModelRenderer(CModel* renderer)
 {
 	RENDER_PASS pass = renderer->Get_RenderPass();
 
-	auto iter = find_if(m_Renderers[pass].begin(), m_Renderers[pass].end(),
+	auto iter = find_if(m_Models[pass].begin(), m_Models[pass].end(),
 		[&renderer](CModel* data)->bool {
 			return data == renderer;
 		});
 
-	if (iter == m_Renderers[pass].end())
-		m_Renderers[pass].push_back(renderer);
+	if (iter == m_Models[pass].end())
+		m_Models[pass].push_back(renderer);
+}
+
+void CRenderMgr::Add_ParticleRenderer(CParticle* particle)
+{
+	auto iter = find_if(m_Particles.begin(), m_Particles.end(),
+		[&particle](CParticle* data)->bool {
+			return data == particle;
+		});
+
+	if (iter == m_Particles.end())
+		m_Particles.push_back(particle);
 }
 
 void CRenderMgr::Remove_Renderer(CModel* renderer)
 {
 	RENDER_PASS pass = renderer->Get_RenderPass();
 
-	auto iter = remove_if(m_Renderers[pass].begin(), m_Renderers[pass].end(),
+	auto iter = remove_if(m_Models[pass].begin(), m_Models[pass].end(),
 		[&renderer](CModel* data)->bool {
 			return data == renderer;
 		});
 
-	if (iter != m_Renderers[pass].end()) {
-		m_Renderers[pass].erase(iter, m_Renderers[pass].end());
+	if (iter != m_Models[pass].end()) {
+		m_Models[pass].erase(iter, m_Models[pass].end());
 	}
 }
 
@@ -52,9 +64,7 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- ·»´õ·¯ÀÇ ÅëÇÕÀ» °í·Á ÇØº
 	//·»´õ ½ºÅ×ÀÌÆ® ¼³Á¤
 	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, TRUE);		// Á¤±ÔÈ­µÈ ³ë¸Ö »ç¿ë
 	pDevice->SetRenderState(D3DRS_SPECULARENABLE, TRUE);			// ½ºÆäÅ§·¯ ÇÏÀÌ¶óÀÌÆ®
@@ -66,24 +76,39 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- ·»´õ·¯ÀÇ ÅëÇÕÀ» °í·Á ÇØº
 
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
-	//pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_SHADOW])
+	if(m_bWireFram)
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	else
+		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+
+	if(m_iCullMode == 0 )
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	else if(m_iCullMode == 1 )
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+	else if(m_iCullMode == 2 )
+		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	for (auto& renderer : m_Models[RENDER_PASS::RP_SHADOW])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_OPAQUE])
+	for (auto& renderer : m_Models[RENDER_PASS::RP_OPAQUE])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_STENCIL])
+	for (auto& renderer : m_Models[RENDER_PASS::RP_STENCIL])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_TRANSPARENT])
+	for (auto& renderer : m_Particles)
+		renderer->Render_Particle(pDevice);
+
+	for (auto& renderer : m_Models[RENDER_PASS::RP_TRANSPARENT])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_UI])
+	for (auto& renderer : m_Models[RENDER_PASS::RP_UI])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Renderers[RENDER_PASS::RP_POSTPROCESS])
+	for (auto& renderer : m_Models[RENDER_PASS::RP_POSTPROCESS])
 		renderer->Render(pDevice);
 
 	Clear();
@@ -92,7 +117,8 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- ·»´õ·¯ÀÇ ÅëÇÕÀ» °í·Á ÇØº
 
 void CRenderMgr::Clear()
 {
-	m_Renderers.clear();
+	m_Models.clear();
+	m_Particles.clear();
 }
 
 void CRenderMgr::Free()

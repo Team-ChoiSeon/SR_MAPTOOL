@@ -23,12 +23,24 @@ CTexture* CTexture::Create()
 
 HRESULT CTexture::Load(LPDIRECT3DDEVICE9 pDevice, const std::string& filePath)
 {
-    if (!pDevice) return E_FAIL;
-
-    if (filePath.empty())
+    if (!pDevice || filePath.empty())
         return E_FAIL;
 
-    if (FAILED(D3DXCreateTextureFromFileA(pDevice, filePath.c_str(), &m_pTexture)))
+    HRESULT hr = D3DXCreateTextureFromFileExA(
+        pDevice,
+        filePath.c_str(),
+        D3DX_DEFAULT, D3DX_DEFAULT,     // 원본 사이즈
+        D3DX_DEFAULT,                   // MipLevel
+        0,                              // Usage
+        D3DFMT_A8R8G8B8,                // Force alpha-aware format
+        D3DPOOL_MANAGED,                // 일반적인 풀
+        D3DX_DEFAULT, D3DX_DEFAULT,     // 필터
+        0,                              // ColorKey (0: 없음)
+        nullptr, nullptr,
+        &m_pTexture
+    );
+
+    if (FAILED(hr))
     {
         MessageBoxA(0, ("Failed to load texture: " + filePath).c_str(), "Error", MB_OK);
         return E_FAIL;

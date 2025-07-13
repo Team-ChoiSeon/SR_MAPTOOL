@@ -47,14 +47,11 @@ public:
     _vec3 Get_Dir() { return m_vLookDir; };
     _vec3 Get_Eye() { return m_vEye; };
     _vec3 Get_Up() { return m_vUp; };
-    _vec3 Get_Right() { 
-        _vec3 Right;
-        D3DXVec3Cross(&Right, &m_vUp, &m_vLookDir); 
-        return Right;
-    };
+    _vec3 Get_Right() {  return m_vRight;};
+
     string Get_ComponentName() const override;
 private:
-    //void UpdateDirFromAngles();
+    void UpdateDirFromAngles();
 private:
     _float m_fFOV;
     _float m_fAspect;
@@ -68,8 +65,9 @@ private:
     _float m_fYaw;
     _float m_fRoll;
 
-    _vec3 m_vUp;
     _vec3 m_vEye;
+    _vec3 m_vUp;
+    _vec3 m_vRight;
     _vec3 m_vLookDir;
 
     _matrix m_matView;
