@@ -16,11 +16,11 @@ namespace Engine {
 	typedef struct tagVertexParticle
 	{
 		_vec3 vPosition;
-		_vec2 vTexUV;
 		_ulong dwColor;
+		_vec2 vTexUV;
 	}VTXPARTICLE;
 
-	const _ulong	FVF_PARTICLE = D3DFVF_XYZ| D3DFVF_TEX1 | D3DFVF_DIFFUSE;
+	const _ulong	FVF_PARTICLE = D3DFVF_XYZ| D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 	typedef struct tagVertexTexture {
 		_vec3 vPosition;

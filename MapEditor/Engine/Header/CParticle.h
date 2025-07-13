@@ -2,11 +2,17 @@
 #include "CComponent.h"
 
 BEGIN(Engine)
+enum class PARTICLE_MOVE_TYPE
+{
+    FIRE,
+    DUST
+};
 
 struct Particle
 {
     _vec3 vPos;
     _vec3 vVelocity;
+    PARTICLE_MOVE_TYPE moveType;
     float fLifeTime;
     float fAge;
     float fSize;
@@ -15,6 +21,7 @@ struct Particle
 };
 
 class CTexture;
+
 
 class ENGINE_DLL CParticle :
     public CComponent
@@ -39,6 +46,9 @@ public:
 
 private:
     void Set_Texture(const string& key);
+    float randRange(float min, float max);
+    float FadeAlpha(float life, float lifeTime);
+
 private:
     int m_iTextureIndex = 0;
     //파티클 컴포넌트 설정
@@ -54,9 +64,11 @@ private:
     _vec3 m_vVelocity = {0.f,0.f,0.f};
     _vec3 m_vPos = { 0.f,0.f,0.f };
     _vec3 m_vOffset = { 0.f,0.f,0.f };
-    D3DCOLOR m_BaseColor = D3DCOLOR_ARGB(255, 255, 160, 0); // 밝은 주황색
+    D3DCOLOR m_BaseColor = D3DCOLOR_ARGB(255, 255, 160, 100); // 밝은 주황색
     LPDIRECT3DVERTEXBUFFER9 m_pVB = nullptr;
     CTexture* m_pTexture = nullptr;
+    PARTICLE_MOVE_TYPE m_MoveType;
+    int m_iMovementType = 0;
 private:
     void Free() override;
 };

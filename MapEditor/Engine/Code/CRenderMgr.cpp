@@ -96,11 +96,11 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- 렌더러의 통합을 고려 해�
 	for (auto& renderer : m_Models[RENDER_PASS::RP_OPAQUE])
 		renderer->Render(pDevice);
 
-	for (auto& renderer : m_Particles)
-		renderer->Render_Particle(pDevice);
-
 	for (auto& renderer : m_Models[RENDER_PASS::RP_STENCIL])
 		renderer->Render(pDevice);
+
+	for (auto& renderer : m_Particles)
+		renderer->Render_Particle(pDevice);
 
 	for (auto& renderer : m_Models[RENDER_PASS::RP_TRANSPARENT])
 		renderer->Render(pDevice);
