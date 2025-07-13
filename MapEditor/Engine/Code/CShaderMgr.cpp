@@ -49,8 +49,9 @@ LPD3DXEFFECT CShaderMgr::GetShader(const string& path)
 {
 	auto it = m_mapShader.find(path);
 
-	if (it != m_mapShader.end())
+	if (it != m_mapShader.end()) {
 		return it->second;
+	}
 
 	wstring fullPath = CFunction::toWString("../../Shader/" + path); // 경로 조합
 

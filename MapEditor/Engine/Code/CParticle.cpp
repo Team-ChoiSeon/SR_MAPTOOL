@@ -170,8 +170,8 @@ void CParticle::Render_Particle(LPDIRECT3DDEVICE9 pDevice)
 	CCamera* pCamera = CCameraMgr::GetInstance()->Get_MainCamera();
 	if (!pCamera) return;
 
-	pDevice->SetTransform(D3DTS_VIEW, &pCamera->Get_ViewMatrix());
-	pDevice->SetTransform(D3DTS_PROJECTION, &pCamera->Get_ProjMatrix());
+	//pDevice->SetTransform(D3DTS_VIEW, &pCamera->Get_ViewMatrix());
+	//pDevice->SetTransform(D3DTS_PROJECTION, &pCamera->Get_ProjMatrix());
 
 	D3DXMATRIX identity;
 	D3DXMatrixIdentity(&identity);
@@ -323,13 +323,10 @@ CComponent* CParticle::Clone() const
 void CParticle::Serialize(json& outJson) const
 {
 	outJson["spawn_interval"] = m_fSpawnInterval;
-	outJson["elapsed_time"] = m_fElapsedTime;
 	outJson["max_particles"] = m_iMaxParticles;
 	outJson["life_time"] = m_fLifeTime;
 	outJson["size"] = m_fSize;
 
-	outJson["velocity"] = { m_vVelocity.x, m_vVelocity.y, m_vVelocity.z };
-	outJson["position"] = { m_vPos.x, m_vPos.y, m_vPos.z };
 	outJson["offset"] = { m_vOffset.x, m_vOffset.y, m_vOffset.z };
 
 	outJson["base_color"] =  //a,r,g,b
@@ -339,6 +336,8 @@ void CParticle::Serialize(json& outJson) const
 			((BYTE)((m_BaseColor) >> 0) & 0xFF)
 	};
 
+	outJson["Particle_Type"] =  m_MoveType ;
+
 	if (!m_pTexture->GetKey().empty())
 		outJson["texture_path"] = m_pTexture->GetKey();
 }
@@ -347,16 +346,10 @@ void CParticle::Serialize(json& outJson) const
 void CParticle::Deserialize(const json& inJson)
 {
 	m_fSpawnInterval = inJson.value("spawn_interval", 1.0f);
-	m_fElapsedTime = inJson.value("elapsed_time", 0.0f);
 	m_iMaxParticles = inJson.value("max_particles", 100);
 	m_fLifeTime = inJson.value("life_time", 1.0f);
 	m_fSize = inJson.value("size", 1.0f);
-
-	auto vel = inJson.value("velocity", std::vector<float>{0.f, 0.f, 0.f});
-	if (vel.size() == 3) m_vVelocity = { vel[0], vel[1], vel[2] };
-
-	auto pos = inJson.value("position", std::vector<float>{0.f, 0.f, 0.f});
-	if (pos.size() == 3) m_vPos = { pos[0], pos[1], pos[2] };
+	m_MoveType = inJson.value("Particle_Type", PARTICLE_MOVE_TYPE::FIRE);
 
 	auto off = inJson.value("offset", std::vector<float>{0.f, 0.f, 0.f});
 	if (off.size() == 3) m_vOffset = { off[0], off[1], off[2] };

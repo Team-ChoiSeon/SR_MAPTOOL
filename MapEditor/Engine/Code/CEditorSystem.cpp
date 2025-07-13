@@ -35,6 +35,9 @@ void CEditorSystem::Update_Editor(_float& dt)
 	if (CInputMgr::GetInstance()->Key_Tap(DIK_F5))
 		CRenderMgr::GetInstance()->Set_CullMode();
 
+	if (CInputMgr::GetInstance()->Key_Tap(DIK_F6))
+		CRenderMgr::GetInstance()->Set_LightMode();
+
 	if (!m_selected || !m_pTransform) return;
 	Key_Check();
 }

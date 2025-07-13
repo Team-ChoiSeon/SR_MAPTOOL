@@ -11,6 +11,7 @@
 #include "CCameraMgr.h"
 #include "CInputMgr.h"
 #include "CCamera.h"
+#include "CLightMgr.h"
 
 CModel::CModel()
 	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), m_uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
@@ -73,6 +74,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
 		D3DXMATRIX wvp = world * view * proj;
 		shader->SetMatrix("g_matWorldViewProj", &wvp);
+
 		_vec4 tmp = { 1.f,1.f,0.f,0.f };
 		if (m_uvScale != tmp)
 			e_uvMode = custom;
@@ -85,6 +87,9 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		else {
 			shader->SetVector("g_UVScale", &m_uvScale);
 		}
+		D3DLIGHT9 tLight=	CLightMgr::GetInstance()->Get_MainLight();
+		D3DXVECTOR4 LightDir(tLight.Direction.x, tLight.Direction.y, tLight.Direction.z, 0.f); // W는 임시값
+		shader->SetVector("g_LightDir", &LightDir);
 	}
 
 	if (shader) {
@@ -160,7 +165,14 @@ void CModel::Render_Panel(ImVec2 size)
 			if (CTexture* diffuse = m_pMaterial->Get_Diffuse()) {
 				LPDIRECT3DTEXTURE9 pTex = diffuse->Get_Handle();
 				if (pTex) {
-					ImGui::Text("Texture Preview:");
+					ImGui::Text("Diffuse Texture:");
+					ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
+				}
+			}
+			if (CTexture* normal = m_pMaterial->Get_Normal()) {
+				LPDIRECT3DTEXTURE9 pTex = normal->Get_Handle();
+				if (pTex) {
+					ImGui::Text("Normal Texture:");
 					ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
 				}
 			}

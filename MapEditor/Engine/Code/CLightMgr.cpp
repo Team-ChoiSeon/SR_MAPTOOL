@@ -19,8 +19,25 @@ CLightMgr::~CLightMgr()
 HRESULT CLightMgr::Ready_Light(LPDIRECT3DDEVICE9 pDevice)
 {
 	m_pDevice = pDevice;
+
+	// [기본 방향 라이트 설정]
+
+	ZeroMemory(&m_BaseLight, sizeof(D3DLIGHT9));
+	m_BaseLight.Type = D3DLIGHT_DIRECTIONAL;
+
+	// 빛의 방향 (정규화된 벡터)
+	m_BaseLight.Direction = D3DXVECTOR3(0.f, -1.f, 1.f); // 위에서 아래로 대각선
+	m_BaseLight.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);  // 흰색 디퓨즈
+	m_BaseLight.Specular = D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f);
+	m_BaseLight.Ambient = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f); // 약한 앰비언트
+
+	// 0번 라이트로 적용
+	m_pDevice->SetLight(0, &m_BaseLight);
+	m_pDevice->LightEnable(0, TRUE);
+
 	return S_OK;
 }
+
 
 void CLightMgr::Update_Light(_float& dt)
 {

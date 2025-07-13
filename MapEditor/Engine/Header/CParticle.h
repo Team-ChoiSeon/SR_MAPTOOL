@@ -2,7 +2,7 @@
 #include "CComponent.h"
 
 BEGIN(Engine)
-enum class PARTICLE_MOVE_TYPE
+enum PARTICLE_MOVE_TYPE
 {
     FIRE,
     DUST
@@ -47,7 +47,6 @@ public:
 private:
     void Set_Texture(const string& key);
     float randRange(float min, float max);
-    float FadeAlpha(float life, float lifeTime);
 
 private:
     int m_iTextureIndex = 0;

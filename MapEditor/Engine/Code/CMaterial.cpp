@@ -98,8 +98,6 @@ void CMaterial::Apply(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (m_pEffect)
 	{
-
-
 		// 셰이더 파라미터 바인딩
 		if (m_pDiffuse)  m_pEffect->SetTexture("g_DiffuseTex", m_pDiffuse->Get_Handle());
 		if (m_pNormal)   m_pEffect->SetTexture("g_NormalTex", m_pNormal->Get_Handle());

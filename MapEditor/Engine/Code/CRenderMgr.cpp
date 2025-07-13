@@ -59,12 +59,12 @@ void CRenderMgr::Remove_Renderer(CModel* renderer)
 	}
 }
 
-void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice) //<- 렌더러의 통합을 고려 해보기! 
+void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 {
 	//렌더 스테이트 설정
 	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	pDevice->SetRenderState(D3DRS_LIGHTING, m_bLightMode);
 
 	pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, TRUE);		// 정규화된 노멀 사용
 	pDevice->SetRenderState(D3DRS_SPECULARENABLE, TRUE);			// 스페큘러 하이라이트

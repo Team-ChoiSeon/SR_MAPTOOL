@@ -192,11 +192,23 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	// 텍스처 로드 시 경로 조합 (※ 실제 경로 구조에 따라 수정 가능)
 	CTexture* tex = LoadTexture(texturePath); // 경로 수정 필요
 	if (!tex) return nullptr;
+	
 
 	// 머티리얼 객체 생성 및 텍스처 설정
 	CMaterial* mat = CMaterial::Create();
 	mat->Set_MatrialKey(mtlPath);
+	//베이스 컬러
 	mat->Set_Diffuse(tex);
+
+	//노멀맵
+	string NormalPath = texturePath;
+	size_t pos = NormalPath.rfind("_d.");
+	if (pos != string::npos) { //찾았다면
+		NormalPath.replace(pos, 3, "_n.");
+	}
+	CTexture* norm = LoadTexture(NormalPath); // 경로 수정 필요
+	mat->Set_Normal(norm);
+
 	// 머티리얼 맵에 등록 (이름으로 저장)
 	m_materialMap[mtlPath] = mat;
 
