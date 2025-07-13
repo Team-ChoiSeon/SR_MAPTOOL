@@ -221,6 +221,35 @@
                                 0.0
                             ]
                         },
+                        "CParticle": {
+                            "base_color": [
+                                255,
+                                255,
+                                160,
+                                100
+                            ],
+                            "elapsed_time": 1.5089607238769531,
+                            "life_time": 3.5,
+                            "max_particles": 100,
+                            "offset": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "position": [
+                                0.9999122619628906,
+                                20.02850341796875,
+                                28.00050163269043
+                            ],
+                            "size": 1.5,
+                            "spawn_interval": 2.1500000953674316,
+                            "texture_path": "dirt_disp_4k.png",
+                            "velocity": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ]
+                        },
                         "CPickable": {
                             "validInGame": true
                         },

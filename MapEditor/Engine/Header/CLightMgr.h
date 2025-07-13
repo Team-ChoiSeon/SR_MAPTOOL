@@ -20,7 +20,7 @@ public:
     void LateUpdate_Light(_float& dt);
     void Add_Light(CLight* light);
     void Remove_Light(CLight* light);
-
+    D3DLIGHT9& Get_MainLight() { return m_BaseLight; }
 private:
     void Sort_Light();
     float DistanceSqare(_vec3 light, _vec3 cam);
@@ -30,7 +30,7 @@ private:
     int m_curMaxSize ;
     vector<CLight*> m_LightContainer;
     LPDIRECT3DDEVICE9 m_pDevice;
-
+    D3DLIGHT9 m_BaseLight;
 private:
     void Free();
 };
