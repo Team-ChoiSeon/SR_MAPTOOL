@@ -5,7 +5,7 @@
 #include "CCameraMgr.h"
 
 CCamera::CCamera()
-	:m_pTransform(nullptr),m_fPitch(0),m_fYaw(0),m_fRoll(0)
+	:m_pTransform(nullptr),m_fPitch(0),m_fYaw(0),m_fRoll(0),m_fFOV(20.0f)
 {
 }
 
@@ -167,7 +167,7 @@ void CCamera::Render_Panel(ImVec2 size)
 
 		ImGui::Separator();
 		ImGui::Text("Projection");
-		ImGui::SliderFloat("FOV", &m_fFOV, 10.0f, 120.0f);
+		ImGui::SliderFloat("FOV", &m_fFOV, 20.0f, 120.0f);
 		ImGui::SliderFloat("Near", &m_fNear, 0.01f, 10.0f);
 		ImGui::SliderFloat("Far", &m_fFar, 10.0f, 1000.0f);
 
