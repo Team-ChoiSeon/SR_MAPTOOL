@@ -60,7 +60,7 @@
                 0.0,
                 0.0
             ],
-            "m_bGravity": true
+            "m_bGravity": false
         },
         "CTransform": {
             "position": [

@@ -1,16 +1,16 @@
 {
-    "class": "CDirectionalCube",
+    "class": "CFloatingCube",
     "components": {
         "CCollider": {
             "ColTag": 1,
-            "ColType": 0
+            "ColType": 1
         },
         "CModel": {
-            "matKey": "Brick_Wall_009.mtl",
-            "mesh": "Brick_Wall_009.obj"
-        },
-        "CPickable": {
-            "validInGame": "true"
+            "matKey": "DirtObj.mtl",
+            "material": {
+                "diffuse": "dirt_diff_4k.jpg"
+            },
+            "mesh": "DirtObj.obj"
         },
         "CRigidBody": {
             "Accelator": [
@@ -59,13 +59,13 @@
                 0.0,
                 0.0
             ],
-            "m_bGravity": false
+            "m_bGravity": true
         },
         "CTransform": {
             "position": [
-                46.56175231933594,
-                15.57905387878418,
-                -19.142751693725586
+                0.0,
+                0.0,
+                0.0
             ],
             "rotation": [
                 0.0,
@@ -73,9 +73,9 @@
                 0.0
             ],
             "scale": [
-                11.717320442199707,
-                5.0,
-                5.0
+                1.0,
+                0.30000001192092896,
+                1.0
             ]
         }
     }

@@ -1,13 +1,16 @@
 {
-    "class": "CDirectionalCube",
+    "class": "CPickSwitch",
     "components": {
         "CCollider": {
             "ColTag": 1,
             "ColType": 0
         },
         "CModel": {
-            "matKey": "Brick_Wall_009.mtl",
-            "mesh": "Brick_Wall_009.obj"
+            "matKey": "DirtObj.mtl",
+            "material": {
+                "diffuse": "dirt_diff_4k.jpg"
+            },
+            "mesh": "DirtObj.obj"
         },
         "CPickable": {
             "validInGame": "true"
@@ -48,7 +51,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 1.0,
+            "Mass": 10.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -63,9 +66,9 @@
         },
         "CTransform": {
             "position": [
-                46.56175231933594,
-                15.57905387878418,
-                -19.142751693725586
+                0.0,
+                0.0,
+                0.0
             ],
             "rotation": [
                 0.0,
@@ -73,9 +76,9 @@
                 0.0
             ],
             "scale": [
-                11.717320442199707,
-                5.0,
-                5.0
+                1.0,
+                1.0,
+                1.0
             ]
         }
     }

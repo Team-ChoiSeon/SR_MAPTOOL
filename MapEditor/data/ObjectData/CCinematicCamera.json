@@ -1,0 +1,27 @@
+{
+    "class": "CCinematicCamera",
+    "components": {
+        "CCamera": {
+            "fov": 0.7853981852531433,
+            "zfar": 1000.0,
+            "znear": 0.10000000149011612
+        },
+        "CTransform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    }
+}

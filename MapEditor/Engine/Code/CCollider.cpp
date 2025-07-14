@@ -125,13 +125,15 @@ void CCollider::Render_Panel(ImVec2 size)
 		Delete_ComponentPane();
 
 		// Collider Type Combo
-		const char* typeItems[] = { "ACTIVE", "PASSIVE", "TRIGGER" };
+		const char* typeItems[] = { "PASSIVE", "ACTIVE", "TRIGGER" };
 		int currentType = static_cast<int>(m_eType);
 		if (ImGui::Combo("Type", &currentType, typeItems, IM_ARRAYSIZE(typeItems)))
 			m_eType = static_cast<ColliderType>(currentType);
 
+
+	
 		// Collider Tag Combo
-		const char* tagItems[] = { "NONE", "GROUND", "PLAYER", "ENEMY", "PLATFORM" };
+		const char* tagItems[] = { "NONE", "GROUND", "WALL","PLATFORM" };
 		int currentTag = static_cast<int>(m_eTag);
 		if (ImGui::Combo("Tag", &currentTag, tagItems, IM_ARRAYSIZE(tagItems)))
 			m_eTag = static_cast<ColliderTag>(currentTag);
