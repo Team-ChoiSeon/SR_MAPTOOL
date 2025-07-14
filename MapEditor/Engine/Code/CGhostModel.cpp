@@ -129,7 +129,7 @@ void CGhostModel::Deserialize(const json& inJson)
 
 string CGhostModel::Get_ComponentName() const
 {
-	return "CGhostModel";
+	return "";
 }
 
 void CGhostModel::Free()

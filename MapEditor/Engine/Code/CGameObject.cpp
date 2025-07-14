@@ -194,7 +194,8 @@ void CGameObject::Serialize(json& outJson) const
 		json jComp;
 		comp->Serialize(jComp);
 		string compName = comp->Get_ComponentName();
-		jComponents[compName] = jComp;
+		if(!compName.empty())
+			jComponents[compName] = jComp;
 	}
 
 	outJson["components"] = jComponents;
