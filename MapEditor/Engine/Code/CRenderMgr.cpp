@@ -3,6 +3,7 @@
 #include "CResourceMgr.h"
 #include "CModel.h"
 #include "CParticle.h"
+#include "CGhostModel.h"
 
 IMPLEMENT_SINGLETON(CRenderMgr)
 
@@ -43,6 +44,17 @@ void CRenderMgr::Add_ParticleRenderer(CParticle* particle)
 
 	if (iter == m_Particles.end())
 		m_Particles.push_back(particle);
+}
+
+void CRenderMgr::Add_GhostRenderer(CGhostModel* particle)
+{
+	auto iter = find_if(m_Ghosts.begin(), m_Ghosts.end(),
+		[&particle](CGhostModel* data)->bool {
+			return data == particle;
+		});
+
+	if (iter == m_Ghosts.end())
+		m_Ghosts.push_back(particle);
 }
 
 void CRenderMgr::Remove_Renderer(CModel* renderer)
@@ -96,6 +108,9 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 	for (auto& renderer : m_Models[RENDER_PASS::RP_OPAQUE])
 		renderer->Render(pDevice);
 
+	for (auto& renderer : m_Ghosts)
+		renderer->Render(pDevice);
+
 	for (auto& renderer : m_Models[RENDER_PASS::RP_STENCIL])
 		renderer->Render(pDevice);
 
@@ -112,13 +127,13 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 		renderer->Render(pDevice);
 
 	Clear();
-	//m_StateCache->Clear();
 }
 
 void CRenderMgr::Clear()
 {
 	m_Models.clear();
 	m_Particles.clear();
+	m_Ghosts.clear();
 }
 
 void CRenderMgr::Free()
