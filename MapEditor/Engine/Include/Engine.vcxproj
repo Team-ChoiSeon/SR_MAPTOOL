@@ -177,6 +177,7 @@
     <ClInclude Include="..\Header\CFrameMgr.h" />
     <ClInclude Include="..\Header\CFunction.h" />
     <ClInclude Include="..\Header\CGameObject.h" />
+    <ClInclude Include="..\Header\CGhostModel.h" />
     <ClInclude Include="..\Header\CGraphicDev.h" />
     <ClInclude Include="..\Header\CInputMgr.h" />
     <ClInclude Include="..\Header\CInputSystem.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="..\Code\CFrameMgr.cpp" />
     <ClCompile Include="..\Code\CFunction.cpp" />
     <ClCompile Include="..\Code\CGameObject.cpp" />
+    <ClCompile Include="..\Code\CGhostModel.cpp" />
     <ClCompile Include="..\Code\CGraphicDev.cpp" />
     <ClCompile Include="..\Code\CInputMgr.cpp" />
     <ClCompile Include="..\Code\CInputSystem.cpp" />

@@ -206,7 +206,7 @@ void CParticle::Render_Particle(LPDIRECT3DDEVICE9 pDevice)
 		D3DXVec3Cross(&vRight, &vUp, &vLook);
 		D3DXVec3Normalize(&vRight, &vRight);
 
-		// 다시 up 보정 (직교화)
+		// 다시 up 보정
 		D3DXVECTOR3 vTrueUp;
 		D3DXVec3Cross(&vTrueUp, &vLook, &vRight);
 

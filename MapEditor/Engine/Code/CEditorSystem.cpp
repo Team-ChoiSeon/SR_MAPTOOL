@@ -117,7 +117,7 @@ void CEditorSystem::Set_Select(CGameObject* obj)
 
 	m_bEditing = obj ? true : false;
 	if (m_pTransform)
-		m_gizmoWorld = m_pTransform->Get_WorldMatrix(); // ← 초기값 복사
+		m_gizmoWorld = m_pTransform->Get_WorldMatrix(); 
 
 }
 

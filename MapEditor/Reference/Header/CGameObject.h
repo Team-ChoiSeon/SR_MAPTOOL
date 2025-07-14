@@ -1,6 +1,8 @@
 #pragma once
 #include "CBase.h"
 #include "CComponent.h"
+#include "CModel.h"
+#include "CGhostModel.h"
 
 BEGIN(Engine)
 static vector<string>ComponentList = { "Transform","Camera","Model","InputSystem","Light","RigidBody","Collider","Particle"};
@@ -107,5 +109,18 @@ inline void CGameObject::Remove_Component()
 	Safe_Release(target);
 }
 
+
+template<>
+inline void CGameObject::TryLoadComponent<CModel>(CGameObject* obj, const json& jComponents, const char* compName)
+{
+	if (jComponents.contains(compName)) {
+		CModel* comp = obj->Add_Component<CModel>();
+		comp->Deserialize(jComponents[compName]);
+	}
+	else {
+		CGhostModel* comp = obj->Add_Component<CGhostModel>();
+		//comp->Deserialize(jComponents[compName]);
+	}
+}
 
 END
