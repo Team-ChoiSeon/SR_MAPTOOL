@@ -51,7 +51,7 @@ void CResourceMgr::AutoLoad_MaterialFromMTL()
 
 void CResourceMgr::AutoLoad_Texture()
 {
-	string folderPath = "../../Resource/Texture/";
+	string folderPath = "../../Resource/Texture/Diffuse/";
 	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
 		if (entry.is_regular_file()) {
 			string filename = entry.path().filename().string();
@@ -125,8 +125,13 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	if (it != m_textureMap.end()) 
 		return it->second;
 
-	string BasePath = "../../Resource/Texture/";
-	string filePath = BasePath + texturePath;
+	string BasePath = "../../Resource/Texture/Diffuse/";
+	string filePath;
+
+	if (texturePath.empty())
+		filePath = BasePath+ "Grey_Diffuse.PNG";
+	else
+		 filePath = BasePath + texturePath;
 
 	CTexture* tex = CTexture::Create();
 
@@ -153,9 +158,10 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 
 	// .mtl 파일 열기
 	ifstream in(filePath);
+
 	if (!in.is_open()) {
-		MSG_BOX(L"머티리얼 로딩 파일 오류가 생겼습니다");
-		return nullptr;
+		MSG_BOX(L"머티리얼 로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
+		 filePath = BasePath + "Default_A.mtl";
 	}
 
 	// .mtl 파일 파싱 준비

@@ -27,7 +27,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	//파일 열기
 	ifstream in(path);
 	if (!in.is_open()) {
-		MSG_BOX(L"OBJ 로딩 파일 오류가 생겼습니다");
+		MSG_BOX(L"로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
 		return E_FAIL;
 	}
 
