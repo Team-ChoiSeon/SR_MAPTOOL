@@ -35,7 +35,7 @@ void CPhysicsMgr::LateUpdate_Physics(_float& dt)
 
 void CPhysicsMgr::Render_Physics()
 {
-	ImGui::Checkbox("##ActivePhysics", &m_bSimulate); ImGui::SameLine();
+	//ImGui::Checkbox("##ActivePhysics", &m_bSimulate); ImGui::SameLine();
 }
 
 void CPhysicsMgr::Register_Physics(CRigidBody* rigid)

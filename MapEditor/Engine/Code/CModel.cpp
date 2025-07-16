@@ -72,17 +72,31 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		D3DXMATRIX world = pTransform->Get_WorldMatrix();
 		D3DXMATRIX view = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ViewMatrix();
 		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
-		D3DXMATRIX wvp = world * view * proj;
-		shader->SetMatrix("g_matWorldViewProj", &wvp);
+
+		//D3DXMATRIX wvp = world * view * proj;
+		//shader->SetMatrix("g_matWorldViewProj", &wvp);
+
+		shader->SetMatrix("g_matWorld", &world);
+		shader->SetMatrix("g_matView", &view);
+		shader->SetMatrix("g_matProj", &proj);
+		
+		D3DLIGHT9 mainLight = CLightMgr::GetInstance()->Get_MainLight();
+		// 라이트 방향은 -Direction (픽셀에서 빛이 향하는 것, 입사광)
+		D3DXVECTOR3 lightDir = mainLight.Direction;
+		lightDir *= -1;
+		D3DXVec3Normalize(&lightDir, &lightDir);
+
+		shader->SetVector("g_LightDir", reinterpret_cast<D3DXVECTOR4*>(&lightDir)); 
+		shader->SetVector("g_LightColor", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Diffuse));
+		shader->SetVector("g_Ambient", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Ambient));
 
 		_vec4 tmp = { 1.f,1.f,0.f,0.f };
 		if (m_uvScale != tmp)
 			e_uvMode = custom;
 
 		if (e_uvMode == sync ) {
-			D3DXVECTOR4 transScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
+			D3DXVECTOR4 transScale(scale.x, scale.x, scale.x, 0.f); // Z, W는 임시값
 			shader->SetVector("g_UVScale", &transScale);
-			shader->SetVector("g_UVPosition", &uvPos);
 		}
 		else {
 			shader->SetVector("g_UVScale", &m_uvScale);
@@ -197,7 +211,6 @@ void CModel::Render_Panel(ImVec2 size)
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(150);
 			ImGui::DragFloat("##UVX", &m_uvScale.x, 0.1f, 1.0f, 30.f, "%.3f");
-
 			ImGui::Text("Y"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(150);
 			ImGui::DragFloat("##UVY", &m_uvScale.y, 0.1f, 1.0f, 30.f, "%.3f");

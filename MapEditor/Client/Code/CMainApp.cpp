@@ -106,7 +106,8 @@ void CMainApp::Render_MainApp()
 	CCollisionMgr::GetInstance()->Render_Collider(m_pGraphicDev);
 	GUISystem::GetInstance()->Render_GUI();
 	CEditorSystem::GetInstance()->Render_Gizmo();
-	CPhysicsMgr::GetInstance()->Render_Physics();
+	//CPhysicsMgr::GetInstance()->Render_Physics();
+	CLightMgr::GetInstance()->Render_Light();
 	GUISystem::GetInstance()->Render_End();
 
 	m_pDeviceClass->Render_End();

@@ -1,6 +1,19 @@
 #include "Engine_Define.h"
 #include "CMesh.h"
 
+//const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
+//FVF는 바이트 오프셋을 직접 지정하지는 않지만, 결과적으로 Direct3D가 바이트 오프셋을 *자동으로 계산할 수 있도록 힌트를 제공하는 구조
+
+D3DVERTEXELEMENT9 FVF_TILE[] =
+{
+	{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },   // pos
+	{ 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },   // normal
+	{ 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },   // uv
+	{ 0, 32, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,  0 },   // tangent
+	{ 0, 44, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_BINORMAL, 0 },   // binormal
+	D3DDECL_END()
+};
+
 CMesh::CMesh()
 {
 }
@@ -101,14 +114,16 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	}
 	// 정점 버퍼 생성
 	
-	m_dwFVF = FVF_TILE;
+	//m_dwFVF = FVF_TILE;
+	
+	pDevice->CreateVertexDeclaration(FVF_TILE, &g_pDecl);
 	m_iVertexStride = sizeof(VTXTILE);
 	m_iPrimitiveCount = indices.size() / 3;
 	m_iVtxCount = vertices.size();
 
 	if (FAILED(pDevice->CreateVertexBuffer(
 		vertices.size() * m_iVertexStride,
-		0, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, 0))) {
+		0, 0, D3DPOOL_MANAGED, &m_pVB, 0))) {
 		return E_FAIL;
 	}
 
@@ -129,6 +144,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	memcpy(pIBData, indices.data(), indices.size() * sizeof(DWORD));
 	m_pIB->Unlock();
 
+
 	return S_OK;
 }
 
@@ -136,8 +152,11 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 
 void CMesh::Render(LPDIRECT3DDEVICE9 pDevice)
 {
+	//직접 설정한 선언 사용하는 것
 
-	pDevice->SetFVF(m_dwFVF);
+	pDevice->SetVertexDeclaration(g_pDecl);  // 정점 선언 설정
+	//이제 dx 세팅 안씀
+	//pDevice->SetFVF(m_fvf);
 	pDevice->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
 	pDevice->SetIndices(m_pIB);
 	// 렌더링

@@ -28,7 +28,7 @@ private:
     _uint m_iPrimitiveCount = 0;
     _uint m_iVtxCount = 0;
     _uint m_iVertexStride = 0;
-
+    LPDIRECT3DVERTEXDECLARATION9 g_pDecl = nullptr;
    string m_strKey;
 
 private:

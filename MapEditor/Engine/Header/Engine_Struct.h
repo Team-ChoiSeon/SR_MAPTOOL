@@ -43,10 +43,10 @@ namespace Engine {
 		_vec3		vPosition;
 		_vec3		vNormal;
 		_vec2		vTexUV;
+		_vec3 tangent;		  // 이거 두개는 FVF 지원하지 않음.
+		_vec3 binormal;	  // 이거 두개는 FVF 지원하지 않음.
 
 	}VTXTILE;
-
-	const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
 
 	typedef struct tagIndex16
 	{

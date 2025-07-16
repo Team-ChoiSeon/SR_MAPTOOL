@@ -20,6 +20,7 @@ public:
     void LateUpdate_Light(_float& dt);
     void Add_Light(CLight* light);
     void Remove_Light(CLight* light);
+    void Render_Light();
     D3DLIGHT9& Get_MainLight() { return m_BaseLight; }
 private:
     void Sort_Light();

@@ -43,11 +43,14 @@ namespace Engine {
 		_vec3		vPosition;
 		_vec3		vNormal;
 		_vec2		vTexUV;
+		_vec3 tangent;		  // 이거 두개는 FVF 지원하지 않음.
+		_vec3 binormal;	  // 이거 두개는 FVF 지원하지 않음.
 
 	}VTXTILE;
 
-	const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
-
+	//const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
+	//FVF는 바이트 오프셋을 직접 지정하지는 않지만, 결과적으로 Direct3D가 바이트 오프셋을 *자동으로 계산할 수 있도록 힌트를 제공하는 구조
+	
 	typedef struct tagIndex16
 	{
 		_ushort  _0;
