@@ -283,7 +283,7 @@ void CModel::Render_Panel(ImVec2 size)
 				for (int i = 0; i < normalList.size(); ++i) {
 					bool isSelected = (m_iNormalIndex == i);
 					if (ImGui::Selectable(normalList[i].c_str(), isSelected)) {
-						m_iMaterialIndex = i;
+						m_iNormalIndex = i;
 						Set_Normal(normalList[i]);
 					}
 					if (isSelected)
