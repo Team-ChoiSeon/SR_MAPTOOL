@@ -104,7 +104,6 @@ void CMaterial::Apply(LPDIRECT3DDEVICE9 pDevice)
 		if (m_pRoughness)m_pEffect->SetTexture("g_RoughnessTex", m_pRoughness->Get_Handle());
 		if (m_pEmissive) m_pEffect->SetTexture("g_EmissiveTex", m_pEmissive->Get_Handle());
 		if (m_pSpecular) m_pEffect->SetTexture("g_SpecularTex", m_pSpecular->Get_Handle());
-		//  추가: 기본 UVScale 지정 (디버깅 목적으로라도)
 
 		return;
 	}

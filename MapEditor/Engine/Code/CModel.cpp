@@ -72,17 +72,31 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		D3DXMATRIX world = pTransform->Get_WorldMatrix();
 		D3DXMATRIX view = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ViewMatrix();
 		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
-		D3DXMATRIX wvp = world * view * proj;
-		shader->SetMatrix("g_matWorldViewProj", &wvp);
+
+		//D3DXMATRIX wvp = world * view * proj;
+		//shader->SetMatrix("g_matWorldViewProj", &wvp);
+
+		shader->SetMatrix("g_matWorld", &world);
+		shader->SetMatrix("g_matView", &view);
+		shader->SetMatrix("g_matProj", &proj);
+		
+		D3DLIGHT9 mainLight = CLightMgr::GetInstance()->Get_MainLight();
+		// 라이트 방향은 -Direction (픽셀에서 빛이 향하는 것, 입사광)
+		D3DXVECTOR3 lightDir = mainLight.Direction;
+		lightDir *= -1;
+		D3DXVec3Normalize(&lightDir, &lightDir);
+
+		shader->SetVector("g_LightDir", reinterpret_cast<D3DXVECTOR4*>(&lightDir)); 
+		shader->SetVector("g_LightColor", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Diffuse));
+		shader->SetVector("g_Ambient", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Ambient));
 
 		_vec4 tmp = { 1.f,1.f,0.f,0.f };
 		if (m_uvScale != tmp)
 			e_uvMode = custom;
 
 		if (e_uvMode == sync ) {
-			D3DXVECTOR4 transScale(scale.x, scale.y, 0.f, 0.f); // Z, W는 임시값
+			D3DXVECTOR4 transScale(scale.x, scale.x, scale.x, 0.f); // Z, W는 임시값
 			shader->SetVector("g_UVScale", &transScale);
-			shader->SetVector("g_UVPosition", &uvPos);
 		}
 		else {
 			shader->SetVector("g_UVScale", &m_uvScale);
@@ -132,6 +146,16 @@ HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 	return S_OK;
 }
 
+HRESULT CModel::Set_Normal(const string& normalKey)
+{
+	if (m_pMaterial) {
+		CTexture* normal = CResourceMgr::GetInstance()->GetNormal(normalKey);
+		m_pMaterial->Set_Normal(normal);
+		m_iNormalIndex = CResourceMgr::GetInstance()->Get_NormalID(normalKey);
+	}
+	return S_OK;
+}
+
 CMesh* CModel::Get_Mesh()
 {
 	return  m_pMesh;
@@ -169,6 +193,7 @@ void CModel::Render_Panel(ImVec2 size)
 					ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
 				}
 			}
+			ImGui::SameLine();
 			if (CTexture* normal = m_pMaterial->Get_Normal()) {
 				LPDIRECT3DTEXTURE9 pTex = normal->Get_Handle();
 				if (pTex) {
@@ -181,7 +206,7 @@ void CModel::Render_Panel(ImVec2 size)
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Matrial Handle is null");
 		}
 
-		ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
+		//ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
 
 		ImGui::Separator();
 		ImGui::Text("UV Scale:");
@@ -197,7 +222,6 @@ void CModel::Render_Panel(ImVec2 size)
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(150);
 			ImGui::DragFloat("##UVX", &m_uvScale.x, 0.1f, 1.0f, 30.f, "%.3f");
-
 			ImGui::Text("Y"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(150);
 			ImGui::DragFloat("##UVY", &m_uvScale.y, 0.1f, 1.0f, 30.f, "%.3f");
@@ -248,6 +272,28 @@ void CModel::Render_Panel(ImVec2 size)
 			}
 		}
 
+		ImGui::Separator();
+		// 노멀맵 선택
+		const auto& normalList = CResourceMgr::GetInstance()->Get_NormallName();
+		if (!normalList.empty()) {
+			if (m_iNormalIndex >= normalList.size())
+				m_iNormalIndex = 0;
+
+			if (ImGui::BeginCombo("Normal", normalList[m_iNormalIndex].c_str())) {
+				for (int i = 0; i < normalList.size(); ++i) {
+					bool isSelected = (m_iNormalIndex == i);
+					if (ImGui::Selectable(normalList[i].c_str(), isSelected)) {
+						m_iMaterialIndex = i;
+						Set_Normal(normalList[i]);
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::Separator();
 		const auto& shaderList = CShaderMgr::GetInstance()->Get_ShaderName();
 		if (!shaderList.empty()) {
 			if (m_iShaderIndex >= shaderList.size())

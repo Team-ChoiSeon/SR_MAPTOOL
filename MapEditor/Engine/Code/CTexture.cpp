@@ -42,8 +42,9 @@ HRESULT CTexture::Load(LPDIRECT3DDEVICE9 pDevice, const std::string& filePath)
 
     if (FAILED(hr))
     {
-        MessageBoxA(0, ("Failed to load texture: " + filePath).c_str(), "Error", MB_OK);
-        return E_FAIL;
+        //MessageBoxA(0, ("Failed to load texture: " + filePath).c_str(), "Error", MB_OK);
+        return S_OK;
+
     }
 
     return S_OK;

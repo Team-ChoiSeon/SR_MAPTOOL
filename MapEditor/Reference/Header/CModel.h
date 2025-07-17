@@ -26,6 +26,7 @@ public:
 
 public:
     HRESULT Set_Model(const string& meshType, const string& matType );
+    HRESULT Set_Normal(const string& normalKey);
     void Render_Panel(ImVec2 size) override;
     void Serialize(json& outJson) const override;
     void Deserialize(const json& inJson) override;
@@ -39,6 +40,7 @@ private:
     CMaterial* m_pMaterial;
     int m_iMeshIndex;
     int m_iMaterialIndex;
+    int m_iNormalIndex;
     int m_iShaderIndex;
     uvMode e_uvMode;
     _vec4 m_uvScale;

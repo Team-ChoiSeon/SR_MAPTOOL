@@ -79,6 +79,17 @@ void CLightMgr::Remove_Light(CLight* light)
 		)
 	);
 }
+
+void CLightMgr::Render_Light()
+{
+	ImGui::DragFloat("##LightX", &m_BaseLight.Direction.x, 0.01f, -1.0f, 1.0f, "%.3f");
+	ImGui::DragFloat("##LightY", &m_BaseLight.Direction.y, 0.01f, -1.0f, 1.0f, "%.3f");
+	ImGui::DragFloat("##LightZ", &m_BaseLight.Direction.z, 0.01f, -1.0f, 1.0f, "%.3f");
+	_vec3 dir = m_BaseLight.Direction;
+	D3DXVec3Normalize(&dir, &dir);
+	m_BaseLight.Direction = dir;
+}
+
 void CLightMgr::Sort_Light()
 {
 	_vec3 CamPos = CCameraMgr::GetInstance()->Get_MainCamera()->Get_Eye();

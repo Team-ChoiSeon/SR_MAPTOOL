@@ -88,6 +88,7 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+	
 
 	if(m_bWireFram)
 		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
