@@ -48,9 +48,6 @@ namespace Engine {
 
 	}VTXTILE;
 
-	//const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
-	//FVF는 바이트 오프셋을 직접 지정하지는 않지만, 결과적으로 Direct3D가 바이트 오프셋을 *자동으로 계산할 수 있도록 힌트를 제공하는 구조
-	
 	typedef struct tagIndex16
 	{
 		_ushort  _0;

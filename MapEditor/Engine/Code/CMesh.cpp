@@ -38,9 +38,12 @@ CMesh* CMesh::Create()
 HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 {
 	//파일 열기
-	ifstream in(path);
+	ifstream in;
+	in.open(path);
+
 	if (!in.is_open()) {
 		MSG_BOX(L"로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
+		in.open("../Resource/Obj/Default_A.obj");
 		return E_FAIL;
 	}
 
@@ -115,7 +118,7 @@ HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
 	// 정점 버퍼 생성
 	
 	//m_dwFVF = FVF_TILE;
-	
+	GenerateTangentSpace(vertices, indices);
 	pDevice->CreateVertexDeclaration(FVF_TILE, &g_pDecl);
 	m_iVertexStride = sizeof(VTXTILE);
 	m_iPrimitiveCount = indices.size() / 3;
@@ -167,6 +170,53 @@ HRESULT CMesh::Ready_Mesh()
 {
 	return S_OK;
 }
+
+void CMesh::GenerateTangentSpace(vector<VTXTILE>& vertices, const vector<DWORD>& indices)
+{
+	// 초기화
+	for (auto& v : vertices) {
+		v.tangent = D3DXVECTOR3(0, 0, 0);
+		v.binormal = D3DXVECTOR3(0, 0, 0);
+	}
+
+	for (size_t i = 0; i < indices.size(); i += 3)
+	{
+		VTXTILE& v0 = vertices[indices[i + 0]];
+		VTXTILE& v1 = vertices[indices[i + 1]];
+		VTXTILE& v2 = vertices[indices[i + 2]];
+
+		//3d 공간의 위치 변화량
+		D3DXVECTOR3 edge1 = v1.vPosition - v0.vPosition; 
+		D3DXVECTOR3 edge2 = v2.vPosition - v0.vPosition;
+
+		//에서 대응되는 텍스처 변화량
+		D3DXVECTOR2 deltaUV1 = v1.vTexUV - v0.vTexUV;
+		D3DXVECTOR2 deltaUV2 = v2.vTexUV - v0.vTexUV;
+
+		float f = deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y;
+		if (fabs(f) < 1e-6f) f = 1.0f; // divide by zero 방지
+		float invDet = 1.0f / f;
+
+		D3DXVECTOR3 tangent = (edge1 * deltaUV2.y - edge2 * deltaUV1.y) * invDet;
+		D3DXVECTOR3 binormal = (edge2 * deltaUV1.x - edge1 * deltaUV2.x) * invDet;
+
+		// 누적 (공유된 정점이라서 평균 낼 거임)
+		v0.tangent += tangent;
+		v1.tangent += tangent;
+		v2.tangent += tangent;
+
+		v0.binormal += binormal;
+		v1.binormal += binormal;
+		v2.binormal += binormal;
+	}
+
+	// 정규화 누적된 것 평균 낸 것과 마찬가지 효과
+	for (auto& v : vertices) {
+		D3DXVec3Normalize(&v.tangent, &v.tangent);
+		D3DXVec3Normalize(&v.binormal, &v.binormal);
+	}
+}
+
 
 void CMesh::Free()
 {

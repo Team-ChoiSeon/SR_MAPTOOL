@@ -26,6 +26,7 @@ HRESULT CResourceMgr::Ready_Resource()
 	AutoLoad_OBJMeshes();
 	AutoLoad_MaterialFromMTL();
 	AutoLoad_Texture();
+	AutoLoad_Normal();
 	return S_OK;
 }
 void CResourceMgr::AutoLoad_OBJMeshes()
@@ -56,6 +57,17 @@ void CResourceMgr::AutoLoad_Texture()
 		if (entry.is_regular_file()) {
 			string filename = entry.path().filename().string();
 			m_textureName.push_back(filename);
+		}
+	}
+}
+
+void CResourceMgr::AutoLoad_Normal()
+{
+	string folderPath = "../../Resource/Texture/Normal/";
+	for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
+		if (entry.is_regular_file()) {
+			string filename = entry.path().filename().string();
+			m_normalName.push_back(filename);
 		}
 	}
 }
@@ -95,6 +107,19 @@ int CResourceMgr::Get_TextureID(const string& name)
 
 	if (it != m_textureName.end())
 		return static_cast<int>(distance(m_textureName.begin(), it));
+
+	return -1; // 못 찾았을 경우
+}
+
+int CResourceMgr::Get_NormalID(const string& name)
+{
+	auto it = find_if(m_normalName.begin(), m_normalName.end(),
+		[&name](const string& texName) {
+			return texName == name;
+		});
+
+	if (it != m_normalName.end())
+		return static_cast<int>(distance(m_normalName.begin(), it));
 
 	return -1; // 못 찾았을 경우
 }
@@ -141,6 +166,32 @@ CTexture* CResourceMgr::LoadTexture(const std::string& texturePath)
 	}
 	tex->SetKey(texturePath);
 	m_textureMap[texturePath] = tex;
+
+	return tex;
+}
+
+CTexture* CResourceMgr::LoadNormal(const string& texturePath)
+{
+	auto it = m_textureMap.find(texturePath);
+	if (it != m_textureMap.end())
+		return it->second;
+
+	string BasePath = "../../Resource/Texture/Normal/";
+	string filePath;
+
+	if (texturePath.empty())
+		filePath = BasePath + "Default_A.PNG";
+	else
+		filePath = BasePath + texturePath;
+
+	CTexture* tex = CTexture::Create();
+
+	if (FAILED(tex->Load(m_pDevice, filePath))) {
+		Safe_Release(tex);
+		return nullptr;
+	}
+	tex->SetKey(texturePath);
+	m_normalMap[texturePath] = tex;
 
 	return tex;
 }
@@ -206,18 +257,8 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	//베이스 컬러
 	mat->Set_Diffuse(tex);
 
-	//노멀맵
-	string NormalPath = texturePath;
-	size_t pos = NormalPath.rfind("_d.");
-	if (pos != string::npos) { //찾았다면
-		NormalPath.replace(pos, 3, "_n.");
-	}
-	CTexture* norm = LoadTexture(NormalPath); // 경로 수정 필요
-	mat->Set_Normal(norm);
-
 	// 머티리얼 맵에 등록 (이름으로 저장)
 	m_materialMap[mtlPath] = mat;
-
 	return mat;
 }
 
@@ -236,6 +277,17 @@ CTexture* CResourceMgr::GetTexture(const std::string& key)
 {
 	auto iter = m_textureMap.find(key);
 	if (iter != m_textureMap.end()) {
+		return iter->second;
+	}
+	else {
+		return LoadTexture(key);
+	}
+}
+
+CTexture* CResourceMgr::GetNormal(const std::string& key)
+{
+	auto iter = m_normalMap.find(key);
+	if (iter != m_normalMap.end()) {
 		return iter->second;
 	}
 	else {

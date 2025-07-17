@@ -146,6 +146,16 @@ HRESULT CModel::Set_Model(const string& meshType, const string& matType)
 	return S_OK;
 }
 
+HRESULT CModel::Set_Normal(const string& normalKey)
+{
+	if (m_pMaterial) {
+		CTexture* normal = CResourceMgr::GetInstance()->GetNormal(normalKey);
+		m_pMaterial->Set_Normal(normal);
+		m_iNormalIndex = CResourceMgr::GetInstance()->Get_NormalID(normalKey);
+	}
+	return S_OK;
+}
+
 CMesh* CModel::Get_Mesh()
 {
 	return  m_pMesh;
@@ -183,6 +193,7 @@ void CModel::Render_Panel(ImVec2 size)
 					ImGui::Image((ImTextureID)pTex, ImVec2(64, 64));
 				}
 			}
+			ImGui::SameLine();
 			if (CTexture* normal = m_pMaterial->Get_Normal()) {
 				LPDIRECT3DTEXTURE9 pTex = normal->Get_Handle();
 				if (pTex) {
@@ -195,7 +206,7 @@ void CModel::Render_Panel(ImVec2 size)
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Matrial Handle is null");
 		}
 
-		ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
+		//ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
 
 		ImGui::Separator();
 		ImGui::Text("UV Scale:");
@@ -261,6 +272,28 @@ void CModel::Render_Panel(ImVec2 size)
 			}
 		}
 
+		ImGui::Separator();
+		// ³ë¸Ö¸Ê ¼±ÅÃ
+		const auto& normalList = CResourceMgr::GetInstance()->Get_NormallName();
+		if (!normalList.empty()) {
+			if (m_iNormalIndex >= normalList.size())
+				m_iNormalIndex = 0;
+
+			if (ImGui::BeginCombo("Normal", normalList[m_iNormalIndex].c_str())) {
+				for (int i = 0; i < normalList.size(); ++i) {
+					bool isSelected = (m_iNormalIndex == i);
+					if (ImGui::Selectable(normalList[i].c_str(), isSelected)) {
+						m_iMaterialIndex = i;
+						Set_Normal(normalList[i]);
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::Separator();
 		const auto& shaderList = CShaderMgr::GetInstance()->Get_ShaderName();
 		if (!shaderList.empty()) {
 			if (m_iShaderIndex >= shaderList.size())
