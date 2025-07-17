@@ -1,5 +1,6 @@
 #include "Engine_Define.h"
 #include "CMesh.h"
+#include "CResourceMgr.h"
 
 //const _ulong	FVF_TILE = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1 ; 
 //FVF는 바이트 오프셋을 직접 지정하지는 않지만, 결과적으로 Direct3D가 바이트 오프셋을 *자동으로 계산할 수 있도록 힌트를 제공하는 구조
@@ -35,17 +36,30 @@ CMesh* CMesh::Create()
 }
 
 
-HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, const std::string& path)
+HRESULT CMesh::LoadOBJ(LPDIRECT3DDEVICE9 pDevice, string& path)
 {
+
+	string BasePath = "../../Resource/Obj/";
+	string filePath = BasePath + path;
+
 	//파일 열기
 	ifstream in;
-	in.open(path);
+	in.open(filePath);
 
 	if (!in.is_open()) {
-		MSG_BOX(L"로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
-		in.open("../Resource/Obj/Default_A.obj");
-		return E_FAIL;
+		in.clear();
+		in.open("../../Resource/Obj/Default_A.obj");
+		path = "Default_A.obj";
+		if (!in.is_open()) {
+			MessageBoxW(0, L"Mesh Load Err", L"Err", MB_OK);
+			return E_FAIL;
+		}
+		else {
+			if (CResourceMgr::GetInstance()->LoadMeshFromOBJ(path))
+				return E_FAIL;
+		}
 	}
+
 
 	vector<D3DXVECTOR3> positions;
 	vector<D3DXVECTOR3> normals;
@@ -210,7 +224,7 @@ void CMesh::GenerateTangentSpace(vector<VTXTILE>& vertices, const vector<DWORD>&
 		v2.binormal += binormal;
 	}
 
-	// 정규화 누적된 것 평균 낸 것과 마찬가지 효과
+	// 정규화 누적된 것 평균 낸 것과 마찬가지 효과(영향을 받는 정점의 평균잉까)
 	for (auto& v : vertices) {
 		D3DXVec3Normalize(&v.tangent, &v.tangent);
 		D3DXVec3Normalize(&v.binormal, &v.binormal);

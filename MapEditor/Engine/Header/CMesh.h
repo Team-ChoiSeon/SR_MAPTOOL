@@ -12,7 +12,7 @@ public:
     static CMesh* Create();
 
 public:
-    HRESULT LoadOBJ(LPDIRECT3DDEVICE9 pDevice,const std::string& filePath);
+    HRESULT LoadOBJ(LPDIRECT3DDEVICE9 pDevice,string& filePath);
     void Render(LPDIRECT3DDEVICE9 pDevice);
 
     string& Get_Key() { return m_strKey; }

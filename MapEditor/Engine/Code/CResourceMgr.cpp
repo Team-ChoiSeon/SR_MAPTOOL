@@ -131,16 +131,21 @@ CMesh* CResourceMgr::LoadMeshFromOBJ( const std::string& objPath)
 		return iter->second;
 	}
 
-	string BasePath = "../../Resource/Obj/";
-	string filePath = BasePath + objPath;
-
 	CMesh* mesh = CMesh::Create();
-	if (FAILED(mesh->LoadOBJ(m_pDevice,filePath))) {
+	string meshKey = objPath;
+
+	if (FAILED(mesh->LoadOBJ(m_pDevice, meshKey))) {
 		Safe_Release(mesh);
-		return nullptr;
+		auto iter = m_meshMap.find(meshKey);
+		if (iter != m_meshMap.end()) {
+			return iter->second;
+		}
+		else {
+			return nullptr;
+		}
 	}
-	mesh->Set_Key(objPath);
-	m_meshMap[objPath] = mesh;
+	mesh->Set_Key(meshKey);
+	m_meshMap[meshKey] = mesh;
 	return mesh;
 }
 
@@ -206,15 +211,29 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	//  기준 루트 경로 설정
 	string BasePath = "../../Resource/Material/";
 	string filePath = BasePath + mtlPath;
+	string mtlKey = mtlPath;
 
 	// .mtl 파일 열기
-	ifstream in(filePath);
+	//ifstream in(filePath);
+	ifstream in;
+
+	in.open(filePath);
 
 	if (!in.is_open()) {
-		MSG_BOX(L"머티리얼 로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
+		//MSG_BOX(L"머티리얼 로딩 파일 오류가 생겼습니다. \n 기본 파일로 대체 됩니다.");
 		 filePath = BasePath + "Default_A.mtl";
+		 // 스트림 상태 초기화
+		 in.clear(); 
+		 in.open(filePath);
+		 if (!in.is_open()) {
+			 MessageBoxW(0, L"Mtl Load Err", L"Err", MB_OK);
+		 }
+		 else {
+			 auto iter = m_materialMap.find(mtlKey);
+			 if (iter != m_materialMap.end())
+				 return iter->second;
+		 }
 	}
-
 	// .mtl 파일 파싱 준비
 	string line;
 	string matName;
@@ -249,16 +268,15 @@ CMaterial* CResourceMgr::LoadMaterialFromMTL(const std::string& mtlPath)
 	// 텍스처 로드 시 경로 조합 (※ 실제 경로 구조에 따라 수정 가능)
 	CTexture* tex = LoadTexture(texturePath); // 경로 수정 필요
 	if (!tex) return nullptr;
-	
 
 	// 머티리얼 객체 생성 및 텍스처 설정
 	CMaterial* mat = CMaterial::Create();
-	mat->Set_MatrialKey(mtlPath);
+	mat->Set_MatrialKey(mtlKey);
 	//베이스 컬러
 	mat->Set_Diffuse(tex);
 
 	// 머티리얼 맵에 등록 (이름으로 저장)
-	m_materialMap[mtlPath] = mat;
+	m_materialMap[mtlKey] = mat;
 	return mat;
 }
 
