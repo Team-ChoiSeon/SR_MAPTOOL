@@ -81,6 +81,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		shader->SetMatrix("g_matProj", &proj);
 		
 		D3DLIGHT9 mainLight = CLightMgr::GetInstance()->Get_MainLight();
+		_bool usingLight = CRenderMgr::GetInstance()->Get_LightMode();
 		// 라이트 방향은 -Direction (픽셀에서 빛이 향하는 것, 입사광)
 		D3DXVECTOR3 lightDir = mainLight.Direction;
 		lightDir *= -1;
@@ -104,6 +105,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		D3DLIGHT9 tLight=	CLightMgr::GetInstance()->Get_MainLight();
 		D3DXVECTOR4 LightDir(tLight.Direction.x, tLight.Direction.y, tLight.Direction.z, 0.f); // W는 임시값
 		shader->SetVector("g_LightDir", &LightDir);
+		shader->SetBool("g_usingLight", usingLight);
 	}
 
 	if (shader) {
@@ -283,7 +285,7 @@ void CModel::Render_Panel(ImVec2 size)
 				for (int i = 0; i < normalList.size(); ++i) {
 					bool isSelected = (m_iNormalIndex == i);
 					if (ImGui::Selectable(normalList[i].c_str(), isSelected)) {
-						m_iMaterialIndex = i;
+						m_iNormalIndex = i;
 						Set_Normal(normalList[i]);
 					}
 					if (isSelected)

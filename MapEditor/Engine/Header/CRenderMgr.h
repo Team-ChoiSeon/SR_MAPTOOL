@@ -28,6 +28,8 @@ public:
 	void Set_WireFrame() { m_bWireFram = (!m_bWireFram); };
 	void Set_CullMode() { m_iCullMode++; if (m_iCullMode > 2) m_iCullMode = 0; };
 	void Set_LightMode() { m_bLightMode = (!m_bLightMode); };
+
+	_bool Get_LightMode() { return m_bLightMode; }
 	void Clear();
 
 private:

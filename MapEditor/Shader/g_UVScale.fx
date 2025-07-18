@@ -6,6 +6,7 @@ float4x4 g_matProj;
 texture g_DiffuseTex;
 texture g_NormalTex;
 
+bool g_usingLight;
 float3 g_LightDir;
 float4 g_LightColor;
 float4 g_Ambient;
@@ -96,6 +97,10 @@ float4 PS_Main(VS_OUT input) : COLOR0
 
     //(조명 색 + ambient) * 텍스처 색
     float3 litColor = g_Ambient.rgb + g_LightColor.rgb * diff;
+    if (g_usingLight)
+    {
+        return float4(baseColor, 1.f);
+    }
     return float4(baseColor * litColor, 1.0f);
 }
 
