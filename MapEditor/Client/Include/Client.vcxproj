@@ -122,6 +122,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>./;../Header;../../Base;../../Reference/Header;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,6 +143,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>./;../Header;../../Base;../../Reference/Header;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

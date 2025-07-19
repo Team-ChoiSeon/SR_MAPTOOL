@@ -1,4 +1,102 @@
 {
     "class": "CVellum",
-    "components": null
+    "components": {
+        "CCollider": {
+            "ColTag": 0,
+            "ColType": 0
+        },
+        "CModel": {
+            "matKey": "Default_A.mtl",
+            "material": {
+                "diffuse": "Grey_Diffuse.PNG",
+                "shader": "g_UVScale.fx"
+            },
+            "mesh": "Default_A.obj"
+        },
+        "CParticle": {
+            "Particle_Type": 1,
+            "base_color": [
+                255,
+                255,
+                160,
+                100
+            ],
+            "life_time": 0,
+            "max_particles": 300,
+            "offset": [
+                0.0,
+                -0.5,
+                0.0
+            ],
+            "size": 1.5,
+            "spawn_interval": 0.30000001192092896,
+            "texture_path": "blackSmoke00.png"
+        },
+        "CRigidBody": {
+            "Accelator": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "AngleAccel": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "AngleVelocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Bounciness": 0.0,
+            "ExternalForce": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Friction": 1.0,
+            "Gravity": [
+                1.0
+            ],
+            "GravityForce": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Inertia": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Mass": 1.0,
+            "Torque": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "m_bGravity": false
+        },
+        "CTransform": {
+            "position": [
+                0.0,
+                20.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.3300000429153442,
+                1.3300000429153442,
+                1.3300000429153442
+            ]
+        }
+    }
 }

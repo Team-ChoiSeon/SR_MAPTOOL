@@ -6,11 +6,11 @@
             "ColType": 1
         },
         "CModel": {
-            "matKey": "DirtObj.mtl",
+            "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "dirt_diff_4k.jpg"
+                "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "DirtObj.obj"
+            "mesh": "Default_A.obj"
         },
         "CPickable": {
             "validInGame": "true"

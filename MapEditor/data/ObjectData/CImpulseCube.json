@@ -2,15 +2,15 @@
     "class": "CImpulseCube",
     "components": {
         "CCollider": {
-            "ColTag": 1,
+            "ColTag": 0,
             "ColType": 1
         },
         "CModel": {
-            "matKey": "DirtObj.mtl",
+            "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "dirt_diff_4k.jpg"
+                "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "DirtObj.obj"
+            "mesh": "Default_A.obj"
         },
         "CRigidBody": {
             "Accelator": [
@@ -28,13 +28,13 @@
                 0.0,
                 0.0
             ],
-            "Bounciness": 0.0,
+            "Bounciness": 0.5,
             "ExternalForce": [
                 0.0,
                 0.0,
                 0.0
             ],
-            "Friction": 0.0,
+            "Friction": 0.10000000149011612,
             "Gravity": [
                 1.0
             ],
