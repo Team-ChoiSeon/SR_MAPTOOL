@@ -51,10 +51,10 @@ private:
     void Set_Texture(const string& key);
     float randRange(float min, float max);
     int Particle_Count();
-
+    void Set_Radial();
 private:
     int m_iTextureIndex = 0;
-
+    LPDIRECT3DDEVICE9 m_pDevice;
     //파티클 컴포넌트 설정 (각 파티클에게 공통 적용 할 것)
     vector<Particle> m_vecParticles;     // 파티클 리스트
     float m_fSpawnInterval = 0.5f;       // 생성 주기
@@ -74,7 +74,7 @@ private:
     _vec3 m_vVelocity = {0.f,0.f,0.f};
     _vec3 m_vPos = { 0.f,0.f,0.f };
     _vec3 m_vOffset = { 0.f,0.f,0.f };
-
+    _vec3 m_vAxis = {0,1,0};
     D3DCOLOR m_BaseColor = D3DCOLOR_ARGB(255, 255, 160, 100); // 밝은 주황색
     LPDIRECT3DVERTEXBUFFER9 m_pVB = nullptr;
 
