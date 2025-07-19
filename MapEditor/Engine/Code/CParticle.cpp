@@ -32,8 +32,8 @@ CParticle* CParticle::Create()
 HRESULT CParticle::Ready_Component()
 {
 	m_vecParticles.resize(m_iMaxParticles); //파티클 생성
-	LPDIRECT3DDEVICE9 pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
-	pDevice->CreateVertexBuffer(
+	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
+	m_pDevice->CreateVertexBuffer(
 		sizeof(VTXPARTICLE) * 6 * m_iMaxParticles,
 		D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY,
 		FVF_PARTICLE,
@@ -68,7 +68,7 @@ void CParticle::Update_Component(_float& dt)
 
 		if (particle.fAge >= particle.fLifeTime)
 		{
-			particle.bActive = false;
+			particle.bActive = false; //생존 시간 증가 시 비활성화
 			continue;
 		}
 		// 알파 감소
@@ -101,13 +101,12 @@ void CParticle::Update_Component(_float& dt)
 			break;
 		case PARTICLE_MOVE_TYPE::RADIAL:
 			particle.fSize += 0.4f * dt;
-			particle.vVelocity.y -= 0.1f * dt; // 중력
 			break;
 		default:
 			break;
 		}
 
-		particle.vPos += particle.vVelocity * m_fSpeed*dt;
+		particle.vPos += particle.vVelocity * m_fSpeed*dt; //스피드만큼 이동
 	}
 }
 
@@ -141,6 +140,8 @@ void CParticle::Emit_Particle()
 
 	if (m_eMoveType == PARTICLE_MOVE_TYPE::RADIAL) {
 		int count = 0;
+		_matrix RotateMat;
+
 		for (auto& particle : m_vecParticles) {
 			if (!particle.bActive)
 			{
@@ -150,15 +151,21 @@ void CParticle::Emit_Particle()
 				particle.fAge = 0;
 				particle.moveType = m_eMoveType;
 				particle.color = m_BaseColor; // 주황 계열
-				D3DXVECTOR3 dir = {
-				cosf(D3DXToRadian(m_fAngle)),
-				0.f,
-				sinf(D3DXToRadian(m_fAngle))
-				};
+				_vec3 defaultDir ; // 기준 벡터
+				if (fabs(m_vAxis.y) > 0.99f)
+					defaultDir = D3DXVECTOR3(1.f, 0.f, 0.f); // X축
+				else
+					defaultDir = D3DXVECTOR3(0.f, 1.f, 0.f); // Y축
 
-				particle.vVelocity = dir * randRange(3.0f, 4.0f);
+				D3DXVec3Normalize(&m_vAxis,&m_vAxis);
+				// 회전 행렬 생성: m_vAxis 축을 기준으로 m_fAngle만큼 회전
+				D3DXMatrixRotationAxis(&RotateMat, &m_vAxis, D3DXToRadian(m_fAngle));
 
-				m_fAngle = (360.f / m_EmitCount) * count;
+				_vec3 rotatedDir;
+				D3DXVec3TransformNormal(&rotatedDir, &defaultDir, &RotateMat);
+				particle.vVelocity = rotatedDir;
+
+				m_fAngle = (360.f / max(m_EmitCount,1)) * count;
 
 				if (m_fAngle >= 360.f)
 					m_fAngle = 0.f;
@@ -255,9 +262,6 @@ void CParticle::Render_Particle(LPDIRECT3DDEVICE9 pDevice)
 	CCamera* pCamera = CCameraMgr::GetInstance()->Get_MainCamera();
 	if (!pCamera) return;
 
-	//pDevice->SetTransform(D3DTS_VIEW, &pCamera->Get_ViewMatrix());
-	//pDevice->SetTransform(D3DTS_PROJECTION, &pCamera->Get_ProjMatrix());
-
 	D3DXMATRIX identity;
 	D3DXMatrixIdentity(&identity);
 	pDevice->SetTransform(D3DTS_WORLD, &identity); // 모든 파티클에 동일 적용
@@ -279,20 +283,24 @@ void CParticle::Render_Particle(LPDIRECT3DDEVICE9 pDevice)
 	{
 		if (!particle.bActive) continue;
 
+		const int maxVertexCount = 6 * m_iMaxParticles;
+		if (vtxCount + 6 > maxVertexCount)
+			break;
+
 		const float half = particle.fSize * 0.5f;
-		const D3DXVECTOR3& c = particle.vPos;
+		const _vec3& c = particle.vPos;
 
 		// 빌보드 회전 벡터 계산
-		D3DXVECTOR3 vLook = camPos - c;
+		_vec3 vLook = camPos - c;
 		D3DXVec3Normalize(&vLook, &vLook);
 
-		D3DXVECTOR3 vUp(0.f, 1.f, 0.f);
-		D3DXVECTOR3 vRight;
+		_vec3 vUp(0.f, 1.f, 0.f);
+		_vec3 vRight;
 		D3DXVec3Cross(&vRight, &vUp, &vLook);
 		D3DXVec3Normalize(&vRight, &vRight);
 
 		// 다시 up 보정
-		D3DXVECTOR3 vTrueUp;
+		_vec3 vTrueUp;
 		D3DXVec3Cross(&vTrueUp, &vLook, &vRight);
 
 		// 정점 6개 (두 삼각형)
@@ -409,9 +417,17 @@ void CParticle::Render_Panel(ImVec2 size)
 		if (m_iPrevMaxParticles != m_iMaxParticles) {
 			m_vecParticles.resize(m_iMaxParticles);
 			m_iPrevMaxParticles = m_iMaxParticles;
+			m_pDevice->CreateVertexBuffer(
+				sizeof(VTXPARTICLE) * 6 * m_iMaxParticles,
+				D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY,
+				FVF_PARTICLE,
+				D3DPOOL_DEFAULT,
+				&m_pVB,
+				nullptr);
 		}
 		ImGui::InputFloat3("Velocity", (_float*)&m_vVelocity, "%.2f");
-		ImGui::SliderFloat("SpawnInterval", &m_fSpawnInterval, 0.03f, 2.f, "%.3f");
+		ImGui::InputFloat3("Axis", (_float*)&m_vAxis, "%.2f");
+		ImGui::SliderFloat("SpawnInterval", &m_fSpawnInterval, 0.03f, 10.f, "%.3f");
 		ImGui::SliderFloat("LifeTime", &m_fLifeTime, 0.1f, 20.f, "%.3f");
 		ImGui::SliderFloat("Size", &m_fSize, 0.1f, 10.f, "%.3f");
 		ImGui::SliderFloat("Speed", &m_fSpeed, 1.f, 10.f, "%.3f");
@@ -548,5 +564,9 @@ int CParticle::Particle_Count()
 	}
 
 	return count;
+}
+
+void CParticle::Set_Radial()
+{
 }
 
