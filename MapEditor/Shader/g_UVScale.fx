@@ -2,7 +2,7 @@
 float4x4 g_matWorld;
 float4x4 g_matView;
 float4x4 g_matProj;
-
+float g_Alpha = 1.f;
 texture g_DiffuseTex;
 texture g_NormalTex;
 
@@ -101,7 +101,7 @@ float4 PS_Main(VS_OUT input) : COLOR0
     {
         return float4(baseColor, 1.f);
     }
-    return float4(baseColor * litColor, 1.0f);
+    return float4(baseColor * litColor, g_Alpha);
 }
 
 // ===== 기법 정의 =====

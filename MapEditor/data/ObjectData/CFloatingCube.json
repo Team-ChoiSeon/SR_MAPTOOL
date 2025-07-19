@@ -3,14 +3,16 @@
     "components": {
         "CCollider": {
             "ColTag": 1,
-            "ColType": 1
+            "ColType": 0
         },
         "CModel": {
-            "matKey": "DirtObj.mtl",
+            "Alpha": 1.0,
+            "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "dirt_diff_4k.jpg"
+                "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "DirtObj.obj"
+            "mesh": "Default_A.obj",
+            "shader": "g_UVScale.fx"
         },
         "CRigidBody": {
             "Accelator": [
@@ -48,7 +50,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 1.0,
+            "Mass": 10.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -59,7 +61,7 @@
                 0.0,
                 0.0
             ],
-            "m_bGravity": true
+            "m_bGravity": false
         },
         "CTransform": {
             "position": [

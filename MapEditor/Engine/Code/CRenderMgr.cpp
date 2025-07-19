@@ -118,8 +118,16 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 	for (auto& renderer : m_Particles)
 		renderer->Render_Particle(pDevice);
 
-	for (auto& renderer : m_Models[RENDER_PASS::RP_TRANSPARENT])
+	for (auto& renderer : m_Models[RENDER_PASS::RP_TRANSPARENT]) {
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+		pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 		renderer->Render(pDevice);
+		pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	}
 
 	for (auto& renderer : m_Models[RENDER_PASS::RP_UI])
 		renderer->Render(pDevice);

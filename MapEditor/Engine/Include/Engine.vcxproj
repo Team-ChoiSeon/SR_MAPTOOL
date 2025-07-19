@@ -118,6 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>./;../Header;../../Base;../../ThirdParty;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,6 +140,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>./;../Header;../../Base;../../ThirdParty;../../ThirdParty/Imgui;../../ThirdParty/Imgui/backends;../../ThirdParty/JSON;../../ThirdParty/NFD;../../ThirdParty/GUIZMO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

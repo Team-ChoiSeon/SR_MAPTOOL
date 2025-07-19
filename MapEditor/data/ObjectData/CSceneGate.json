@@ -1,21 +1,9 @@
 {
-    "class": "CDirectionalCube",
+    "class": "CSceneGate",
     "components": {
         "CCollider": {
-            "ColTag": 1,
-            "ColType": 0
-        },
-        "CModel": {
-            "Alpha": 1.0,
-            "matKey": "Default_A.mtl",
-            "material": {
-                "diffuse": "Grey_Diffuse.PNG"
-            },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
-        },
-        "CPickable": {
-            "validInGame": "true"
+            "ColTag": 0,
+            "ColType": 2
         },
         "CRigidBody": {
             "Accelator": [
@@ -33,7 +21,7 @@
                 0.0,
                 0.0
             ],
-            "Bounciness": 0.10000000149011612,
+            "Bounciness": 0.0,
             "ExternalForce": [
                 0.0,
                 0.0,
@@ -53,7 +41,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 10.0,
+            "Mass": 1.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -69,8 +57,8 @@
         "CTransform": {
             "position": [
                 0.0,
-                0.0,
-                0.0
+                -7.0,
+                -20.0
             ],
             "rotation": [
                 0.0,
@@ -78,9 +66,9 @@
                 0.0
             ],
             "scale": [
-                1.0,
-                1.0,
-                0.20000000298023224
+                7.0,
+                7.0,
+                7.0
             ]
         }
     }

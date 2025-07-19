@@ -74,6 +74,7 @@ namespace Engine {
 			: bOpen(open), callback(std::move(cb)) {
 		}
 	};
+
 	
 	typedef struct  tagRay
 	{

@@ -1,21 +1,16 @@
 {
-    "class": "CDirectionalCube",
+    "class": "CMetalCube",
     "components": {
         "CCollider": {
             "ColTag": 1,
-            "ColType": 0
+            "ColType": 1
         },
         "CModel": {
-            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
                 "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
-        },
-        "CPickable": {
-            "validInGame": "true"
+            "mesh": "Default_A.obj"
         },
         "CRigidBody": {
             "Accelator": [
@@ -33,7 +28,7 @@
                 0.0,
                 0.0
             ],
-            "Bounciness": 0.10000000149011612,
+            "Bounciness": 0.0,
             "ExternalForce": [
                 0.0,
                 0.0,
@@ -53,7 +48,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 10.0,
+            "Mass": 100.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -80,7 +75,7 @@
             "scale": [
                 1.0,
                 1.0,
-                0.20000000298023224
+                1.0
             ]
         }
     }

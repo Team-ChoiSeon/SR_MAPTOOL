@@ -6,12 +6,13 @@
             "ColType": 1
         },
         "CModel": {
-            "matKey": "DirtObj.mtl",
+            "Alpha": 1.0,
+            "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "dirt_diff_4k.jpg",
-                "shader": "g_UVScale.fx"
+                "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "DirtObj.obj"
+            "mesh": "Default_A.obj",
+            "shader": "g_UVScale.fx"
         },
         "CRigidBody": {
             "Accelator": [
@@ -74,9 +75,9 @@
                 0.0
             ],
             "scale": [
-                1.0,
-                2.0,
-                1.0
+                0.800000011920929,
+                4.0,
+                0.800000011920929
             ]
         }
     }

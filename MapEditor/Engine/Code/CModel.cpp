@@ -15,7 +15,7 @@
 
 CModel::CModel()
 	:m_pMesh(nullptr), m_pMaterial(nullptr), m_iShaderIndex(0), m_uvScale{1.f,1.f,0.f,0.f}, e_uvMode(sync)
-	, uvPos{0,0,0,0}, m_fspeed(0.f)
+	, uvPos{0,0,0,0}, m_fspeed(0.f), m_fAlpha(1.f)
 {
 }
 
@@ -44,6 +44,12 @@ void CModel::Update_Component(_float& dt)
 {
 	uvPos.x += dt* m_fspeed;
 	uvPos.y += dt * m_fspeed;
+	if (m_fAlpha < 1.f) {
+		m_ePass = RENDER_PASS::RP_TRANSPARENT;
+	}
+	else {
+		m_ePass = RENDER_PASS::RP_OPAQUE;
+	}
 }
 
 void CModel::LateUpdate_Component(_float& dt)
@@ -65,6 +71,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 	LPD3DXEFFECT shader = m_pMaterial->Get_Effect();
 	UINT passCount = 0;
 	m_pMaterial->Apply(pDevice);
+
 	if (shader)
 	{
 		const D3DXVECTOR3& scale = pTransform->Get_Scale();
@@ -90,6 +97,7 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		shader->SetVector("g_LightDir", reinterpret_cast<D3DXVECTOR4*>(&lightDir)); 
 		shader->SetVector("g_LightColor", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Diffuse));
 		shader->SetVector("g_Ambient", reinterpret_cast<D3DXVECTOR4*>(&mainLight.Ambient));
+		shader->SetFloat("g_Alpha", m_fAlpha);
 
 		_vec4 tmp = { 1.f,1.f,0.f,0.f };
 		if (m_uvScale != tmp)
@@ -129,7 +137,7 @@ CComponent* CModel::Clone() const
 
 RENDER_PASS CModel::Get_RenderPass()
 {
-	return RENDER_PASS::RP_OPAQUE;
+	return m_ePass;
 }
 
 HRESULT CModel::Set_Model(const string& meshType, const string& matType)
@@ -207,10 +215,10 @@ void CModel::Render_Panel(ImVec2 size)
 		else {
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Matrial Handle is null");
 		}
-
-		//ImGui::SliderFloat("uvSpeed : ", &m_fspeed, 0.001f, 1.f, "%.3f");
-
 		ImGui::Separator();
+		ImGui::Text("Mesh Alpha:");
+		ImGui::Separator();
+		ImGui::SliderFloat("##Alpha : ", &m_fAlpha, 0.01f, 1.f, "%.3f");
 		ImGui::Text("UV Scale:");
 		int selectedMode = static_cast<int>(e_uvMode);
 		ImGui::RadioButton("SyncScale", &selectedMode, (int)sync);ImGui::SameLine();
@@ -345,9 +353,13 @@ void CModel::Serialize(json& outJson) const
 	{
 		outJson["matKey"] = m_pMaterial->Get_MaterialKey();
 
+		if (m_pMaterial->Get_Normal())
+			outJson["Normal"] = m_pMaterial->Get_Normal()->GetKey();
+
 		const string& shaderPath = m_pMaterial->Get_ShaderKey(); 
 		if (!shaderPath.empty()) {
 			outJson["shader"] = shaderPath;
+			outJson["Alpha"] = m_fAlpha;
 			outJson["uvScale"] = { m_uvScale.x, m_uvScale.y, m_uvScale.z, m_uvScale.w };
 		}
 	}
@@ -355,8 +367,9 @@ void CModel::Serialize(json& outJson) const
 
 void CModel::Deserialize(const json& inJson)
 {
-	string meshKey = "DirtObj.obj";
-	string matKey = "DirtObj.mtl";
+	string meshKey = "Default_A.obj";
+	string matKey = "Default_A.mtl";
+	string nomalKey = "Default_A.PNG";
 	string shaderPath;
 
 	if (inJson.contains("mesh"))
@@ -370,6 +383,11 @@ void CModel::Deserialize(const json& inJson)
 
 	Set_Model(meshKey, matKey);
 
+	if (inJson.contains("Normal"))
+		nomalKey = inJson["Normal"];
+
+	Set_Normal(nomalKey);
+
 	if (!shaderPath.empty() && m_pMaterial)
 		m_pMaterial->Set_Shader(shaderPath);
 
@@ -382,4 +400,7 @@ void CModel::Deserialize(const json& inJson)
 		if (uvArr.size() > 3) m_uvScale.w = uvArr[3].get<float>();
 	}
 
+	if (inJson.contains("Alpha")) {
+		m_fAlpha = inJson["Alpha"];
+	}
 }

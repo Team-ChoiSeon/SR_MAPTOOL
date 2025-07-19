@@ -35,6 +35,7 @@ public:
     CMaterial* Get_Material();
     string Get_ComponentName() const override;
 
+    void Set_Transparent();
 private:
     CMesh* m_pMesh;
     CMaterial* m_pMaterial;
@@ -46,6 +47,8 @@ private:
     _vec4 m_uvScale;
     _vec4 uvPos;
     float m_fspeed;
+    float m_fAlpha;
+    RENDER_PASS m_ePass = RENDER_PASS::RP_OPAQUE;
 private:
     void Free() override;
 
