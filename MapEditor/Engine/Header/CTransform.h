@@ -54,6 +54,7 @@ public:
     void Add_Orbit(_vec3 orbit);
     void Add_Axis(_vec3 axis);
     void Rotate_Axis(const _vec3& axis, float angle);
+    void Set_LookDirection(const _vec3& lookDir);
 
 
 private:
