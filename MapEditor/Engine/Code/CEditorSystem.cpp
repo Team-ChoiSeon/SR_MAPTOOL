@@ -10,6 +10,7 @@
 #include "CSceneMgr.h"
 #include "GUISystem.h"
 #include "CRenderMgr.h"
+
 IMPLEMENT_SINGLETON(CEditorSystem)
 CEditorSystem::CEditorSystem()
 	: m_selected(nullptr), m_bEditing(false),m_pTransform(nullptr)
@@ -18,6 +19,7 @@ CEditorSystem::CEditorSystem()
 
 CEditorSystem::~CEditorSystem()
 {
+	Free();
 }
 
 HRESULT CEditorSystem::Ready_EditorSystem()
@@ -25,10 +27,22 @@ HRESULT CEditorSystem::Ready_EditorSystem()
 	m_pDevice = CGraphicDev::GetInstance()->Get_GraphicDev();
 	m_pDevice->GetViewport(&vp);
 	gizmoOperation = ImGuizmo::TRANSLATE;
+
+	m_pHellyCam = CGameObject::CreateDeafult();
+	m_pHellyCam->Add_Component<CTransform>();
+	m_pHellyCam->Add_Component<CCamera>();
+
 	return S_OK;
 }
 void CEditorSystem::Update_Editor(_float& dt)
 {
+	Sync_MainCam();
+
+	if (CInputMgr::GetInstance()->Key_Down(DIK_9)) {
+		m_pHellyCam->Get_Component<CTransform>()->Add_Rotate({ 10,0,0 });
+	}
+	m_pHellyCam->Update_GameObject(dt);
+
 	if (CInputMgr::GetInstance()->Key_Tap(DIK_F4))
 		CRenderMgr::GetInstance()->Set_WireFrame();
 
@@ -45,8 +59,7 @@ void CEditorSystem::Update_Editor(_float& dt)
 
 void CEditorSystem::LateUpdate_Editor(_float& dt)
 {
-	//m_selected = CSceneMgr::GetInstance()->Get_SelectedObject();
-	//Set_Select(m_selected);
+	m_pHellyCam->LateUpdate_GameObject(dt);
 }
 
 void CEditorSystem::Render_Gizmo()
@@ -98,7 +111,7 @@ void CEditorSystem::Render_Gizmo()
 	ImGuizmo::DecomposeMatrixToComponents(m_gizmoWorld, &pos.x, &rot.x, &scale.x);
 
 	m_pTransform->Set_Pos(pos);
-	m_pTransform->Set_Rotate(rot);  // 디그리 그대로 사용
+	//m_pTransform->Set_Rotate(rot);  // 디그리 그대로 사용
 	m_pTransform->Set_Scale(scale);
 
 	m_bEditing = ImGuizmo::IsUsing();
@@ -121,6 +134,34 @@ void CEditorSystem::Set_Select(CGameObject* obj)
 
 }
 
+CCamera* CEditorSystem::Get_HellyCame()
+{
+	if (m_pHellyCam)
+		return m_pHellyCam->Get_Component<CCamera>();
+	else
+		return nullptr;
+}
+
+CTransform* CEditorSystem::Get_HellyTrans()
+{
+	if (m_pHellyCam)
+		return m_pHellyCam->Get_Component<CTransform>();
+	else
+		return nullptr;
+}
+
+void CEditorSystem::Sync_MainCam()
+{
+	if (CCamera* mainCam = CCameraMgr::GetInstance()->Get_MainCamera()) {
+		CTransform* camTrans = m_pHellyCam->Get_Component<CTransform>();
+		_vec3  vMainCamPos = mainCam->Get_Eye();
+		camTrans->Set_Pos({ vMainCamPos.x, vMainCamPos.y + 10, vMainCamPos.z });
+		_vec3 vMyPos = camTrans->Get_Pos();
+		_vec3 vLook = vMainCamPos -vMyPos;
+		camTrans->Set_LookDirection(vLook);
+	}
+}
+
 void CEditorSystem::Key_Check()
 {
 	if (CInputMgr::GetInstance()->Key_Tap(DIK_F1))
@@ -129,9 +170,9 @@ void CEditorSystem::Key_Check()
 		gizmoOperation = ImGuizmo::ROTATE;
 	if (CInputMgr::GetInstance()->Key_Tap(DIK_F3))
 		gizmoOperation = ImGuizmo::SCALE;
-
 }
 
 void CEditorSystem::Free()
 {
+	Safe_Release(m_pHellyCam);
 }

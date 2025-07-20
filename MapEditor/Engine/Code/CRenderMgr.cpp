@@ -4,6 +4,10 @@
 #include "CModel.h"
 #include "CParticle.h"
 #include "CGhostModel.h"
+#include "CEditorSystem.h"
+#include "CCamera.h"
+#include "CTransform.h"
+#include "CCameraMgr.h"
 
 IMPLEMENT_SINGLETON(CRenderMgr)
 
@@ -18,6 +22,14 @@ CRenderMgr::~CRenderMgr()
 
 HRESULT CRenderMgr::Ready_RenderMgr(LPDIRECT3DDEVICE9 pDevice)
 {
+	pDevice->CreateTexture(
+		300, 300,
+		1, D3DUSAGE_RENDERTARGET,
+		D3DFMT_A8R8G8B8,
+		D3DPOOL_DEFAULT,
+		&g_pMyTexture,
+		NULL
+	);
 
 	return S_OK;
 }
@@ -88,21 +100,22 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
-	
 
-	if(m_bWireFram)
+
+	if (m_bWireFram)
 		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	else
 		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 
-	if(m_iCullMode == 0 )
+	if (m_iCullMode == 0)
 		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	else if(m_iCullMode == 1 )
+	else if (m_iCullMode == 1)
 		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-	else if(m_iCullMode == 2 )
+	else if (m_iCullMode == 2)
 		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	m_pRenderCam = CCameraMgr::GetInstance()->Get_MainCamera();
 	for (auto& renderer : m_Models[RENDER_PASS::RP_SHADOW])
 		renderer->Render(pDevice);
 
@@ -129,13 +142,49 @@ void CRenderMgr::Render(LPDIRECT3DDEVICE9 pDevice)
 		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	}
 
-	for (auto& renderer : m_Models[RENDER_PASS::RP_UI])
-		renderer->Render(pDevice);
-
 	for (auto& renderer : m_Models[RENDER_PASS::RP_POSTPROCESS])
 		renderer->Render(pDevice);
 
+	for (auto& renderer : m_Models[RENDER_PASS::RP_UI])
+		renderer->Render(pDevice);
+
+	LPDIRECT3DSURFACE9 pBackBuffer = nullptr;
+	pDevice->GetRenderTarget(0, &pBackBuffer);// ¹é¾÷
+
+	LPDIRECT3DSURFACE9 pDestSurface = nullptr;
+	g_pMyTexture->GetSurfaceLevel(0, &pDestSurface);
+	pDevice->SetRenderTarget(0, pDestSurface);
+
+	pDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
+
+	//Çï¸®Ä· 
+	CCamera* HellyCam = CEditorSystem::GetInstance()->Get_HellyCame();
+	m_pRenderCam = HellyCam;
+	CTransform* HellyTrans = CEditorSystem::GetInstance()->Get_HellyTrans();
+	pDevice->SetTransform(D3DTS_VIEW, &HellyCam->Get_ViewMatrix());
+	pDevice->SetTransform(D3DTS_PROJECTION, &HellyCam->Get_ProjMatrix());
+
+	for (auto& renderer : m_Models[RENDER_PASS::RP_OPAQUE])
+		renderer->Render(pDevice);
+
+	pDevice->SetRenderTarget(0, pBackBuffer); 
+	pDestSurface->Release();
+	pBackBuffer->Release();
+
 	Clear();
+	m_pRenderCam = CCameraMgr::GetInstance()->Get_MainCamera();
+}
+
+void CRenderMgr::Render_GUI()
+{
+	ImGui::Begin("HellyCam View"); // »õ ÆÐ³Î Ã¢ »ý¼º
+
+	ImTextureID textureID = (ImTextureID)g_pMyTexture;
+	ImVec2 size = ImVec2(WINCX /5, WINCY / 5);
+
+	ImGui::Image(textureID, size);
+
+	ImGui::End(); // Ã¢ ´Ý±â
 }
 
 void CRenderMgr::Clear()
@@ -147,4 +196,5 @@ void CRenderMgr::Clear()
 
 void CRenderMgr::Free()
 {
+
 }

@@ -77,8 +77,8 @@ void CModel::Render(LPDIRECT3DDEVICE9 pDevice)
 		const D3DXVECTOR3& scale = pTransform->Get_Scale();
 
 		D3DXMATRIX world = pTransform->Get_WorldMatrix();
-		D3DXMATRIX view = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ViewMatrix();
-		D3DXMATRIX proj = CCameraMgr::GetInstance()->Get_MainCamera()->Get_ProjMatrix();
+		D3DXMATRIX view = CRenderMgr::GetInstance()->Get_RenderCam()->Get_ViewMatrix();
+		D3DXMATRIX proj = CRenderMgr::GetInstance()->Get_RenderCam()->Get_ProjMatrix();
 
 		//D3DXMATRIX wvp = world * view * proj;
 		//shader->SetMatrix("g_matWorldViewProj", &wvp);

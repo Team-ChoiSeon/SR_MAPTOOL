@@ -79,6 +79,11 @@ void CTransform::Update_Component(_float& dt)
 	m_vRight = _vec3(m_WorldMat._11, m_WorldMat._12, m_WorldMat._13);
 	m_vUp = _vec3(m_WorldMat._21, m_WorldMat._22, m_WorldMat._23);
 	m_vLook = _vec3(m_WorldMat._31, m_WorldMat._32, m_WorldMat._33);
+
+	D3DXVec3Normalize(&m_vRight, &m_vRight);
+	D3DXVec3Normalize(&m_vUp, &m_vUp);
+	D3DXVec3Normalize(&m_vLook, &m_vLook);
+
 }
 
 void CTransform::LateUpdate_Component(_float& dt)
@@ -173,6 +178,24 @@ void CTransform::Rotate_Axis(const _vec3& axis, float angle)
 	D3DXVec3TransformNormal(&m_vUp, &m_vUp, &matRot);
 	D3DXVec3TransformNormal(&m_vLook, &m_vLook, &matRot);
 }
+
+void CTransform::Set_LookDirection(const _vec3& lookDir)
+{
+	_vec3 dir = lookDir;
+	D3DXVec3Normalize(&dir, &dir);
+
+	// 회전각을 구함
+	// Pitch (X 회전) = 위/아래 방향
+	// Yaw   (Y 회전) = 좌/우 방향
+
+	float pitch = asinf(-dir.y); // 위아래
+	float yaw = atan2f(dir.x, dir.z); // 좌우 (Z-forward 기준)
+
+	m_vRotate.x = D3DXToDegree(pitch);
+	m_vRotate.y = D3DXToDegree(yaw);
+	// Roll은 보통 0
+}
+
 
 void CTransform::Free()
 {

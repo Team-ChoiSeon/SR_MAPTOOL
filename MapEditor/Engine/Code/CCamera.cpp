@@ -54,7 +54,7 @@ void CCamera::Update_Component(_float& dt)
 	m_vUp = m_pTransform->Get_Up();
 	m_vRight = m_pTransform->Get_Right();
 
-	UpdateDirFromAngles();
+	//UpdateDirFromAngles();
 
 	_vec3 vAt = m_vEye + m_vLookDir; //바라보는 곳은 항상 위치 + 방향
 
