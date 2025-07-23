@@ -6,13 +6,11 @@
             "ColType": 1
         },
         "CModel": {
-            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
                 "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
+            "mesh": "Default_A.obj"
         },
         "CRigidBody": {
             "Accelator": [
@@ -50,7 +48,7 @@
                 1.0,
                 1.0
             ],
-            "Mass": 1.0,
+            "Mass": 100.0,
             "Torque": [
                 0.0,
                 0.0,
@@ -61,7 +59,7 @@
                 0.0,
                 0.0
             ],
-            "m_bGravity": true
+            "m_bGravity": false
         },
         "CTransform": {
             "position": [

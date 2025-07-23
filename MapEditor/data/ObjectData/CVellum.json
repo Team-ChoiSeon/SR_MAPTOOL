@@ -2,35 +2,34 @@
     "class": "CVellum",
     "components": {
         "CCollider": {
-            "ColTag": 6,
+            "ColTag": 0,
             "ColType": 0
         },
         "CModel": {
-            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "Grey_Diffuse.PNG"
+                "diffuse": "Grey_Diffuse.PNG",
+                "shader": "g_UVScale.fx"
             },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
+            "mesh": "Default_A.obj"
         },
         "CParticle": {
-            "Particle_Type": 3,
+            "Particle_Type": 1,
             "base_color": [
                 255,
                 255,
                 160,
                 100
             ],
-            "life_time": 1,
+            "life_time": 0,
             "max_particles": 300,
             "offset": [
                 0.0,
-                0.0,
+                -0.5,
                 0.0
             ],
-            "size": 2.0,
-            "spawn_interval": 3.0,
+            "size": 1.5,
+            "spawn_interval": 0.30000001192092896,
             "texture_path": "blackSmoke00.png"
         },
         "CRigidBody": {
@@ -85,8 +84,8 @@
         "CTransform": {
             "position": [
                 0.0,
-                33.0,
-                60.0
+                20.0,
+                0.0
             ],
             "rotation": [
                 0.0,
@@ -94,9 +93,9 @@
                 0.0
             ],
             "scale": [
-                3.0,
-                3.0,
-                3.0
+                1.3300000429153442,
+                1.3300000429153442,
+                1.3300000429153442
             ]
         }
     }

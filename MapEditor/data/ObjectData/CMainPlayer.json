@@ -2,7 +2,7 @@
     "class": "CMainPlayer",
     "components": {
         "CCollider": {
-            "ColTag": 5,
+            "ColTag": 0,
             "ColType": 1
         },
         "CModel": {

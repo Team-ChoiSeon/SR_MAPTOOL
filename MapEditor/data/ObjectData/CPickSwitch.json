@@ -6,13 +6,12 @@
             "ColType": 0
         },
         "CModel": {
-            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
-                "diffuse": "Grey_Diffuse.PNG"
+                "diffuse": "Grey_Diffuse.PNG",
+                "shader": "g_UVScale.fx"
             },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
+            "mesh": "Default_A.obj"
         },
         "CPickable": {
             "validInGame": "true"
