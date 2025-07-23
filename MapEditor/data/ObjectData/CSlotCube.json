@@ -6,7 +6,7 @@
             "ColType": 1
         },
         "CModel": {
-            "Alpha": 1.0,
+            "Alpha": 0.5,
             "matKey": "Default_A.mtl",
             "material": {
                 "diffuse": "Grey_Diffuse.PNG"

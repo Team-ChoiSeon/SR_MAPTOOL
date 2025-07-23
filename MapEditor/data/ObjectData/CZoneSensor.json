@@ -1,18 +1,9 @@
 {
-    "class": "CFloatingCube",
+    "class": "CZoneSensor",
     "components": {
         "CCollider": {
             "ColTag": 1,
-            "ColType": 0
-        },
-        "CModel": {
-            "Alpha": 1.0,
-            "matKey": "Default_A.mtl",
-            "material": {
-                "diffuse": "Grey_Diffuse.PNG"
-            },
-            "mesh": "Default_A.obj",
-            "shader": "g_UVScale.fx"
+            "ColType": 2
         },
         "CRigidBody": {
             "Accelator": [

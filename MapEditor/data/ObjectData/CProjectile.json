@@ -1,9 +1,9 @@
 {
-    "class": "CFloatingCube",
+    "class": "CProjectile",
     "components": {
         "CCollider": {
-            "ColTag": 1,
-            "ColType": 0
+            "ColTag": 6,
+            "ColType": 1
         },
         "CModel": {
             "Alpha": 1.0,
@@ -13,6 +13,28 @@
             },
             "mesh": "Default_A.obj",
             "shader": "g_UVScale.fx"
+        },
+        "CParticle": {
+            "Particle_Type": 0,
+            "base_color": [
+                255,
+                255,
+                160,
+                100
+            ],
+            "life_time": 1,
+            "max_particles": 300,
+            "offset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "size": 3.0,
+            "spawn_interval": 0.029999999329447746,
+            "texture_path": "projectile.png"
+        },
+        "CPickable": {
+            "validInGame": "true"
         },
         "CRigidBody": {
             "Accelator": [
@@ -36,7 +58,7 @@
                 0.0,
                 0.0
             ],
-            "Friction": 0.0,
+            "Friction": 1.0,
             "Gravity": [
                 1.0
             ],
@@ -61,7 +83,7 @@
                 0.0,
                 0.0
             ],
-            "m_bGravity": false
+            "m_bGravity": true
         },
         "CTransform": {
             "position": [

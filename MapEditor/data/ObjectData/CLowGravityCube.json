@@ -1,9 +1,9 @@
 {
-    "class": "CFloatingCube",
+    "class": "CLowGravityCube",
     "components": {
         "CCollider": {
             "ColTag": 1,
-            "ColType": 0
+            "ColType": 2
         },
         "CModel": {
             "Alpha": 1.0,

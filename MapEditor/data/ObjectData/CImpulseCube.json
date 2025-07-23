@@ -6,11 +6,13 @@
             "ColType": 1
         },
         "CModel": {
+            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
                 "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "Default_A.obj"
+            "mesh": "Default_A.obj",
+            "shader": "g_UVScale.fx"
         },
         "CRigidBody": {
             "Accelator": [
@@ -34,7 +36,7 @@
                 0.0,
                 0.0
             ],
-            "Friction": 0.10000000149011612,
+            "Friction": 0.0,
             "Gravity": [
                 1.0
             ],
@@ -64,7 +66,7 @@
         "CTransform": {
             "position": [
                 0.0,
-                20.0,
+                0.0,
                 0.0
             ],
             "rotation": [

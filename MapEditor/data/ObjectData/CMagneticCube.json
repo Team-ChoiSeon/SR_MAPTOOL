@@ -3,14 +3,16 @@
     "components": {
         "CCollider": {
             "ColTag": 0,
-            "ColType": 0
+            "ColType": 1
         },
         "CModel": {
+            "Alpha": 1.0,
             "matKey": "Default_A.mtl",
             "material": {
                 "diffuse": "Grey_Diffuse.PNG"
             },
-            "mesh": "Default_A.obj"
+            "mesh": "Default_A.obj",
+            "shader": "g_UVScale.fx"
         },
         "CPickable": {
             "validInGame": "true"
